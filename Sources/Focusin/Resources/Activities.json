@@ -1,0 +1,222 @@
+[
+  {
+    "id": "window-breath-30",
+    "title": "Window Breath",
+    "instruction": "Look at the farthest thing you can see and take five slow breaths.",
+    "category": "mind",
+    "states": ["tired", "scattered", "anxious", "fine"],
+    "durations": ["thirtySeconds", "twoMinutes"],
+    "officeSafe": true,
+    "mindfulness": true,
+    "intensity": "low"
+  },
+  {
+    "id": "shoulder-reset-30",
+    "title": "Shoulder Reset",
+    "instruction": "Raise your shoulders toward your ears, hold briefly, then release. Repeat five times.",
+    "category": "move",
+    "states": ["stiff", "tired", "fine"],
+    "durations": ["thirtySeconds", "twoMinutes"],
+    "officeSafe": true,
+    "mindfulness": false,
+    "intensity": "low"
+  },
+  {
+    "id": "wrist-unwind-30",
+    "title": "Wrist Unwind",
+    "instruction": "Open and close your hands ten times, then gently circle each wrist.",
+    "category": "move",
+    "states": ["stiff", "fine"],
+    "durations": ["thirtySeconds", "twoMinutes"],
+    "officeSafe": true,
+    "mindfulness": false,
+    "intensity": "low"
+  },
+  {
+    "id": "next-task-seven-words",
+    "title": "Seven-Word Restart",
+    "instruction": "Write your next task in seven words or fewer, then start only that.",
+    "category": "focus",
+    "states": ["scattered", "anxious", "fine"],
+    "durations": ["thirtySeconds", "twoMinutes"],
+    "officeSafe": true,
+    "mindfulness": false,
+    "intensity": "low"
+  },
+  {
+    "id": "desk-one-item",
+    "title": "One-Item Clear",
+    "instruction": "Remove or put away exactly one thing from your desk.",
+    "category": "desk",
+    "states": ["scattered", "fine"],
+    "durations": ["thirtySeconds", "twoMinutes"],
+    "officeSafe": true,
+    "mindfulness": false,
+    "intensity": "low"
+  },
+  {
+    "id": "hydrate-two",
+    "title": "Water Check",
+    "instruction": "Take a drink of water or refill your bottle before returning.",
+    "category": "desk",
+    "states": ["tired", "scattered", "fine"],
+    "durations": ["twoMinutes", "fiveMinutes"],
+    "officeSafe": true,
+    "mindfulness": false,
+    "intensity": "low"
+  },
+  {
+    "id": "box-breath-two",
+    "title": "Box Breathing",
+    "instruction": "Breathe in for four, hold for four, out for four, hold for four. Repeat four rounds.",
+    "category": "mind",
+    "states": ["anxious", "scattered", "fine"],
+    "durations": ["twoMinutes", "fiveMinutes"],
+    "officeSafe": true,
+    "mindfulness": true,
+    "intensity": "low"
+  },
+  {
+    "id": "grounding-three-sounds",
+    "title": "Three Sounds",
+    "instruction": "Pause and name three sounds you can hear without judging them.",
+    "category": "mind",
+    "states": ["anxious", "scattered"],
+    "durations": ["thirtySeconds", "twoMinutes"],
+    "officeSafe": true,
+    "mindfulness": true,
+    "intensity": "low"
+  },
+  {
+    "id": "tab-trim-two",
+    "title": "Tab Trim",
+    "instruction": "Close one tab or window that is not helping your current task.",
+    "category": "focus",
+    "states": ["scattered", "fine"],
+    "durations": ["thirtySeconds", "twoMinutes"],
+    "officeSafe": true,
+    "mindfulness": false,
+    "intensity": "low"
+  },
+  {
+    "id": "stand-and-reach-two",
+    "title": "Stand and Reach",
+    "instruction": "Stand up, reach overhead, then reach gently to each side.",
+    "category": "move",
+    "states": ["stiff", "tired", "fine"],
+    "durations": ["twoMinutes", "fiveMinutes"],
+    "officeSafe": true,
+    "mindfulness": false,
+    "intensity": "low"
+  },
+  {
+    "id": "walk-window-five",
+    "title": "Window Walk",
+    "instruction": "Walk to a window or doorway and let your eyes rest on distance.",
+    "category": "move",
+    "states": ["tired", "stiff", "scattered"],
+    "durations": ["fiveMinutes", "tenMinutes"],
+    "officeSafe": true,
+    "mindfulness": false,
+    "intensity": "medium"
+  },
+  {
+    "id": "tea-no-phone-five",
+    "title": "Phone-Free Tea",
+    "instruction": "Make tea or coffee without taking your phone with you.",
+    "category": "desk",
+    "states": ["tired", "anxious", "scattered"],
+    "durations": ["fiveMinutes", "tenMinutes"],
+    "officeSafe": true,
+    "mindfulness": true,
+    "intensity": "low"
+  },
+  {
+    "id": "chair-reset-two",
+    "title": "Chair Reset",
+    "instruction": "Set both feet flat, relax your jaw, and adjust your chair or screen height.",
+    "category": "desk",
+    "states": ["stiff", "tired", "fine"],
+    "durations": ["twoMinutes", "fiveMinutes"],
+    "officeSafe": true,
+    "mindfulness": false,
+    "intensity": "low"
+  },
+  {
+    "id": "one-line-journal-two",
+    "title": "One-Line Journal",
+    "instruction": "Write one honest sentence about what is taking your attention right now.",
+    "category": "mind",
+    "states": ["anxious", "scattered", "tired"],
+    "durations": ["twoMinutes", "fiveMinutes"],
+    "officeSafe": true,
+    "mindfulness": true,
+    "intensity": "low"
+  },
+  {
+    "id": "message-human-five",
+    "title": "Human Ping",
+    "instruction": "Send one kind or useful message to someone, then come back.",
+    "category": "social",
+    "states": ["tired", "anxious", "fine"],
+    "durations": ["fiveMinutes", "tenMinutes"],
+    "officeSafe": true,
+    "mindfulness": false,
+    "intensity": "low"
+  },
+  {
+    "id": "outside-light-ten",
+    "title": "Daylight Loop",
+    "instruction": "Step outside or near daylight for a short loop. Keep your phone away.",
+    "category": "move",
+    "states": ["tired", "scattered", "anxious"],
+    "durations": ["fiveMinutes", "tenMinutes"],
+    "officeSafe": true,
+    "mindfulness": true,
+    "intensity": "medium"
+  },
+  {
+    "id": "squats-ten",
+    "title": "Ten Squats",
+    "instruction": "Do ten controlled squats, then take one slow breath before sitting.",
+    "category": "move",
+    "states": ["stiff", "tired"],
+    "durations": ["twoMinutes", "fiveMinutes"],
+    "officeSafe": false,
+    "mindfulness": false,
+    "intensity": "medium"
+  },
+  {
+    "id": "desk-dance-two",
+    "title": "Silent Shakeout",
+    "instruction": "Step away and shake out your arms and legs for one minute.",
+    "category": "move",
+    "states": ["stiff", "tired", "anxious"],
+    "durations": ["twoMinutes", "fiveMinutes"],
+    "officeSafe": false,
+    "mindfulness": false,
+    "intensity": "medium"
+  },
+  {
+    "id": "screen-clean-five",
+    "title": "Screen Clean",
+    "instruction": "Clean your screen or glasses, then return to one open task.",
+    "category": "desk",
+    "states": ["scattered", "fine"],
+    "durations": ["fiveMinutes", "tenMinutes"],
+    "officeSafe": true,
+    "mindfulness": false,
+    "intensity": "low"
+  },
+  {
+    "id": "single-sprint-five",
+    "title": "Five-Minute Setup",
+    "instruction": "Choose one task, remove one blocker, and set up your next work sprint.",
+    "category": "focus",
+    "states": ["scattered", "anxious", "fine"],
+    "durations": ["fiveMinutes", "tenMinutes"],
+    "officeSafe": true,
+    "mindfulness": false,
+    "intensity": "low"
+  }
+]
