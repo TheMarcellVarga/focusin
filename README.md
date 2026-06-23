@@ -19,12 +19,32 @@ Focusin is a native SwiftUI macOS menu bar app for state-based micro-break recom
 
 The project is set up as a Swift Package with a macOS 14 minimum target.
 
+### Run without Xcode or SwiftPM
+
+This machine's SwiftPM currently fails while loading package manifests. Use the direct local builder:
+
+```sh
+./scripts/build-local.sh --run
+```
+
+Focusin is a menu bar app, so look for it in the macOS top bar rather than expecting a normal app window.
+
+To verify the app without SwiftPM:
+
+```sh
+./scripts/test-local.sh
+```
+
+### Run with a working SwiftPM/Xcode install
+
+If SwiftPM is working:
+
 ```sh
 swift test
 swift run Focusin
 ```
 
-On this machine, Apple Command Line Tools report Swift 6.3.1 but SwiftPM cannot load even a freshly generated package manifest. The source has been verified with direct Swift 6 compiler type-checking and an ad hoc compiled test harness.
+On this machine, Apple Command Line Tools report Swift 6.3.1 but SwiftPM cannot load even a freshly generated package manifest. The source has been verified with direct Swift 6 compiler type-checking, a direct local app build, and an ad hoc compiled test harness.
 
 ## App Store Notes
 
