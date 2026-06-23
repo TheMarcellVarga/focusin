@@ -9,7 +9,11 @@ struct FocusinApp: App {
             FocusinPopoverView()
                 .environmentObject(store)
         } label: {
-            Label(store.focusStatusText, systemImage: store.isBreakDue ? "bell.badge" : "sparkle.magnifyingglass")
+            if store.settings.showMenuBarText {
+                Label(store.focusStatusText, systemImage: store.menuBarSystemImage)
+            } else {
+                Image(systemName: store.menuBarSystemImage)
+            }
         }
         .menuBarExtraStyle(.window)
 

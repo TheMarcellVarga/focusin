@@ -163,6 +163,9 @@ struct SettingsView: View {
     var body: some View {
         Form {
             Section("Reminder") {
+                Toggle("Start focus timer on launch", isOn: $store.settings.startFocusTimerOnLaunch)
+                Toggle("Enable notifications", isOn: $store.settings.notificationsEnabled)
+
                 Picker("Work interval", selection: $store.settings.workInterval) {
                     ForEach(WorkInterval.allCases) { interval in
                         Text(interval.label).tag(interval)
@@ -200,6 +203,7 @@ struct SettingsView: View {
             }
 
             Section("System") {
+                Toggle("Show menu bar text", isOn: $store.settings.showMenuBarText)
                 Toggle("Launch at login", isOn: $store.settings.launchAtLogin)
             }
         }

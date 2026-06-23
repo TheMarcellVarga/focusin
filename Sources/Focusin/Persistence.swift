@@ -25,11 +25,11 @@ final class FocusinPersistence {
               let settings = try? decoder.decode(FocusinSettings.self, from: data) else {
             return FocusinSettings()
         }
-        return settings
+        return settings.normalized
     }
 
     func save(settings: FocusinSettings) {
-        guard let data = try? encoder.encode(settings) else { return }
+        guard let data = try? encoder.encode(settings.normalized) else { return }
         defaults.set(data, forKey: Key.settings)
     }
 

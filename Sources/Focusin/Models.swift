@@ -124,6 +124,9 @@ public struct FocusinSettings: Codable, Equatable, Sendable {
     public var quietStartHour: Int
     public var quietEndHour: Int
     public var launchAtLogin: Bool
+    public var showMenuBarText: Bool
+    public var notificationsEnabled: Bool
+    public var startFocusTimerOnLaunch: Bool
 
     public init(
         workInterval: WorkInterval = .twentyFive,
@@ -134,7 +137,10 @@ public struct FocusinSettings: Codable, Equatable, Sendable {
         quietHoursEnabled: Bool = false,
         quietStartHour: Int = 18,
         quietEndHour: Int = 8,
-        launchAtLogin: Bool = false
+        launchAtLogin: Bool = false,
+        showMenuBarText: Bool = true,
+        notificationsEnabled: Bool = true,
+        startFocusTimerOnLaunch: Bool = true
     ) {
         self.workInterval = workInterval
         self.customWorkMinutes = customWorkMinutes
@@ -145,6 +151,9 @@ public struct FocusinSettings: Codable, Equatable, Sendable {
         self.quietStartHour = quietStartHour
         self.quietEndHour = quietEndHour
         self.launchAtLogin = launchAtLogin
+        self.showMenuBarText = showMenuBarText
+        self.notificationsEnabled = notificationsEnabled
+        self.startFocusTimerOnLaunch = startFocusTimerOnLaunch
     }
 
     public var resolvedWorkMinutes: Int {
@@ -154,6 +163,47 @@ public struct FocusinSettings: Codable, Equatable, Sendable {
         default:
             workInterval.rawValue
         }
+    }
+
+    public var normalized: FocusinSettings {
+        var copy = self
+        copy.customWorkMinutes = min(max(copy.customWorkMinutes, 1), 240)
+        copy.quietStartHour = min(max(copy.quietStartHour, 0), 23)
+        copy.quietEndHour = min(max(copy.quietEndHour, 0), 23)
+        return copy
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case workInterval
+        case customWorkMinutes
+        case defaultDuration
+        case officeSafeOnly
+        case includeMindfulness
+        case quietHoursEnabled
+        case quietStartHour
+        case quietEndHour
+        case launchAtLogin
+        case showMenuBarText
+        case notificationsEnabled
+        case startFocusTimerOnLaunch
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(
+            workInterval: try container.decodeIfPresent(WorkInterval.self, forKey: .workInterval) ?? .twentyFive,
+            customWorkMinutes: try container.decodeIfPresent(Int.self, forKey: .customWorkMinutes) ?? 25,
+            defaultDuration: try container.decodeIfPresent(BreakDuration.self, forKey: .defaultDuration) ?? .twoMinutes,
+            officeSafeOnly: try container.decodeIfPresent(Bool.self, forKey: .officeSafeOnly) ?? true,
+            includeMindfulness: try container.decodeIfPresent(Bool.self, forKey: .includeMindfulness) ?? true,
+            quietHoursEnabled: try container.decodeIfPresent(Bool.self, forKey: .quietHoursEnabled) ?? false,
+            quietStartHour: try container.decodeIfPresent(Int.self, forKey: .quietStartHour) ?? 18,
+            quietEndHour: try container.decodeIfPresent(Int.self, forKey: .quietEndHour) ?? 8,
+            launchAtLogin: try container.decodeIfPresent(Bool.self, forKey: .launchAtLogin) ?? false,
+            showMenuBarText: try container.decodeIfPresent(Bool.self, forKey: .showMenuBarText) ?? true,
+            notificationsEnabled: try container.decodeIfPresent(Bool.self, forKey: .notificationsEnabled) ?? true,
+            startFocusTimerOnLaunch: try container.decodeIfPresent(Bool.self, forKey: .startFocusTimerOnLaunch) ?? true
+        )
     }
 }
 

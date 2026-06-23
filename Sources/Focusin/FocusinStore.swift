@@ -6,8 +6,18 @@ final class FocusinStore: ObservableObject {
     @Published var activities: [BreakActivity] = []
     @Published var settings: FocusinSettings {
         didSet {
+            let normalized = settings.normalized
+            if settings != normalized {
+                settings = normalized
+                return
+            }
             persistence.save(settings: settings)
             LaunchAtLoginController.setEnabled(settings.launchAtLogin)
+            if settings.notificationsEnabled {
+                notifications.requestAuthorization()
+            } else {
+                notifications.clearBreakReminder()
+            }
             rescheduleReminder()
         }
     }
@@ -56,14 +66,16 @@ final class FocusinStore: ObservableObject {
             libraryErrorMessage = "The local activity library could not be loaded."
         }
 
-        notifications.requestAuthorization()
+        if settings.notificationsEnabled {
+            notifications.requestAuthorization()
+        }
         notifications.onReminderOpened = { [weak self] in
             self?.markBreakDue()
         }
 
         startTicker()
         restoreRuntimeState()
-        if runtimeState == .idle {
+        if runtimeState == .idle && settings.startFocusTimerOnLaunch {
             startFocusTimer()
         } else {
             rescheduleReminder()
@@ -82,6 +94,19 @@ final class FocusinStore: ObservableObject {
             let elapsed = max(0, Int(Date().timeIntervalSince(startedAt)))
             let remaining = max(settings.resolvedWorkMinutes * 60 - elapsed, 0)
             return "Focus \(remaining / 60)m"
+        }
+    }
+
+    var menuBarSystemImage: String {
+        switch runtimeState {
+        case .idle:
+            return "pause.circle"
+        case .focusing:
+            return "timer"
+        case .breakDue:
+            return "bell.badge"
+        case .breaking:
+            return "figure.mind.and.body"
         }
     }
 
@@ -226,7 +251,9 @@ final class FocusinStore: ObservableObject {
     private func rescheduleReminder() {
         notifications.clearBreakReminder()
 
-        guard let focusStartedAt, !isQuietTime(date: Date()) else {
+        guard settings.notificationsEnabled,
+              let focusStartedAt,
+              !isQuietTime(date: Date()) else {
             return
         }
 
