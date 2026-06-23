@@ -157,12 +157,34 @@ public struct FocusinSettings: Codable, Equatable, Sendable {
     }
 }
 
-public struct DailyActivityHistory: Codable, Equatable, Sendable {
-    public var dateKey: String
-    public var activityIDs: Set<String>
+public enum FocusinRuntimeState: Codable, Equatable, Sendable {
+    case idle
+    case focusing(startedAt: Date)
+    case breakDue
+    case breaking(activityID: String, endsAt: Date)
+}
 
-    public init(dateKey: String, activityIDs: Set<String> = []) {
+public struct ActivityHistory: Codable, Equatable, Sendable {
+    public var dateKey: String
+    public var completedActivityIDs: Set<String>
+    public var skippedActivityIDs: Set<String>
+    public var seenActivityIDs: Set<String>
+
+    public init(
+        dateKey: String,
+        completedActivityIDs: Set<String> = [],
+        skippedActivityIDs: Set<String> = [],
+        seenActivityIDs: Set<String> = []
+    ) {
         self.dateKey = dateKey
-        self.activityIDs = activityIDs
+        self.completedActivityIDs = completedActivityIDs
+        self.skippedActivityIDs = skippedActivityIDs
+        self.seenActivityIDs = seenActivityIDs
+    }
+
+    public var excludedForRecommendations: Set<String> {
+        completedActivityIDs
+            .union(skippedActivityIDs)
+            .union(seenActivityIDs)
     }
 }

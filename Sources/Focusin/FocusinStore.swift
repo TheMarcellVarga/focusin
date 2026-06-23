@@ -24,10 +24,12 @@ final class FocusinStore: ObservableObject {
         }
     }
     @Published var currentActivity: BreakActivity?
-    @Published var dailyHistory: DailyActivityHistory
-    @Published var isBreakDue = false
-    @Published var focusStartedAt: Date?
-    @Published var breakEndsAt: Date?
+    @Published var activityHistory: ActivityHistory
+    @Published var runtimeState: FocusinRuntimeState {
+        didSet {
+            persistence.save(runtimeState: runtimeState)
+        }
+    }
     @Published var remainingBreakSeconds = 0
     @Published var libraryErrorMessage: String?
 
@@ -44,8 +46,8 @@ final class FocusinStore: ObservableObject {
         settings = loadedSettings
         selectedState = resolvedPersistence.loadSelectedState()
         selectedDuration = resolvedPersistence.loadSelectedDuration(defaultDuration: loadedSettings.defaultDuration)
-        dailyHistory = resolvedPersistence.loadDailyHistory(dateKey: DateKey.make(for: Date()))
-        focusStartedAt = resolvedPersistence.loadReminderStartedAt()
+        activityHistory = resolvedPersistence.loadActivityHistory(dateKey: DateKey.make(for: Date()))
+        runtimeState = resolvedPersistence.loadRuntimeState()
 
         do {
             activities = try ActivityLibrary.load()
@@ -60,7 +62,8 @@ final class FocusinStore: ObservableObject {
         }
 
         startTicker()
-        if focusStartedAt == nil {
+        restoreRuntimeState()
+        if runtimeState == .idle {
             startFocusTimer()
         } else {
             rescheduleReminder()
@@ -68,17 +71,36 @@ final class FocusinStore: ObservableObject {
     }
 
     var focusStatusText: String {
-        if isBreakDue {
+        switch runtimeState {
+        case .breakDue:
             return "Break due"
-        }
-
-        guard let focusStartedAt else {
+        case .breaking:
+            return "Break \(remainingBreakSeconds / 60)m"
+        case .idle:
             return "Ready"
+        case let .focusing(startedAt):
+            let elapsed = max(0, Int(Date().timeIntervalSince(startedAt)))
+            let remaining = max(settings.resolvedWorkMinutes * 60 - elapsed, 0)
+            return "Focus \(remaining / 60)m"
         }
+    }
 
-        let elapsed = max(0, Int(Date().timeIntervalSince(focusStartedAt)))
-        let remaining = max(settings.resolvedWorkMinutes * 60 - elapsed, 0)
-        return "Focus \(remaining / 60)m"
+    var isBreakDue: Bool {
+        runtimeState == .breakDue
+    }
+
+    var focusStartedAt: Date? {
+        if case let .focusing(startedAt) = runtimeState {
+            return startedAt
+        }
+        return nil
+    }
+
+    var breakEndsAt: Date? {
+        if case let .breaking(_, endsAt) = runtimeState {
+            return endsAt
+        }
+        return nil
     }
 
     var canShowRecommendation: Bool {
@@ -93,38 +115,36 @@ final class FocusinStore: ObservableObject {
             duration: selectedDuration,
             officeSafeOnly: settings.officeSafeOnly,
             includeMindfulness: settings.includeMindfulness,
-            excludedActivityIDs: dailyHistory.activityIDs
+            excludedActivityIDs: activityHistory.excludedForRecommendations
         )
 
         currentActivity = engine.recommend(from: activities, request: request)
     }
 
     func anotherActivity() {
-        recordCurrentActivity()
+        recordCurrentActivityAsSeen()
         recommend()
     }
 
     func startBreak() {
-        guard currentActivity != nil else { return }
-        isBreakDue = false
-        focusStartedAt = nil
-        persistence.save(reminderStartedAt: nil)
+        guard let currentActivity else { return }
         notifications.clearBreakReminder()
         remainingBreakSeconds = selectedDuration.seconds
-        breakEndsAt = Date().addingTimeInterval(TimeInterval(selectedDuration.seconds))
+        runtimeState = .breaking(
+            activityID: currentActivity.id,
+            endsAt: Date().addingTimeInterval(TimeInterval(selectedDuration.seconds))
+        )
     }
 
     func completeBreak() {
-        recordCurrentActivity()
-        breakEndsAt = nil
+        recordCurrentActivityAsCompleted()
         remainingBreakSeconds = 0
         startFocusTimer()
         recommend()
     }
 
     func skipActivity() {
-        recordCurrentActivity()
-        breakEndsAt = nil
+        recordCurrentActivityAsSkipped()
         remainingBreakSeconds = 0
         startFocusTimer()
         recommend()
@@ -132,31 +152,49 @@ final class FocusinStore: ObservableObject {
 
     func startFocusTimer() {
         let now = Date()
-        focusStartedAt = now
-        isBreakDue = false
-        persistence.save(reminderStartedAt: now)
+        runtimeState = .focusing(startedAt: now)
         rescheduleReminder()
     }
 
     func markBreakDue() {
-        isBreakDue = true
-        focusStartedAt = nil
-        persistence.save(reminderStartedAt: nil)
+        runtimeState = .breakDue
         notifications.clearBreakReminder()
     }
 
-    private func recordCurrentActivity() {
+    private func recordCurrentActivityAsSeen() {
         refreshHistoryIfNeeded()
         guard let currentActivity else { return }
-        dailyHistory.activityIDs.insert(currentActivity.id)
-        persistence.save(dailyHistory: dailyHistory)
+        activityHistory.seenActivityIDs.insert(currentActivity.id)
+        persistence.save(activityHistory: activityHistory)
+    }
+
+    private func recordCurrentActivityAsCompleted() {
+        refreshHistoryIfNeeded()
+        guard let activityID = activeOrCurrentActivityID else { return }
+        activityHistory.completedActivityIDs.insert(activityID)
+        persistence.save(activityHistory: activityHistory)
+    }
+
+    private func recordCurrentActivityAsSkipped() {
+        refreshHistoryIfNeeded()
+        guard let activityID = activeOrCurrentActivityID else { return }
+        activityHistory.skippedActivityIDs.insert(activityID)
+        persistence.save(activityHistory: activityHistory)
+    }
+
+    private var activeOrCurrentActivityID: String? {
+        if case let .breaking(activityID, _) = runtimeState {
+            return activityID
+        }
+
+        return currentActivity?.id
     }
 
     private func refreshHistoryIfNeeded() {
         let dateKey = DateKey.make(for: Date())
-        if dailyHistory.dateKey != dateKey {
-            dailyHistory = DailyActivityHistory(dateKey: dateKey)
-            persistence.save(dailyHistory: dailyHistory)
+        if activityHistory.dateKey != dateKey {
+            activityHistory = ActivityHistory(dateKey: dateKey)
+            persistence.save(activityHistory: activityHistory)
         }
     }
 
@@ -198,6 +236,26 @@ final class FocusinStore: ObservableObject {
             markBreakDue()
         } else {
             notifications.scheduleBreakReminder(after: remaining)
+        }
+    }
+
+    private func restoreRuntimeState() {
+        switch runtimeState {
+        case .idle:
+            remainingBreakSeconds = 0
+        case let .focusing(startedAt):
+            let elapsed = Date().timeIntervalSince(startedAt)
+            if elapsed >= TimeInterval(settings.resolvedWorkMinutes * 60) {
+                markBreakDue()
+            }
+        case .breakDue:
+            remainingBreakSeconds = 0
+        case let .breaking(activityID, endsAt):
+            remainingBreakSeconds = max(0, Int(ceil(endsAt.timeIntervalSinceNow)))
+            currentActivity = activities.first { $0.id == activityID } ?? currentActivity
+            if remainingBreakSeconds == 0 {
+                completeBreak()
+            }
         }
     }
 
