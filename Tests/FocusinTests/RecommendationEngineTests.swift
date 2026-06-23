@@ -99,6 +99,58 @@ final class RecommendationEngineTests: XCTestCase {
         XCTAssertEqual(DateKey.make(for: morning, calendar: calendar), DateKey.make(for: evening, calendar: calendar))
     }
 
+    func testActivityHistoryCombinesRecommendationExclusions() {
+        let history = ActivityHistory(
+            dateKey: "2026-6-23",
+            completedActivityIDs: ["completed"],
+            skippedActivityIDs: ["skipped"],
+            seenActivityIDs: ["seen"]
+        )
+
+        XCTAssertEqual(history.excludedForRecommendations, ["completed", "skipped", "seen"])
+    }
+
+    func testSettingsNormalizeClampsUserEditableNumbers() {
+        let settings = FocusinSettings(customWorkMinutes: 999, quietStartHour: -4, quietEndHour: 40).normalized
+
+        XCTAssertEqual(settings.customWorkMinutes, 240)
+        XCTAssertEqual(settings.quietStartHour, 0)
+        XCTAssertEqual(settings.quietEndHour, 23)
+    }
+
+    func testSettingsDecodeMissingNewFieldsWithDefaults() throws {
+        let data = """
+        {
+          "workInterval": 25,
+          "customWorkMinutes": 25,
+          "defaultDuration": "twoMinutes"
+        }
+        """.data(using: .utf8)!
+
+        let settings = try JSONDecoder().decode(FocusinSettings.self, from: data)
+
+        XCTAssertTrue(settings.showMenuBarText)
+        XCTAssertTrue(settings.notificationsEnabled)
+        XCTAssertTrue(settings.startFocusTimerOnLaunch)
+    }
+
+    func testRuntimeStateCodableRoundTrip() throws {
+        let state = FocusinRuntimeState.breaking(activityID: "window-breath-30", endsAt: Date(timeIntervalSince1970: 1_800))
+        let data = try JSONEncoder().encode(state)
+        let decoded = try JSONDecoder().decode(FocusinRuntimeState.self, from: data)
+
+        XCTAssertEqual(decoded, state)
+    }
+
+    func testActivityLibraryValidationRejectsDuplicateIDs() {
+        let duplicated = [
+            activity(id: "duplicate", states: [.fine], durations: [.twoMinutes]),
+            activity(id: "duplicate", states: [.fine], durations: [.fiveMinutes])
+        ]
+
+        XCTAssertThrowsError(try ActivityLibrary.validate(duplicated))
+    }
+
     private func activity(
         id: String,
         states: [FocusState],

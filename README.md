@@ -55,3 +55,18 @@ For TestFlight/App Store submission, open or wrap the package in a full Xcode ma
 - `Sources/Focusin/Resources/Info.plist`
 
 The app is local-only in v1: no account, no analytics, no network requirement.
+
+## Manual QA Checklist
+
+- Fresh launch shows Focusin in the macOS menu bar.
+- Popover opens from the menu bar item.
+- Settings opens from the popover and persists changes after relaunch.
+- `Start Focus` begins a focus interval.
+- `Take Break Now` starts the current recommendation immediately.
+- `Another` rotates recommendations without marking one completed.
+- `Done` records completion and starts the next focus interval.
+- `Skip` records a skip and starts the next focus interval.
+- Quiet hours suppress notifications.
+- Disabling notifications prevents scheduling new break reminders.
+- Relaunch restores active focus or break state.
+- Quit exits the Focusin process.
