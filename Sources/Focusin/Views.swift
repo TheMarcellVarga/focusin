@@ -283,11 +283,30 @@ struct SettingsView: View {
                 Toggle("Show menu bar text", isOn: $store.settings.showMenuBarText)
                 Toggle("Launch at login", isOn: $store.settings.launchAtLogin)
             }
+
+            Section("Beta Feedback") {
+                Button {
+                    NSPasteboard.general.clearContents()
+                    NSPasteboard.general.setString(Self.feedbackTemplate, forType: .string)
+                } label: {
+                    Label("Copy Feedback Notes", systemImage: "doc.on.clipboard")
+                }
+            }
         }
         .formStyle(.grouped)
         .padding(20)
         .frame(width: 460)
     }
+
+    private static let feedbackTemplate = """
+    Focusin beta feedback
+
+    1. Did reminders feel useful or annoying?
+    2. Did recommendations feel specific enough?
+    3. Which state did you use most: Stiff, Tired, Scattered, Anxious, or Fine?
+    4. Which activity felt awkward in a study or office context?
+    5. Would Focusin earn a permanent menu bar spot?
+    """
 }
 
 private struct PickerSection<Content: View>: View {
