@@ -11,6 +11,8 @@ struct FocusinPopoverView: View {
 
             Divider()
 
+            statusPanel
+
             PickerSection(title: "State") {
                 ChipGrid(items: FocusState.allCases, selected: $store.selectedState) { state in
                     Text(state.label)
@@ -36,9 +38,6 @@ struct FocusinPopoverView: View {
             VStack(alignment: .leading, spacing: 3) {
                 Text("Focusin")
                     .font(.title3.weight(.semibold))
-                Text(store.focusStatusText)
-                    .font(.subheadline)
-                    .foregroundStyle(store.isBreakDue ? .orange : .secondary)
             }
 
             Spacer()
@@ -59,6 +58,35 @@ struct FocusinPopoverView: View {
             .buttonStyle(.borderless)
             .help("Settings")
         }
+    }
+
+    private var statusPanel: some View {
+        HStack(spacing: 12) {
+            Image(systemName: store.menuBarSystemImage)
+                .font(.title2)
+                .foregroundStyle(store.isBreakDue ? Color.orange : Color.accentColor)
+                .frame(width: 30)
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 3) {
+                Text(store.runtimeStateTitle)
+                    .font(.headline)
+                Text(store.runtimeStateDetail)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer()
+
+            if store.isBreaking {
+                Text(store.breakCountdownText)
+                    .font(.system(.title3, design: .monospaced).weight(.semibold))
+                    .foregroundStyle(.primary)
+            }
+        }
+        .padding(12)
+        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
     }
 
     @ViewBuilder
@@ -108,38 +136,7 @@ struct FocusinPopoverView: View {
 
     private var footer: some View {
         VStack(spacing: 10) {
-            HStack {
-                Button {
-                    store.startBreak()
-                } label: {
-                    Label("Start", systemImage: "play.fill")
-                }
-                .keyboardShortcut(.defaultAction)
-                .disabled(!store.canShowRecommendation || store.breakEndsAt != nil)
-
-                Button {
-                    store.anotherActivity()
-                } label: {
-                    Label("Another", systemImage: "shuffle")
-                }
-                .disabled(!store.canShowRecommendation)
-
-                Spacer()
-
-                Button {
-                    store.completeBreak()
-                } label: {
-                    Label("Done", systemImage: "checkmark")
-                }
-                .disabled(!store.canShowRecommendation)
-
-                Button {
-                    store.skipActivity()
-                } label: {
-                    Label("Skip", systemImage: "forward.end")
-                }
-                .disabled(!store.canShowRecommendation)
-            }
+            actionRow
 
             HStack {
                 SettingsLink {
@@ -153,6 +150,86 @@ struct FocusinPopoverView: View {
                 }
             }
             .font(.caption)
+        }
+    }
+
+    @ViewBuilder
+    private var actionRow: some View {
+        HStack {
+            switch store.runtimeState {
+            case .idle:
+                Button {
+                    store.startFocusTimer()
+                } label: {
+                    Label("Start Focus", systemImage: "timer")
+                }
+                .keyboardShortcut(.defaultAction)
+
+                Button {
+                    store.startBreak()
+                } label: {
+                    Label("Reset Now", systemImage: "play.fill")
+                }
+                .disabled(!store.canShowRecommendation)
+
+            case .focusing:
+                Button {
+                    store.startBreak()
+                } label: {
+                    Label("Take Break Now", systemImage: "play.fill")
+                }
+                .keyboardShortcut(.defaultAction)
+                .disabled(!store.canShowRecommendation)
+
+                Button {
+                    store.startFocusTimer()
+                } label: {
+                    Label("Reset Timer", systemImage: "arrow.clockwise")
+                }
+
+            case .breakDue:
+                Button {
+                    store.startBreak()
+                } label: {
+                    Label("Start", systemImage: "play.fill")
+                }
+                .keyboardShortcut(.defaultAction)
+                .disabled(!store.canShowRecommendation)
+
+                Button {
+                    store.anotherActivity()
+                } label: {
+                    Label("Another", systemImage: "shuffle")
+                }
+                .disabled(!store.canShowRecommendation)
+
+            case .breaking:
+                Button {
+                    store.completeBreak()
+                } label: {
+                    Label("Done", systemImage: "checkmark")
+                }
+                .keyboardShortcut(.defaultAction)
+                .disabled(!store.canShowRecommendation)
+
+                Button {
+                    store.skipActivity()
+                } label: {
+                    Label("Skip", systemImage: "forward.end")
+                }
+                .disabled(!store.canShowRecommendation)
+            }
+
+            Spacer()
+
+            if !store.isBreaking && !store.isBreakDue {
+                Button {
+                    store.anotherActivity()
+                } label: {
+                    Label("Another", systemImage: "shuffle")
+                }
+                .disabled(!store.canShowRecommendation)
+            }
         }
     }
 }
@@ -257,6 +334,7 @@ private struct ChipGrid<Item: Identifiable & Hashable, Label: View>: View {
                 .buttonStyle(.plain)
                 .foregroundStyle(selected == item ? .white : .primary)
                 .background(selected == item ? Color.accentColor : Color(nsColor: .controlBackgroundColor), in: RoundedRectangle(cornerRadius: 8))
+                .help("Select \(String(describing: item.id))")
             }
         }
     }

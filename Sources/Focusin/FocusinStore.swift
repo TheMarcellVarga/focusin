@@ -85,9 +85,9 @@ final class FocusinStore: ObservableObject {
     var focusStatusText: String {
         switch runtimeState {
         case .breakDue:
-            return "Break due"
+            return "Break"
         case .breaking:
-            return "Break \(remainingBreakSeconds / 60)m"
+            return "Reset \(formatted(seconds: remainingBreakSeconds))"
         case .idle:
             return "Ready"
         case let .focusing(startedAt):
@@ -112,6 +112,50 @@ final class FocusinStore: ObservableObject {
 
     var isBreakDue: Bool {
         runtimeState == .breakDue
+    }
+
+    var isFocusing: Bool {
+        if case .focusing = runtimeState {
+            return true
+        }
+        return false
+    }
+
+    var isBreaking: Bool {
+        if case .breaking = runtimeState {
+            return true
+        }
+        return false
+    }
+
+    var runtimeStateTitle: String {
+        switch runtimeState {
+        case .idle:
+            return "Ready"
+        case .focusing:
+            return "Focus running"
+        case .breakDue:
+            return "Break due"
+        case .breaking:
+            return "Break active"
+        }
+    }
+
+    var runtimeStateDetail: String {
+        switch runtimeState {
+        case .idle:
+            return "Choose a reset or start a focus timer."
+        case .focusing:
+            return "A gentle reminder will appear when this interval ends."
+        case .breakDue:
+            return "Start the suggested reset or pick another one."
+        case .breaking:
+            return "Finish early or skip when you are ready."
+        }
+    }
+
+    var breakCountdownText: String {
+        formatted(seconds: remainingBreakSeconds)
     }
 
     var focusStartedAt: Date? {
@@ -302,5 +346,17 @@ final class FocusinStore: ObservableObject {
         }
 
         return hour >= start || hour < end
+    }
+
+    private func formatted(seconds: Int) -> String {
+        let clamped = max(seconds, 0)
+        let minutes = clamped / 60
+        let seconds = clamped % 60
+
+        if minutes > 0 {
+            return "\(minutes)m \(seconds)s"
+        }
+
+        return "\(seconds)s"
     }
 }
