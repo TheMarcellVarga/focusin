@@ -48,7 +48,7 @@ On this machine, Apple Command Line Tools report Swift 6.3.1 but SwiftPM cannot 
 
 ## App Store Notes
 
-For TestFlight/App Store submission, open or wrap the package in a full Xcode macOS app target and apply:
+For TestFlight/App Store submission, open `Focusin.xcodeproj` and archive the `Focusin` scheme. The checked-in Xcode target reuses the existing Swift files and applies:
 
 - `Sources/Focusin/Resources/Focusin.entitlements`
 - `Sources/Focusin/Resources/PrivacyInfo.xcprivacy`

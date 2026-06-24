@@ -1,9 +1,11 @@
 # TestFlight Prep
 
-Focusin currently builds locally through `scripts/build-local.sh` because this machine's Command Line Tools SwiftPM install cannot load package manifests. Before TestFlight, create a full Xcode macOS app wrapper that reuses the existing Swift files and resources.
+Focusin builds locally through `scripts/build-local.sh` because this machine's Command Line Tools SwiftPM install cannot load package manifests. For TestFlight, open the checked-in `Focusin.xcodeproj` and archive the shared `Focusin` scheme.
 
 ## Xcode Target
 
+- Project: `Focusin.xcodeproj`
+- Scheme: `Focusin`
 - Product: macOS App
 - Minimum macOS: 14.0
 - Bundle identifier: `com.marcellvarga.focusin`
@@ -32,8 +34,11 @@ Add these to the app target:
 
 - Run `./scripts/test-local.sh`.
 - Build and launch `./scripts/build-local.sh --run`.
+- Open `Focusin.xcodeproj` in Xcode and select the `Focusin` scheme.
+- Select the Apple Developer team for automatic signing if Xcode has not already resolved it.
+- Build the `Focusin` scheme in Debug.
 - Confirm fresh launch shows a menu bar item.
 - Confirm notification permission flow works.
 - Confirm settings persist after relaunch.
 - Confirm privacy manifest is included in the archived app.
-- Archive from Xcode and upload to App Store Connect for TestFlight.
+- Archive the `Focusin` scheme from Xcode and upload to App Store Connect for TestFlight.
