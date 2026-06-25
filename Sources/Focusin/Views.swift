@@ -6,38 +6,52 @@ struct FocusinPopoverView: View {
     @Environment(\.openSettings) private var openSettings
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 14) {
             header
-
-            Divider()
 
             statusPanel
 
-            PickerSection(title: "State") {
-                ChipGrid(items: FocusState.allCases, selected: $store.selectedState) { state in
-                    Text(state.label)
+            VStack(alignment: .leading, spacing: 12) {
+                SegmentedPickerSection(title: "State", selection: $store.selectedState) {
+                    ForEach(FocusState.allCases) { state in
+                        Text(state.label).tag(state)
+                    }
                 }
-            }
 
-            PickerSection(title: "Time") {
-                ChipGrid(items: BreakDuration.allCases, selected: $store.selectedDuration) { duration in
-                    Text(duration.label)
+                SegmentedPickerSection(title: "Duration", selection: $store.selectedDuration) {
+                    ForEach(BreakDuration.allCases) { duration in
+                        Text(duration.label).tag(duration)
+                    }
                 }
             }
+            .padding(12)
+            .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
 
             activityPanel
 
             footer
         }
-        .padding(18)
-        .frame(width: 360)
+        .padding(16)
+        .frame(width: 384)
+        .background(Color(nsColor: .windowBackgroundColor))
     }
 
     private var header: some View {
-        HStack(alignment: .center) {
-            VStack(alignment: .leading, spacing: 3) {
+        HStack(spacing: 10) {
+            Image(systemName: "figure.mind.and.body")
+                .font(.system(size: 17, weight: .semibold))
+                .foregroundStyle(.white)
+                .frame(width: 30, height: 30)
+                .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 7, style: .continuous))
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 1) {
                 Text("Focusin")
-                    .font(.title3.weight(.semibold))
+                    .font(.headline)
+                Text(store.focusStatusText)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .monospacedDigit()
             }
 
             Spacer()
@@ -48,6 +62,7 @@ struct FocusinPopoverView: View {
                 Image(systemName: "timer")
             }
             .buttonStyle(.borderless)
+            .controlSize(.small)
             .help("Restart focus timer")
 
             Button {
@@ -56,98 +71,136 @@ struct FocusinPopoverView: View {
                 Image(systemName: "gearshape")
             }
             .buttonStyle(.borderless)
+            .controlSize(.small)
             .help("Settings")
         }
+        .padding(.bottom, 2)
     }
 
     private var statusPanel: some View {
         HStack(spacing: 12) {
             Image(systemName: store.menuBarSystemImage)
-                .font(.title2)
-                .foregroundStyle(store.isBreakDue ? Color.orange : Color.accentColor)
-                .frame(width: 30)
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundStyle(statusColor)
+                .frame(width: 34, height: 34)
+                .background(statusColor.opacity(0.12), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
                 .accessibilityHidden(true)
 
-            VStack(alignment: .leading, spacing: 3) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(store.runtimeStateTitle)
-                    .font(.headline)
+                    .font(.callout.weight(.semibold))
                 Text(store.runtimeStateDetail)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
 
-            Spacer()
+            Spacer(minLength: 10)
 
             if store.isBreaking {
                 Text(store.breakCountdownText)
-                    .font(.system(.title3, design: .monospaced).weight(.semibold))
+                    .font(.system(.title3, design: .rounded).weight(.semibold))
                     .foregroundStyle(.primary)
+                    .monospacedDigit()
             }
         }
         .padding(12)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .strokeBorder(.separator.opacity(0.35))
+        }
     }
 
     @ViewBuilder
     private var activityPanel: some View {
         if let message = store.libraryErrorMessage {
-            Text(message)
-                .font(.callout)
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(14)
-                .background(.quaternary, in: RoundedRectangle(cornerRadius: 8))
+            StateMessage(
+                systemImage: "exclamationmark.triangle",
+                title: "Activity library unavailable",
+                message: message,
+                tint: .orange
+            )
         } else if let activity = store.currentActivity {
-            VStack(alignment: .leading, spacing: 10) {
-                HStack {
-                    Text(activity.title)
-                        .font(.headline)
-                    Spacer()
-                    Text(activity.category.rawValue.capitalized)
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(alignment: .firstTextBaseline) {
+                    Label(activity.category.displayName, systemImage: activity.category.systemImage)
                         .font(.caption.weight(.medium))
                         .foregroundStyle(.secondary)
+
+                    Spacer()
+
+                    if activity.officeSafe {
+                        Label("Office safe", systemImage: "checkmark.circle")
+                            .font(.caption2.weight(.medium))
+                            .foregroundStyle(.secondary)
+                    }
                 }
 
-                Text(activity.instruction)
-                    .font(.body)
-                    .foregroundStyle(.primary)
-                    .fixedSize(horizontal: false, vertical: true)
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(activity.title)
+                        .font(.title3.weight(.semibold))
+                        .fixedSize(horizontal: false, vertical: true)
+                    Text(activity.instruction)
+                        .font(.callout)
+                        .foregroundStyle(.primary)
+                        .lineSpacing(2)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
 
                 if let breakEndsAt = store.breakEndsAt {
-                    ProgressView(value: Double(store.selectedDuration.seconds - store.remainingBreakSeconds), total: Double(store.selectedDuration.seconds))
-                    Text("Ends at \(breakEndsAt, style: .time)")
+                    VStack(alignment: .leading, spacing: 6) {
+                        ProgressView(
+                            value: Double(store.selectedDuration.seconds - store.remainingBreakSeconds),
+                            total: Double(store.selectedDuration.seconds)
+                        )
+                        .controlSize(.small)
+
+                        HStack {
+                            Text("Ends at \(breakEndsAt, style: .time)")
+                            Spacer()
+                            Text(store.breakCountdownText)
+                                .monospacedDigit()
+                        }
                         .font(.caption)
                         .foregroundStyle(.secondary)
+                    }
                 }
             }
             .padding(14)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .strokeBorder(.separator.opacity(0.35))
+            }
         } else {
-            Text("No activity matches these settings yet.")
-                .font(.callout)
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(14)
-                .background(.quaternary, in: RoundedRectangle(cornerRadius: 8))
+            StateMessage(
+                systemImage: "sparkle.magnifyingglass",
+                title: "No matching activity",
+                message: "Try another state, duration, or recommendation setting.",
+                tint: .secondary
+            )
         }
     }
 
     private var footer: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 12) {
             actionRow
 
             HStack {
                 SettingsLink {
                     Label("Settings", systemImage: "slider.horizontal.3")
                 }
+                .buttonStyle(.link)
 
                 Spacer()
 
                 Button("Quit") {
                     NSApplication.shared.terminate(nil)
                 }
+                .buttonStyle(.link)
+                .foregroundStyle(.secondary)
             }
             .font(.caption)
         }
@@ -155,14 +208,16 @@ struct FocusinPopoverView: View {
 
     @ViewBuilder
     private var actionRow: some View {
-        HStack {
+        HStack(spacing: 8) {
             switch store.runtimeState {
             case .idle:
                 Button {
                     store.startFocusTimer()
                 } label: {
                     Label("Start Focus", systemImage: "timer")
+                        .frame(maxWidth: .infinity)
                 }
+                .buttonStyle(.borderedProminent)
                 .keyboardShortcut(.defaultAction)
 
                 Button {
@@ -170,29 +225,35 @@ struct FocusinPopoverView: View {
                 } label: {
                     Label("Reset Now", systemImage: "play.fill")
                 }
+                .buttonStyle(.bordered)
                 .disabled(!store.canShowRecommendation)
 
             case .focusing:
                 Button {
                     store.startBreak()
                 } label: {
-                    Label("Take Break Now", systemImage: "play.fill")
+                    Label("Take Break", systemImage: "play.fill")
+                        .frame(maxWidth: .infinity)
                 }
+                .buttonStyle(.borderedProminent)
                 .keyboardShortcut(.defaultAction)
                 .disabled(!store.canShowRecommendation)
 
                 Button {
                     store.startFocusTimer()
                 } label: {
-                    Label("Reset Timer", systemImage: "arrow.clockwise")
+                    Label("Reset", systemImage: "arrow.clockwise")
                 }
+                .buttonStyle(.bordered)
 
             case .breakDue:
                 Button {
                     store.startBreak()
                 } label: {
                     Label("Start", systemImage: "play.fill")
+                        .frame(maxWidth: .infinity)
                 }
+                .buttonStyle(.borderedProminent)
                 .keyboardShortcut(.defaultAction)
                 .disabled(!store.canShowRecommendation)
 
@@ -201,6 +262,7 @@ struct FocusinPopoverView: View {
                 } label: {
                     Label("Another", systemImage: "shuffle")
                 }
+                .buttonStyle(.bordered)
                 .disabled(!store.canShowRecommendation)
 
             case .breaking:
@@ -208,7 +270,9 @@ struct FocusinPopoverView: View {
                     store.completeBreak()
                 } label: {
                     Label("Done", systemImage: "checkmark")
+                        .frame(maxWidth: .infinity)
                 }
+                .buttonStyle(.borderedProminent)
                 .keyboardShortcut(.defaultAction)
                 .disabled(!store.canShowRecommendation)
 
@@ -217,20 +281,34 @@ struct FocusinPopoverView: View {
                 } label: {
                     Label("Skip", systemImage: "forward.end")
                 }
+                .buttonStyle(.bordered)
                 .disabled(!store.canShowRecommendation)
             }
-
-            Spacer()
 
             if !store.isBreaking && !store.isBreakDue {
                 Button {
                     store.anotherActivity()
                 } label: {
-                    Label("Another", systemImage: "shuffle")
+                    Image(systemName: "shuffle")
                 }
+                .buttonStyle(.bordered)
                 .disabled(!store.canShowRecommendation)
+                .help("Show another activity")
             }
         }
+        .controlSize(.large)
+    }
+
+    private var statusColor: Color {
+        if store.isBreakDue {
+            return .orange
+        }
+
+        if store.isBreaking {
+            return .green
+        }
+
+        return .accentColor
     }
 }
 
@@ -238,8 +316,34 @@ struct SettingsView: View {
     @EnvironmentObject private var store: FocusinStore
 
     var body: some View {
-        Form {
-            Section("Reminder") {
+        TabView {
+            reminderSettings
+                .tabItem {
+                    Label("Reminder", systemImage: "bell")
+                }
+
+            recommendationSettings
+                .tabItem {
+                    Label("Activities", systemImage: "figure.walk")
+                }
+
+            systemSettings
+                .tabItem {
+                    Label("System", systemImage: "macwindow")
+                }
+
+            feedbackSettings
+                .tabItem {
+                    Label("Feedback", systemImage: "text.bubble")
+                }
+        }
+        .scenePadding()
+        .frame(width: 540, height: 430)
+    }
+
+    private var reminderSettings: some View {
+        SettingsForm {
+            Section("Timer") {
                 Toggle("Start focus timer on launch", isOn: $store.settings.startFocusTimerOnLaunch)
                 Toggle("Enable notifications", isOn: $store.settings.notificationsEnabled)
 
@@ -262,29 +366,68 @@ struct SettingsView: View {
                 }
             }
 
-            Section("Recommendations") {
-                Toggle("Office-safe activities only", isOn: $store.settings.officeSafeOnly)
-                Toggle("Include mindfulness", isOn: $store.settings.includeMindfulness)
-            }
-
             Section("Quiet Hours") {
                 Toggle("Suppress reminders", isOn: $store.settings.quietHoursEnabled)
 
                 Stepper(value: $store.settings.quietStartHour, in: 0...23) {
                     Text("Start \(store.settings.quietStartHour):00")
                 }
+                .disabled(!store.settings.quietHoursEnabled)
 
                 Stepper(value: $store.settings.quietEndHour, in: 0...23) {
                     Text("End \(store.settings.quietEndHour):00")
                 }
+                .disabled(!store.settings.quietHoursEnabled)
+            }
+        }
+    }
+
+    private var recommendationSettings: some View {
+        SettingsForm {
+            Section("Recommendations") {
+                Toggle("Office-safe activities only", isOn: $store.settings.officeSafeOnly)
+                Toggle("Include mindfulness", isOn: $store.settings.includeMindfulness)
             }
 
-            Section("System") {
+            Section("Defaults") {
+                Picker("Current state", selection: $store.selectedState) {
+                    ForEach(FocusState.allCases) { state in
+                        Text(state.label).tag(state)
+                    }
+                }
+
+                Picker("Break duration", selection: $store.selectedDuration) {
+                    ForEach(BreakDuration.allCases) { duration in
+                        Text(duration.label).tag(duration)
+                    }
+                }
+            }
+        }
+    }
+
+    private var systemSettings: some View {
+        SettingsForm {
+            Section("Menu Bar") {
                 Toggle("Show menu bar text", isOn: $store.settings.showMenuBarText)
+            }
+
+            Section("Startup") {
                 Toggle("Launch at login", isOn: $store.settings.launchAtLogin)
             }
+        }
+    }
 
-            Section("Beta Feedback") {
+    private var feedbackSettings: some View {
+        SettingsForm {
+            Section {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Beta feedback")
+                        .font(.headline)
+                    Text("Copy a short prompt you can paste into Notes, Mail, or TestFlight feedback.")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                }
+
                 Button {
                     NSPasteboard.general.clearContents()
                     NSPasteboard.general.setString(Self.feedbackTemplate, forType: .string)
@@ -293,9 +436,6 @@ struct SettingsView: View {
                 }
             }
         }
-        .formStyle(.grouped)
-        .padding(20)
-        .frame(width: 460)
     }
 
     private static let feedbackTemplate = """
@@ -309,100 +449,96 @@ struct SettingsView: View {
     """
 }
 
-private struct PickerSection<Content: View>: View {
+private struct SegmentedPickerSection<Selection: Hashable, Content: View>: View {
     let title: String
+    @Binding var selection: Selection
     @ViewBuilder let content: Content
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 7) {
             Text(title)
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(.secondary)
-            content
+            Picker(title, selection: $selection) {
+                content
+            }
+            .pickerStyle(.segmented)
+            .labelsHidden()
+            .controlSize(.regular)
         }
     }
 }
 
-private struct ChipGrid<Item: Identifiable & Hashable, Label: View>: View {
-    let items: [Item]
-    @Binding var selected: Item
-    let label: (Item) -> Label
-
-    init(
-        items: [Item],
-        selected: Binding<Item>,
-        @ViewBuilder label: @escaping (Item) -> Label
-    ) {
-        self.items = items
-        _selected = selected
-        self.label = label
-    }
+private struct SettingsForm<Content: View>: View {
+    @ViewBuilder let content: Content
 
     var body: some View {
-        FlowLayout(spacing: 8) {
-            ForEach(items) { item in
-                Button {
-                    selected = item
-                } label: {
-                    label(item)
-                        .font(.callout.weight(.medium))
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 6)
-                        .frame(minWidth: 48)
-                }
-                .buttonStyle(.plain)
-                .foregroundStyle(selected == item ? .white : .primary)
-                .background(selected == item ? Color.accentColor : Color(nsColor: .controlBackgroundColor), in: RoundedRectangle(cornerRadius: 8))
-                .help("Select \(String(describing: item.id))")
-            }
+        Form {
+            content
         }
+        .formStyle(.grouped)
+        .scrollContentBackground(.hidden)
     }
 }
 
-private struct FlowLayout: Layout {
-    var spacing: CGFloat
+private struct StateMessage: View {
+    let systemImage: String
+    let title: String
+    let message: String
+    let tint: Color
 
-    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        let maxWidth = proposal.width ?? 320
-        var rowWidth: CGFloat = 0
-        var rowHeight: CGFloat = 0
-        var totalHeight: CGFloat = 0
-        var widestRow: CGFloat = 0
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: systemImage)
+                .font(.system(size: 17, weight: .semibold))
+                .foregroundStyle(tint)
+                .frame(width: 32, height: 32)
+                .background(tint.opacity(0.12), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                .accessibilityHidden(true)
 
-        for subview in subviews {
-            let size = subview.sizeThatFits(.unspecified)
-            if rowWidth > 0, rowWidth + spacing + size.width > maxWidth {
-                totalHeight += rowHeight + spacing
-                widestRow = max(widestRow, rowWidth)
-                rowWidth = 0
-                rowHeight = 0
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.callout.weight(.semibold))
+                Text(message)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
-
-            rowWidth += rowWidth == 0 ? size.width : size.width + spacing
-            rowHeight = max(rowHeight, size.height)
         }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.quaternary.opacity(0.7), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+    }
+}
 
-        totalHeight += rowHeight
-        widestRow = max(widestRow, rowWidth)
-
-        return CGSize(width: min(maxWidth, widestRow), height: totalHeight)
+private extension ActivityCategory {
+    var displayName: String {
+        switch self {
+        case .move:
+            return "Movement"
+        case .mind:
+            return "Mind"
+        case .desk:
+            return "Desk"
+        case .focus:
+            return "Focus"
+        case .social:
+            return "Social"
+        }
     }
 
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-        var origin = bounds.origin
-        var rowHeight: CGFloat = 0
-
-        for subview in subviews {
-            let size = subview.sizeThatFits(.unspecified)
-            if origin.x > bounds.minX, origin.x + size.width > bounds.maxX {
-                origin.x = bounds.minX
-                origin.y += rowHeight + spacing
-                rowHeight = 0
-            }
-
-            subview.place(at: origin, proposal: ProposedViewSize(size))
-            origin.x += size.width + spacing
-            rowHeight = max(rowHeight, size.height)
+    var systemImage: String {
+        switch self {
+        case .move:
+            return "figure.walk"
+        case .mind:
+            return "brain.head.profile"
+        case .desk:
+            return "desktopcomputer"
+        case .focus:
+            return "scope"
+        case .social:
+            return "person.2"
         }
     }
 }
