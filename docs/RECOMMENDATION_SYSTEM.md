@@ -72,7 +72,7 @@ Planned validation should also enforce:
 
 - Empty after hard filters: show “No matching activity” and direct the user to adjust state, duration, or settings.
 - Missing/invalid JSON: show “Activity library unavailable”; do not silently fabricate content.
-- Removed active ID after update: the approved target behavior cancels the stale active break into break due and selects a valid recommendation without substituting identities.
+- Removed active ID after update: cancel the stale active break into break due and select a valid recommendation without substituting identities.
 
 ## Testing Strategy
 

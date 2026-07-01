@@ -46,7 +46,7 @@ Natural expiry is completion because the full selected break interval elapsed. T
 | RS-05 | break due | remain break due until an explicit action |
 | RS-06 | breaking before deadline with an existing activity ID | restore that activity and derive remaining time from the persisted deadline |
 | RS-07 | breaking at/after deadline with an existing activity ID | apply natural completion and start focus |
-| RS-08 | breaking with a catalog ID removed by an update | **target:** transition to break due, clear the stale deadline, and present a valid new recommendation; do not record or display a different activity as the removed one |
+| RS-08 | breaking with a catalog ID removed by an update | transition to break due, clear the stale deadline, and present a valid new recommendation; do not record or display a different activity as the removed one |
 
 `startFocusTimerOnLaunch` defaults to `true` on clean install and when decoding an older settings payload without that field. It only applies when the restored runtime state is idle.
 

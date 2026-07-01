@@ -32,7 +32,7 @@ The roadmap therefore prioritizes verifiability and release quality over new fea
 | --- | --- | --- |
 | 0 — Documentation And Audit | Complete | [`PHASE_0_COMPLETION.md`](PHASE_0_COMPLETION.md) |
 | 1 — Behavioral Contract | Complete | [`PHASE_1_COMPLETION.md`](PHASE_1_COMPLETION.md) |
-| 2 — Domain And Persistence Hardening | Next | Begin with dependency seams and named contract cases |
+| 2 — Domain And Persistence Hardening | In progress | Clock/calendar/platform/catalog/persistence seams started; first restoration/expiry cases are deterministic |
 | 3–8 | Blocked by sequence | Begin only after the preceding phase exits |
 
 ## Phase 0: Documentation And Audit

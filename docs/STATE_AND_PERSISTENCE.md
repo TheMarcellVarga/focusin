@@ -82,7 +82,7 @@ Restore the catalog activity by ID and derive remaining seconds from `endsAt`. I
 - Invalid settings JSON: reset settings only, not unrelated values.
 - Invalid runtime JSON: return idle.
 - Invalid history JSON or date mismatch: create empty current-day history.
-- Activity ID removed during an active break: transition to break due, clear the stale deadline, and offer a valid recommendation. Never display a replacement activity under the removed ID's timer/history identity. This approved target behavior is implemented and tested in Phase 2.
+- Activity ID removed during an active break: transition to break due, clear the stale deadline, and offer a valid recommendation. Never display a replacement activity under the removed ID's timer/history identity. This behavior has a deterministic restoration test.
 
 ## Compatibility Rules
 

@@ -16,12 +16,13 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 - Codable compatibility defaults and two legacy read paths.
 - Initial domain test suite.
 - Sandbox/privacy resource files and Xcode archive path.
+- Injectable clock/calendar, notification, login-item, catalog, and persistence boundaries; deterministic exact-expiry and removed-active-ID restoration tests.
 
 ## Resolved Product Contracts
 
 - Phase 1 transition/restoration behavior and exact deadline semantics are locked in `BEHAVIORAL_CONTRACT.md`.
 - Natural break expiry counts as completion; equal quiet endpoints suppress reminders all day; startup auto-focus defaults on.
-- Active catalog removal recovers to break due without identity substitution (target implementation in Phase 2).
+- Active catalog removal recovers to break due without identity substitution.
 - Permission/error copy and catalog identity, coverage, editorial, safety, and removal policies are locked for later implementation/verification.
 
 ## P0 — Release Blockers
@@ -46,7 +47,6 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 | --- | --- |
 | Equal quiet-hour endpoints intentionally mean all-day suppression, but Settings does not yet explain it. | Phase 3 experience copy |
 | Random recommendation selection is harder to reproduce in tests and demos. | Phase 2.1 dependency seams and Phase 2.5 recommendation suite |
-| Approved active-activity removal recovery is not implemented or fixture-tested. | Phase 2.2 transition suite and Phase 2.4 persistence fixtures |
 | Release evidence is not organized by build and macOS version. | Phase 4 signed-build evidence and Phase 7.1 final regression |
 | UI automation and deterministic launch-state fixtures do not exist. | Phase 3.1 popover state matrix and Phase 3 accessibility verification |
 | `.DS_Store` files and untracked `.vscode/` settings indicate repository hygiene cleanup is needed. | Phase 8.1 repository scan |

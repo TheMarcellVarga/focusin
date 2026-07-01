@@ -50,12 +50,12 @@ final class FocusinStoreTests: XCTestCase {
 
     private func makeStore(
         persistence: TestPersistence,
-        notifications: TestNotifications = TestNotifications(),
+        notifications: TestNotifications? = nil,
         clock: TestClock
     ) -> FocusinStore {
         FocusinStore(
             persistence: persistence,
-            notifications: notifications,
+            notifications: notifications ?? TestNotifications(),
             launchAtLogin: TestLaunchAtLogin(),
             activityLoader: TestActivityLoader(),
             clock: clock,
