@@ -9,12 +9,12 @@ Focusin is designed as a small but complete macOS product:
 - Menu bar-first workflow with a native popover and Settings scene.
 - Local recommendation engine backed by a curated activity library.
 - Break timers, reminders, quiet hours, launch-at-login, and daily history.
-- App Store / TestFlight ready structure with sandboxing, privacy manifest, and entitlement support.
+- Distribution-oriented structure with sandboxing, a privacy manifest, and entitlement support; signing, archive validation, and store assets remain release gates.
 - Local-only by design: no account, no analytics, and no cloud dependency.
 
-## Why It Is Shippable
+## Release Foundation
 
-The app already covers the pieces a real release needs:
+The repository already contains several prerequisites for a real release:
 
 - A stable macOS 14+ target.
 - Persistent settings and runtime state.
@@ -22,6 +22,8 @@ The app already covers the pieces a real release needs:
 - Launch-at-login support.
 - Privacy manifest and sandbox entitlement files for distribution.
 - A checked-in Xcode project path for archive and signing.
+
+The app is not yet release-ready. Permission/error UX, deterministic lifecycle coverage, accessibility evidence, signed-build integration checks, catalog review, and App Store assets remain tracked in [`docs/UNFINISHED_SURFACES_AUDIT.md`](docs/UNFINISHED_SURFACES_AUDIT.md).
 
 ## What It Does
 
@@ -62,6 +64,31 @@ The interface is intentionally native macOS rather than web-like:
 - `Sources/Focusin/Resources/PrivacyInfo.xcprivacy` - privacy manifest.
 - `Sources/Focusin/Resources/Focusin.entitlements` - sandbox entitlements.
 
+## Planning And Technical Documentation
+
+The repository includes a full product-to-release planning system:
+
+- [`FocusinWorkspacePlan.md`](FocusinWorkspacePlan.md) - consolidated implementation specification and phased outcome.
+- [`FocusinMarkdownDocsPlan.md`](FocusinMarkdownDocsPlan.md) - documentation inventory, status vocabulary, and maintenance policy.
+- [`AGENTS.md`](AGENTS.md) - contributor operating contract.
+- [`docs/PRODUCT_SPEC.md`](docs/PRODUCT_SPEC.md) - users, golden path, requirements, boundaries, and risks.
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) - system boundary, components, startup/event flows, and decisions.
+- [`docs/STATE_AND_PERSISTENCE.md`](docs/STATE_AND_PERSISTENCE.md) - runtime state machine, storage schema, migration, and recovery.
+- [`docs/RECOMMENDATION_SYSTEM.md`](docs/RECOMMENDATION_SYSTEM.md) - activity contract, hard filters, fallback order, and content rules.
+- [`docs/PLATFORM_INTEGRATIONS.md`](docs/PLATFORM_INTEGRATIONS.md) - notifications, quiet hours, login item, sandbox, and lifecycle.
+- [`docs/DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md) - native UI language, states, components, copy, and accessibility.
+- [`docs/SECURITY_PRIVACY_AND_SAFETY.md`](docs/SECURITY_PRIVACY_AND_SAFETY.md) - data inventory, threat model, privacy, and wellness safety.
+- [`docs/ENVIRONMENT.md`](docs/ENVIRONMENT.md) - toolchain, commands, project layout, resources, and troubleshooting.
+- [`docs/TESTING_STRATEGY.md`](docs/TESTING_STRATEGY.md) - automated/manual layers, matrices, severity, and release gates.
+- [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md) - phase backlog and task contract.
+- [`docs/MASTER_EXECUTION_ROADMAP.md`](docs/MASTER_EXECUTION_ROADMAP.md) - dependency-ordered execution control plane.
+- [`docs/UNFINISHED_SURFACES_AUDIT.md`](docs/UNFINISHED_SURFACES_AUDIT.md) - current shipped evidence and ranked gaps.
+- [`docs/RELEASE_AND_DISTRIBUTION.md`](docs/RELEASE_AND_DISTRIBUTION.md) - archive, TestFlight, App Store, and rollback plan.
+- [`docs/DEMO_WALKTHROUGH.md`](docs/DEMO_WALKTHROUGH.md) - repeatable release-candidate demo.
+- [`docs/PORTFOLIO_CASE_STUDY.md`](docs/PORTFOLIO_CASE_STUDY.md) - evidence-based case-study structure.
+- [`docs/BRAND_AND_MEDIA.md`](docs/BRAND_AND_MEDIA.md) - brand position, asset plan, and claim guardrails.
+- [`docs/testflight-prep.md`](docs/testflight-prep.md) - concise machine-specific archive checklist.
+
 ## Build and Run
 
 ### With Xcode
@@ -77,7 +104,7 @@ This repository includes scripts for local verification:
 ./scripts/test-local.sh
 ```
 
-On this machine, SwiftPM currently fails while loading package manifests, so the local scripts and direct Swift compiler checks are the reliable verification path.
+On the documented toolchain, `swift test` currently rejects the executable target's top-level `Resources/Info.plist`. Until the package layout is corrected, use the local scripts for verification and the Xcode project for archive/signing.
 
 ### With SwiftPM
 
@@ -128,4 +155,4 @@ Suggested talking points:
 
 ## License
 
-Add your preferred license here if you want to publish the repository publicly.
+No license file is currently included. Unless one is added, the repository does not grant reuse or redistribution rights.
