@@ -14,6 +14,8 @@ Produce one useful micro-break with minimal input while respecting explicit safe
 
 ## Activity Contract
 
+The normative identity, vocabulary, coverage, editorial, safety, and removal rules are in [`CATALOG_CONTENT_CONTRACT.md`](CATALOG_CONTENT_CONTRACT.md).
+
 Every catalog item includes:
 
 - Stable unique ID.
@@ -70,7 +72,7 @@ Planned validation should also enforce:
 
 - Empty after hard filters: show “No matching activity” and direct the user to adjust state, duration, or settings.
 - Missing/invalid JSON: show “Activity library unavailable”; do not silently fabricate content.
-- Removed active ID after update: preserve timer behavior and select a valid display fallback.
+- Removed active ID after update: the approved target behavior cancels the stale active break into break due and selects a valid recommendation without substituting identities.
 
 ## Testing Strategy
 
@@ -91,4 +93,3 @@ Candidate changes require product validation and are not roadmap commitments:
 - Accessibility tags for seated-only or no-vision-required activities.
 
 Remote content, generative AI, and inferred health state remain out of scope for version 1.
-

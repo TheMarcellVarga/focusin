@@ -1,6 +1,16 @@
 import Foundation
 import SwiftUI
 
+protocol FocusinClock {
+    var now: Date { get }
+    var calendar: Calendar { get }
+}
+
+struct SystemFocusinClock: FocusinClock {
+    var now: Date { Date() }
+    var calendar: Calendar { .current }
+}
+
 @MainActor
 final class FocusinStore: ObservableObject {
     @Published var activities: [BreakActivity] = []
@@ -12,7 +22,7 @@ final class FocusinStore: ObservableObject {
                 return
             }
             persistence.save(settings: settings)
-            LaunchAtLoginController.setEnabled(settings.launchAtLogin)
+            launchAtLogin.setEnabled(settings.launchAtLogin)
             if settings.notificationsEnabled {
                 notifications.requestAuthorization()
             } else {
@@ -43,37 +53,57 @@ final class FocusinStore: ObservableObject {
     @Published var remainingBreakSeconds = 0
     @Published var libraryErrorMessage: String?
 
-    private let persistence: FocusinPersistence
-    private let engine = RecommendationEngine()
-    private let notifications = NotificationScheduler.shared
+    private let persistence: any FocusinPersisting
+    private let engine: RecommendationEngine
+    private let notifications: any NotificationScheduling
+    private let launchAtLogin: any LaunchAtLoginControlling
+    private let activityLoader: any ActivityLoading
+    private let clock: any FocusinClock
+    private let runsTicker: Bool
     private var ticker: Timer?
 
-    init(persistence: FocusinPersistence? = nil) {
+    init(
+        persistence: (any FocusinPersisting)? = nil,
+        engine: RecommendationEngine = RecommendationEngine(),
+        notifications: (any NotificationScheduling)? = nil,
+        launchAtLogin: (any LaunchAtLoginControlling)? = nil,
+        activityLoader: any ActivityLoading = BundledActivityLoader(),
+        clock: any FocusinClock = SystemFocusinClock(),
+        runsTicker: Bool = true
+    ) {
         let resolvedPersistence = persistence ?? FocusinPersistence()
         self.persistence = resolvedPersistence
+        self.engine = engine
+        self.notifications = notifications ?? NotificationScheduler.shared
+        self.launchAtLogin = launchAtLogin ?? LaunchAtLoginController()
+        self.activityLoader = activityLoader
+        self.clock = clock
+        self.runsTicker = runsTicker
 
         let loadedSettings = resolvedPersistence.loadSettings()
         settings = loadedSettings
         selectedState = resolvedPersistence.loadSelectedState()
         selectedDuration = resolvedPersistence.loadSelectedDuration(defaultDuration: loadedSettings.defaultDuration)
-        activityHistory = resolvedPersistence.loadActivityHistory(dateKey: DateKey.make(for: Date()))
+        activityHistory = resolvedPersistence.loadActivityHistory(dateKey: DateKey.make(for: clock.now, calendar: clock.calendar))
         runtimeState = resolvedPersistence.loadRuntimeState()
 
         do {
-            activities = try ActivityLibrary.load()
+            activities = try activityLoader.load()
             recommend()
         } catch {
             libraryErrorMessage = "The local activity library could not be loaded."
         }
 
         if settings.notificationsEnabled {
-            notifications.requestAuthorization()
+            self.notifications.requestAuthorization()
         }
-        notifications.onReminderOpened = { [weak self] in
+        self.notifications.onReminderOpened = { [weak self] in
             self?.markBreakDue()
         }
 
-        startTicker()
+        if runsTicker {
+            startTicker()
+        }
         restoreRuntimeState()
         if runtimeState == .idle && settings.startFocusTimerOnLaunch {
             startFocusTimer()
@@ -91,7 +121,7 @@ final class FocusinStore: ObservableObject {
         case .idle:
             return "Ready"
         case let .focusing(startedAt):
-            let elapsed = max(0, Int(Date().timeIntervalSince(startedAt)))
+            let elapsed = max(0, Int(clock.now.timeIntervalSince(startedAt)))
             let remaining = max(settings.resolvedWorkMinutes * 60 - elapsed, 0)
             return "Focus \(remaining / 60)m"
         }
@@ -201,7 +231,7 @@ final class FocusinStore: ObservableObject {
         remainingBreakSeconds = selectedDuration.seconds
         runtimeState = .breaking(
             activityID: currentActivity.id,
-            endsAt: Date().addingTimeInterval(TimeInterval(selectedDuration.seconds))
+            endsAt: clock.now.addingTimeInterval(TimeInterval(selectedDuration.seconds))
         )
     }
 
@@ -220,7 +250,7 @@ final class FocusinStore: ObservableObject {
     }
 
     func startFocusTimer() {
-        let now = Date()
+        let now = clock.now
         runtimeState = .focusing(startedAt: now)
         rescheduleReminder()
     }
@@ -260,7 +290,7 @@ final class FocusinStore: ObservableObject {
     }
 
     private func refreshHistoryIfNeeded() {
-        let dateKey = DateKey.make(for: Date())
+        let dateKey = DateKey.make(for: clock.now, calendar: clock.calendar)
         if activityHistory.dateKey != dateKey {
             activityHistory = ActivityHistory(dateKey: dateKey)
             persistence.save(activityHistory: activityHistory)
@@ -276,20 +306,24 @@ final class FocusinStore: ObservableObject {
         }
     }
 
-    private func tick() {
+    func reconcileRuntimeState() {
         refreshHistoryIfNeeded()
 
         if let breakEndsAt {
-            remainingBreakSeconds = max(0, Int(ceil(breakEndsAt.timeIntervalSinceNow)))
+            remainingBreakSeconds = max(0, Int(ceil(breakEndsAt.timeIntervalSince(clock.now))))
             if remainingBreakSeconds == 0 {
                 completeBreak()
             }
         }
 
         if let focusStartedAt,
-           Date().timeIntervalSince(focusStartedAt) >= TimeInterval(settings.resolvedWorkMinutes * 60) {
+           clock.now.timeIntervalSince(focusStartedAt) >= TimeInterval(settings.resolvedWorkMinutes * 60) {
             markBreakDue()
         }
+    }
+
+    private func tick() {
+        reconcileRuntimeState()
     }
 
     private func rescheduleReminder() {
@@ -297,11 +331,11 @@ final class FocusinStore: ObservableObject {
 
         guard settings.notificationsEnabled,
               let focusStartedAt,
-              !isQuietTime(date: Date()) else {
+              !isQuietTime(date: clock.now) else {
             return
         }
 
-        let elapsed = Date().timeIntervalSince(focusStartedAt)
+        let elapsed = clock.now.timeIntervalSince(focusStartedAt)
         let remaining = TimeInterval(settings.resolvedWorkMinutes * 60) - elapsed
         if remaining <= 0 {
             markBreakDue()
@@ -315,15 +349,22 @@ final class FocusinStore: ObservableObject {
         case .idle:
             remainingBreakSeconds = 0
         case let .focusing(startedAt):
-            let elapsed = Date().timeIntervalSince(startedAt)
+            let elapsed = clock.now.timeIntervalSince(startedAt)
             if elapsed >= TimeInterval(settings.resolvedWorkMinutes * 60) {
                 markBreakDue()
             }
         case .breakDue:
             remainingBreakSeconds = 0
         case let .breaking(activityID, endsAt):
-            remainingBreakSeconds = max(0, Int(ceil(endsAt.timeIntervalSinceNow)))
-            currentActivity = activities.first { $0.id == activityID } ?? currentActivity
+            guard let restoredActivity = activities.first(where: { $0.id == activityID }) else {
+                remainingBreakSeconds = 0
+                runtimeState = .breakDue
+                notifications.clearBreakReminder()
+                recommend()
+                return
+            }
+            remainingBreakSeconds = max(0, Int(ceil(endsAt.timeIntervalSince(clock.now))))
+            currentActivity = restoredActivity
             if remainingBreakSeconds == 0 {
                 completeBreak()
             }
@@ -333,7 +374,7 @@ final class FocusinStore: ObservableObject {
     private func isQuietTime(date: Date) -> Bool {
         guard settings.quietHoursEnabled else { return false }
 
-        let hour = Calendar.current.component(.hour, from: date)
+        let hour = clock.calendar.component(.hour, from: date)
         let start = settings.quietStartHour
         let end = settings.quietEndHour
 

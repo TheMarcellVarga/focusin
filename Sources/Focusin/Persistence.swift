@@ -1,7 +1,21 @@
 import Foundation
 
 @MainActor
-final class FocusinPersistence {
+protocol FocusinPersisting {
+    func loadSettings() -> FocusinSettings
+    func save(settings: FocusinSettings)
+    func loadSelectedState() -> FocusState
+    func save(selectedState: FocusState)
+    func loadSelectedDuration(defaultDuration: BreakDuration) -> BreakDuration
+    func save(selectedDuration: BreakDuration)
+    func loadActivityHistory(dateKey: String) -> ActivityHistory
+    func save(activityHistory: ActivityHistory)
+    func loadRuntimeState() -> FocusinRuntimeState
+    func save(runtimeState: FocusinRuntimeState)
+}
+
+@MainActor
+final class FocusinPersistence: FocusinPersisting {
     private enum Key {
         static let settings = "focusin.settings"
         static let selectedState = "focusin.selectedState"

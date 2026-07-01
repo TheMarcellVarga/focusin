@@ -1,5 +1,15 @@
 import Foundation
 
+protocol ActivityLoading {
+    func load() throws -> [BreakActivity]
+}
+
+struct BundledActivityLoader: ActivityLoading {
+    func load() throws -> [BreakActivity] {
+        try ActivityLibrary.load()
+    }
+}
+
 public enum ActivityLibrary {
     public static func load(bundle: Bundle = defaultBundle) throws -> [BreakActivity] {
         guard let url = bundle.url(forResource: "Activities", withExtension: "json") else {

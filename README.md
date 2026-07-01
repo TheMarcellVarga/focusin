@@ -72,6 +72,8 @@ The repository includes a full product-to-release planning system:
 - [`FocusinMarkdownDocsPlan.md`](FocusinMarkdownDocsPlan.md) - documentation inventory, status vocabulary, and maintenance policy.
 - [`AGENTS.md`](AGENTS.md) - contributor operating contract.
 - [`docs/PRODUCT_SPEC.md`](docs/PRODUCT_SPEC.md) - users, golden path, requirements, boundaries, and risks.
+- [`docs/BEHAVIORAL_CONTRACT.md`](docs/BEHAVIORAL_CONTRACT.md) - named runtime transitions, restoration policy, and exact recovery copy.
+- [`docs/CATALOG_CONTENT_CONTRACT.md`](docs/CATALOG_CONTENT_CONTRACT.md) - catalog identity, coverage, editorial, safety, and removal rules.
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) - system boundary, components, startup/event flows, and decisions.
 - [`docs/STATE_AND_PERSISTENCE.md`](docs/STATE_AND_PERSISTENCE.md) - runtime state machine, storage schema, migration, and recovery.
 - [`docs/RECOMMENDATION_SYSTEM.md`](docs/RECOMMENDATION_SYSTEM.md) - activity contract, hard filters, fallback order, and content rules.

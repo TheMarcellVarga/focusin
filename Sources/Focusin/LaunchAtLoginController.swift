@@ -1,8 +1,13 @@
 import Foundation
 import ServiceManagement
 
-enum LaunchAtLoginController {
-    static func setEnabled(_ enabled: Bool) {
+@MainActor
+protocol LaunchAtLoginControlling {
+    func setEnabled(_ enabled: Bool)
+}
+
+struct LaunchAtLoginController: LaunchAtLoginControlling {
+    func setEnabled(_ enabled: Bool) {
         do {
             if enabled {
                 if SMAppService.mainApp.status != .enabled {

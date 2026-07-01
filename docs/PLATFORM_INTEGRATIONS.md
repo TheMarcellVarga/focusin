@@ -28,6 +28,8 @@ Focusin integrates with macOS Notification Center, ServiceManagement login items
 
 Quiet hours suppress notification scheduling, not the focus state transition. Equal start/end currently means quiet all day. A range with start before end is same-day; start after end crosses midnight.
 
+Equal endpoints are an intentional all-day-reminder-suppression policy. The target Settings explanation is: “Start and end match, so reminders are quiet all day. Timers still continue.” Exact permission and recovery copy is specified in [`BEHAVIORAL_CONTRACT.md`](BEHAVIORAL_CONTRACT.md).
+
 Required edge tests include 18:00–08:00, 08:00–18:00, equal endpoints, timezone changes, daylight-saving changes, and enabling quiet hours during an active focus interval.
 
 ## Launch At Login
@@ -71,4 +73,3 @@ Test:
 ## Failure Policy
 
 Platform integration failures must not crash the app or corrupt domain state. Expose actionable status where user intervention is possible; otherwise log in development and retain a usable local workflow.
-

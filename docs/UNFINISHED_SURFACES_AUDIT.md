@@ -17,6 +17,13 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 - Initial domain test suite.
 - Sandbox/privacy resource files and Xcode archive path.
 
+## Resolved Product Contracts
+
+- Phase 1 transition/restoration behavior and exact deadline semantics are locked in `BEHAVIORAL_CONTRACT.md`.
+- Natural break expiry counts as completion; equal quiet endpoints suppress reminders all day; startup auto-focus defaults on.
+- Active catalog removal recovers to break due without identity substitution (target implementation in Phase 2).
+- Permission/error copy and catalog identity, coverage, editorial, safety, and removal policies are locked for later implementation/verification.
+
 ## P0 — Release Blockers
 
 - None identified statically. A signed archive/security/privacy inspection is still required before this can be confirmed for release.
@@ -37,10 +44,9 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 
 | Gap | Roadmap destination |
 | --- | --- |
-| Natural break expiry automatically records completion; policy needs explicit product confirmation. | Phase 1.2 policy decisions, then Phase 2.2 transition suite |
-| Equal quiet-hour endpoints mean all-day suppression but Settings does not explain it. | Phase 1.2 policy decisions and Phase 3 experience copy |
+| Equal quiet-hour endpoints intentionally mean all-day suppression, but Settings does not yet explain it. | Phase 3 experience copy |
 | Random recommendation selection is harder to reproduce in tests and demos. | Phase 2.1 dependency seams and Phase 2.5 recommendation suite |
-| Active activity removal between app versions has no explicit migration/presentation policy. | Phase 1.2 policy decisions and Phase 2.4 persistence fixtures |
+| Approved active-activity removal recovery is not implemented or fixture-tested. | Phase 2.2 transition suite and Phase 2.4 persistence fixtures |
 | Release evidence is not organized by build and macOS version. | Phase 4 signed-build evidence and Phase 7.1 final regression |
 | UI automation and deterministic launch-state fixtures do not exist. | Phase 3.1 popover state matrix and Phase 3 accessibility verification |
 | `.DS_Store` files and untracked `.vscode/` settings indicate repository hygiene cleanup is needed. | Phase 8.1 repository scan |

@@ -3,7 +3,15 @@ import AppKit
 import UserNotifications
 
 @MainActor
-final class NotificationScheduler: NSObject, UNUserNotificationCenterDelegate {
+protocol NotificationScheduling: AnyObject {
+    var onReminderOpened: (() -> Void)? { get set }
+    func requestAuthorization()
+    func scheduleBreakReminder(after seconds: TimeInterval)
+    func clearBreakReminder()
+}
+
+@MainActor
+final class NotificationScheduler: NSObject, UNUserNotificationCenterDelegate, NotificationScheduling {
     static let shared = NotificationScheduler()
 
     private let center = UNUserNotificationCenter.current()

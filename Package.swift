@@ -14,8 +14,13 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "Focusin",
+            exclude: [
+                "Resources/Info.plist",
+                "Resources/Focusin.entitlements"
+            ],
             resources: [
-                .process("Resources")
+                .copy("Resources/Activities.json"),
+                .copy("Resources/PrivacyInfo.xcprivacy")
             ]
         ),
         .testTarget(

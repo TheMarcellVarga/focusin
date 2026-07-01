@@ -53,6 +53,7 @@ Desk workers often notice discomfort, fatigue, scattered attention, or anxiety o
 - Preserve the active activity and break deadline across relaunch.
 - Allow early completion or skipping.
 - Start the next focus interval after completion or skip.
+- Treat natural break expiry as completion for same-day novelty history, without implying a wellness outcome.
 
 ### Recommendation
 
@@ -67,7 +68,9 @@ Desk workers often notice discomfort, fatigue, scattered attention, or anxiety o
 - Persist all user-editable settings.
 - Normalize user-editable numbers to supported bounds.
 - Support quiet hours that cross midnight.
+- Treat matching quiet-hour endpoints as all-day reminder suppression while timers continue.
 - Support optional launch at login and optional menu bar text.
+- Default auto-start-on-launch to enabled for clean installs and older settings payloads missing that field.
 
 ## Experience Requirements
 
@@ -125,4 +128,3 @@ Version 1 success is qualitative and operational because analytics are intention
 - [ ] Catalog safety/content review is signed off.
 - [ ] TestFlight beta evidence is recorded.
 - [ ] App Store assets and listing are complete.
-
