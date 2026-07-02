@@ -22,7 +22,7 @@ final class FocusinStore: ObservableObject {
                 return
             }
             persistence.save(settings: settings)
-            if settings.launchAtLogin != oldValue.launchAtLogin {
+            if settings.launchAtLogin != oldValue.launchAtLogin && !isSynchronizingLaunchAtLoginPreference {
                 reconcileLaunchAtLogin()
             }
             if settings.notificationsEnabled != oldValue.notificationsEnabled {
@@ -70,6 +70,7 @@ final class FocusinStore: ObservableObject {
     private let clock: any FocusinClock
     private let runsTicker: Bool
     private var ticker: Timer?
+    private var isSynchronizingLaunchAtLoginPreference = false
 
     init(
         persistence: (any FocusinPersisting)? = nil,
@@ -244,6 +245,14 @@ final class FocusinStore: ObservableObject {
         synchronizeLaunchAtLoginPreference()
     }
 
+    /// Reconciles wall-clock state and platform integrations after macOS lifecycle
+    /// events such as activation, wake, a clock/timezone change, or day rollover.
+    func handleLifecycleEvent() {
+        reconcileRuntimeState()
+        rescheduleReminder()
+        refreshPlatformStatus()
+    }
+
     func requestNotificationPermission() {
         guard settings.notificationsEnabled else { return }
         notifications.requestAuthorization { [weak self] status in
@@ -273,7 +282,9 @@ final class FocusinStore: ObservableObject {
         guard launchAtLoginStatus != .failed else { return }
         let actualEnabled = launchAtLoginStatus == .enabled
         if settings.launchAtLogin != actualEnabled {
+            isSynchronizingLaunchAtLoginPreference = true
             settings.launchAtLogin = actualEnabled
+            isSynchronizingLaunchAtLoginPreference = false
         }
     }
 

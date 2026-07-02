@@ -249,6 +249,100 @@ final class FocusinStoreTests: XCTestCase {
         XCTAssertEqual(notifications.scheduledDelays.last, 1_500)
     }
 
+    func testLifecycleEventReconcilesForwardClockChangeAndClearsReminder() {
+        let now = Date(timeIntervalSince1970: 42_500)
+        let clock = TestClock(now: now)
+        let notifications = TestNotifications()
+        let store = makeStore(
+            persistence: TestPersistence(
+                settings: FocusinSettings(startFocusTimerOnLaunch: false),
+                runtimeState: .focusing(startedAt: now)
+            ),
+            notifications: notifications,
+            clock: clock
+        )
+
+        XCTAssertEqual(notifications.pendingReminderCount, 1)
+        clock.now = now.addingTimeInterval(1_500)
+        store.handleLifecycleEvent()
+
+        XCTAssertTrue(store.isBreakDue)
+        XCTAssertEqual(notifications.pendingReminderCount, 0)
+    }
+
+    func testLifecycleEventReconcilesBackwardClockChangeToOneReminder() {
+        let now = Date(timeIntervalSince1970: 42_600)
+        let clock = TestClock(now: now)
+        let notifications = TestNotifications()
+        let store = makeStore(
+            persistence: TestPersistence(
+                settings: FocusinSettings(startFocusTimerOnLaunch: false),
+                runtimeState: .focusing(startedAt: now.addingTimeInterval(-300))
+            ),
+            notifications: notifications,
+            clock: clock
+        )
+
+        clock.now = now.addingTimeInterval(-120)
+        store.handleLifecycleEvent()
+
+        XCTAssertEqual(notifications.pendingReminderCount, 1)
+        XCTAssertEqual(notifications.scheduledDelays.last, 1_320)
+    }
+
+    func testLifecycleEventHandlesRevocationWithoutBlockingTimer() {
+        let now = Date(timeIntervalSince1970: 42_700)
+        let clock = TestClock(now: now)
+        let notifications = TestNotifications()
+        let store = makeStore(
+            persistence: TestPersistence(
+                settings: FocusinSettings(startFocusTimerOnLaunch: false),
+                runtimeState: .focusing(startedAt: now)
+            ),
+            notifications: notifications,
+            clock: clock
+        )
+
+        notifications.status = .denied
+        store.handleLifecycleEvent()
+
+        XCTAssertEqual(store.notificationPermissionStatus, .denied)
+        XCTAssertEqual(notifications.pendingReminderCount, 0)
+        XCTAssertTrue(store.isFocusing)
+    }
+
+    func testEveryReminderMutationLeavesExactlyZeroOrOnePendingRequest() {
+        let now = Date(timeIntervalSince1970: 42_800)
+        let clock = TestClock(now: now)
+        let notifications = TestNotifications()
+        let store = makeStore(
+            persistence: TestPersistence(
+                settings: FocusinSettings(startFocusTimerOnLaunch: false),
+                runtimeState: .idle
+            ),
+            notifications: notifications,
+            clock: clock
+        )
+
+        XCTAssertEqual(notifications.pendingReminderCount, 0)
+        store.startFocusTimer()
+        XCTAssertEqual(notifications.pendingReminderCount, 1)
+        store.settings.workInterval = .fortyFive
+        XCTAssertEqual(notifications.pendingReminderCount, 1)
+        store.settings.quietHoursEnabled = true
+        store.settings.quietStartHour = 0
+        store.settings.quietEndHour = 0
+        XCTAssertEqual(notifications.pendingReminderCount, 0)
+        store.settings.quietHoursEnabled = false
+        XCTAssertEqual(notifications.pendingReminderCount, 1)
+        store.startBreak()
+        XCTAssertEqual(notifications.pendingReminderCount, 0)
+        store.completeBreak()
+        XCTAssertEqual(notifications.pendingReminderCount, 1)
+        store.markBreakDue()
+        XCTAssertEqual(notifications.pendingReminderCount, 0)
+    }
+
     func testLaunchAtLoginFailureAndApprovalPreserveActualToggleState() {
         let now = Date(timeIntervalSince1970: 43_000)
         let failureController = TestLaunchAtLogin(currentStatus: .disabled, updateStatus: .failed)
@@ -278,12 +372,12 @@ final class FocusinStoreTests: XCTestCase {
         notifications: TestNotifications? = nil,
         clock: TestClock,
         activities: [BreakActivity] = TestActivityLoader.oneActivity,
-        launchAtLogin: TestLaunchAtLogin = TestLaunchAtLogin()
+        launchAtLogin: TestLaunchAtLogin? = nil
     ) -> FocusinStore {
         FocusinStore(
             persistence: persistence,
             notifications: notifications ?? TestNotifications(),
-            launchAtLogin: launchAtLogin,
+            launchAtLogin: launchAtLogin ?? TestLaunchAtLogin(),
             activityLoader: TestActivityLoader(activities: activities),
             clock: clock,
             runsTicker: false
@@ -358,6 +452,7 @@ private final class TestNotifications: NotificationScheduling {
     var clearCount = 0
     var status: NotificationPermissionStatus
     var requestedStatus: NotificationPermissionStatus
+    private(set) var pendingReminderCount = 0
 
     init(status: NotificationPermissionStatus = .authorized, requestedStatus: NotificationPermissionStatus = .authorized) {
         self.status = status
@@ -370,8 +465,14 @@ private final class TestNotifications: NotificationScheduling {
         status = requestedStatus
         completion(status)
     }
-    func scheduleBreakReminder(after seconds: TimeInterval) { scheduledDelays.append(seconds) }
-    func clearBreakReminder() { clearCount += 1 }
+    func scheduleBreakReminder(after seconds: TimeInterval) {
+        scheduledDelays.append(seconds)
+        pendingReminderCount = 1
+    }
+    func clearBreakReminder() {
+        clearCount += 1
+        pendingReminderCount = 0
+    }
 }
 
 @MainActor

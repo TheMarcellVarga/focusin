@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 @main
@@ -21,11 +22,7 @@ struct FocusinApp: App {
                 .environmentObject(store)
                 .focusinUIFixtureEnvironment()
         } label: {
-            if store.settings.showMenuBarText {
-                Label(store.focusStatusText, systemImage: store.menuBarSystemImage)
-            } else {
-                Image(systemName: store.menuBarSystemImage)
-            }
+            LifecycleAwareMenuBarLabel(store: store)
         }
         .menuBarExtraStyle(.window)
 
@@ -33,6 +30,32 @@ struct FocusinApp: App {
             SettingsView()
                 .environmentObject(store)
                 .focusinUIFixtureEnvironment()
+        }
+    }
+}
+
+private struct LifecycleAwareMenuBarLabel: View {
+    @ObservedObject var store: FocusinStore
+
+    var body: some View {
+        Group {
+            if store.settings.showMenuBarText {
+                Label(store.focusStatusText, systemImage: store.menuBarSystemImage)
+            } else {
+                Image(systemName: store.menuBarSystemImage)
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+            store.handleLifecycleEvent()
+        }
+        .onReceive(NSWorkspace.shared.notificationCenter.publisher(for: NSWorkspace.didWakeNotification)) { _ in
+            store.handleLifecycleEvent()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .NSSystemClockDidChange)) { _ in
+            store.handleLifecycleEvent()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in
+            store.handleLifecycleEvent()
         }
     }
 }

@@ -34,7 +34,7 @@ The roadmap therefore prioritizes verifiability and release quality over new fea
 | 1 — Behavioral Contract | Complete | [`PHASE_1_COMPLETION.md`](PHASE_1_COMPLETION.md) |
 | 2 — Domain And Persistence Hardening | Complete | [`PHASE_2_COMPLETION.md`](PHASE_2_COMPLETION.md) |
 | 3 — Native Experience And Accessibility | Complete | [`PHASE_3_EVIDENCE.md`](PHASE_3_EVIDENCE.md) |
-| 4 — macOS Lifecycle And Integration | Not started | Phase 3 exit is complete; Phase 4 is next |
+| 4 — macOS Lifecycle And Integration | In progress | Automated hardening passes; signed-build matrix remains in [`PHASE_4_EVIDENCE.md`](PHASE_4_EVIDENCE.md) |
 | 5–8 | Blocked by sequence | Begin only after the preceding phase exits |
 
 ## Phase 0: Documentation And Audit

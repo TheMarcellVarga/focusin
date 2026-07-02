@@ -20,6 +20,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 - Actionable notification permission and launch-at-login status UI, including System Settings recovery actions and deterministic adapter/store tests.
 - Phase 3 native experience matrix covering all six popover presentations in light/dark appearance, keyboard operation, accessibility semantics, increased contrast, reduced transparency, large text, and alternate accent color.
 - Debug-only deterministic UI launch fixtures for idle, focusing, break due, breaking, empty, and catalog-error presentations.
+- Phase 4 automated lifecycle hardening: activation, wake, clock/timezone changes, and day rollover trigger immediate runtime/platform reconciliation; reminder mutations deterministically leave zero or one pending request.
 
 ## Resolved Product Contracts
 
@@ -36,7 +37,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 
 | Gap | Roadmap destination |
 | --- | --- |
-| Sleep/wake, clock/timezone change, midnight rollover, and signed login-item behavior lack recorded evidence. | Phase 4.3–4.5 lifecycle matrices |
+| Signed-build notification, login-item, sleep/wake, clock/timezone, midnight, termination, and update scenarios lack recorded manual evidence. | Phase 4.2–4.5 lifecycle matrix in `PHASE_4_EVIDENCE.md` |
 | Production icon/App Store screenshots, listing metadata, support URL, and privacy URL are not evidenced. | Phase 6.3 store presence |
 | Activity catalog has structural validation but no recorded complete editorial/safety and coverage review. | Phase 5.1–5.4 catalog validation |
 

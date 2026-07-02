@@ -38,9 +38,6 @@ struct FocusinPopoverView: View {
         .padding(16)
         .frame(width: 384)
         .background(Color(nsColor: .windowBackgroundColor))
-        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
-            store.refreshPlatformStatus()
-        }
     }
 
     private func notificationNotice(_ message: String) -> some View {
