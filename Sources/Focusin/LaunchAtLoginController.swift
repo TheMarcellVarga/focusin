@@ -3,11 +3,20 @@ import ServiceManagement
 
 @MainActor
 protocol LaunchAtLoginControlling {
-    func setEnabled(_ enabled: Bool)
+    func status() -> LaunchAtLoginStatus
+    func setEnabled(_ enabled: Bool) -> LaunchAtLoginStatus
+}
+
+enum LaunchAtLoginStatus: Equatable {
+    case disabled, enabled, requiresApproval, unavailable, failed
 }
 
 struct LaunchAtLoginController: LaunchAtLoginControlling {
-    func setEnabled(_ enabled: Bool) {
+    func status() -> LaunchAtLoginStatus {
+        Self.map(SMAppService.mainApp.status)
+    }
+
+    func setEnabled(_ enabled: Bool) -> LaunchAtLoginStatus {
         do {
             if enabled {
                 if SMAppService.mainApp.status != .enabled {
@@ -18,8 +27,19 @@ struct LaunchAtLoginController: LaunchAtLoginControlling {
                     try SMAppService.mainApp.unregister()
                 }
             }
+            return status()
         } catch {
-            assertionFailure("Unable to update launch at login: \(error)")
+            return .failed
+        }
+    }
+
+    private static func map(_ status: SMAppService.Status) -> LaunchAtLoginStatus {
+        switch status {
+        case .notRegistered: .disabled
+        case .enabled: .enabled
+        case .requiresApproval: .requiresApproval
+        case .notFound: .unavailable
+        @unknown default: .unavailable
         }
     }
 }

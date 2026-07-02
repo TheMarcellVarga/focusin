@@ -5,9 +5,16 @@ import UserNotifications
 @MainActor
 protocol NotificationScheduling: AnyObject {
     var onReminderOpened: (() -> Void)? { get set }
-    func requestAuthorization()
+    func authorizationStatus(_ completion: @escaping @MainActor @Sendable (NotificationPermissionStatus) -> Void)
+    func requestAuthorization(_ completion: @escaping @MainActor @Sendable (NotificationPermissionStatus) -> Void)
     func scheduleBreakReminder(after seconds: TimeInterval)
     func clearBreakReminder()
+}
+
+enum NotificationPermissionStatus: Equatable, Sendable {
+    case notDetermined
+    case denied
+    case authorized
 }
 
 @MainActor
@@ -24,8 +31,29 @@ final class NotificationScheduler: NSObject, UNUserNotificationCenterDelegate, N
         center.delegate = self
     }
 
-    func requestAuthorization() {
-        center.requestAuthorization(options: [.alert, .sound]) { _, _ in }
+    func authorizationStatus(_ completion: @escaping @MainActor @Sendable (NotificationPermissionStatus) -> Void) {
+        Task {
+            let settings = await center.notificationSettings()
+            let status = Self.permissionStatus(from: settings.authorizationStatus)
+            completion(status)
+        }
+    }
+
+    func requestAuthorization(_ completion: @escaping @MainActor @Sendable (NotificationPermissionStatus) -> Void) {
+        Task {
+            _ = try? await center.requestAuthorization(options: [.alert, .sound])
+            let settings = await center.notificationSettings()
+            completion(Self.permissionStatus(from: settings.authorizationStatus))
+        }
+    }
+
+    private nonisolated static func permissionStatus(from status: UNAuthorizationStatus) -> NotificationPermissionStatus {
+        switch status {
+        case .notDetermined: .notDetermined
+        case .denied: .denied
+        case .authorized, .provisional, .ephemeral: .authorized
+        @unknown default: .denied
+        }
     }
 
     func scheduleBreakReminder(after seconds: TimeInterval) {

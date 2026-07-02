@@ -11,6 +11,10 @@ struct FocusinPopoverView: View {
 
             statusPanel
 
+            if let guidance = store.notificationGuidance, store.settings.notificationsEnabled {
+                notificationNotice(guidance)
+            }
+
             VStack(alignment: .leading, spacing: 12) {
                 SegmentedPickerSection(title: "State", selection: $store.selectedState) {
                     ForEach(FocusState.allCases) { state in
@@ -34,6 +38,29 @@ struct FocusinPopoverView: View {
         .padding(16)
         .frame(width: 384)
         .background(Color(nsColor: .windowBackgroundColor))
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+            store.refreshPlatformStatus()
+        }
+    }
+
+    private func notificationNotice(_ message: String) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Label(message, systemImage: "bell.slash")
+                .font(.caption)
+
+            if store.notificationPermissionStatus == .notDetermined {
+                Button("Allow Notifications") {
+                    store.requestNotificationPermission()
+                }
+            } else {
+                Button("Open Notification Settings") {
+                    openSystemSettings(.notifications)
+                }
+            }
+        }
+        .padding(10)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.orange.opacity(0.1), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
     }
 
     private var header: some View {
@@ -355,6 +382,18 @@ struct SettingsView: View {
                 Toggle("Start focus timer on launch", isOn: $store.settings.startFocusTimerOnLaunch)
                 Toggle("Enable notifications", isOn: $store.settings.notificationsEnabled)
 
+                if let guidance = store.notificationGuidance {
+                    Text(guidance)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
+                    if store.settings.notificationsEnabled && store.notificationPermissionStatus == .denied {
+                        Button("Open Notification Settings") {
+                            openSystemSettings(.notifications)
+                        }
+                    }
+                }
+
                 Picker("Work interval", selection: $store.settings.workInterval) {
                     ForEach(WorkInterval.allCases) { interval in
                         Text(interval.label).tag(interval)
@@ -428,6 +467,22 @@ struct SettingsView: View {
 
             Section("Startup") {
                 Toggle("Launch at login", isOn: $store.settings.launchAtLogin)
+
+                if let guidance = store.launchAtLoginGuidance {
+                    Text(guidance)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
+                    if store.launchAtLoginStatus == .requiresApproval {
+                        Button("Open Login Items Settings") {
+                            openSystemSettings(.loginItems)
+                        }
+                    } else {
+                        Button("Try Again") {
+                            store.retryLaunchAtLogin()
+                        }
+                    }
+                }
             }
         }
     }
@@ -462,6 +517,24 @@ struct SettingsView: View {
     4. Which activity felt awkward in a study or office context?
     5. Would Focusin earn a permanent menu bar spot?
     """
+}
+
+private enum SystemSettingsDestination {
+    case notifications
+    case loginItems
+}
+
+private func openSystemSettings(_ destination: SystemSettingsDestination) {
+    let value: String
+    switch destination {
+    case .notifications:
+        value = "x-apple.systempreferences:com.apple.Notifications-Settings.extension"
+    case .loginItems:
+        value = "x-apple.systempreferences:com.apple.LoginItems-Settings.extension"
+    }
+    if let url = URL(string: value) {
+        NSWorkspace.shared.open(url)
+    }
 }
 
 private struct SegmentedPickerSection<Selection: Hashable, Content: View>: View {

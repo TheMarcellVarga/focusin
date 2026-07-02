@@ -22,10 +22,17 @@ final class FocusinStore: ObservableObject {
                 return
             }
             persistence.save(settings: settings)
-            launchAtLogin.setEnabled(settings.launchAtLogin)
-            if settings.notificationsEnabled {
-                notifications.requestAuthorization()
-            } else {
+            if settings.launchAtLogin != oldValue.launchAtLogin {
+                reconcileLaunchAtLogin()
+            }
+            if settings.notificationsEnabled != oldValue.notificationsEnabled {
+                if settings.notificationsEnabled {
+                    refreshNotificationPermission()
+                } else {
+                    notificationPermissionStatus = .notDetermined
+                    notifications.clearBreakReminder()
+                }
+            } else if !settings.notificationsEnabled {
                 notifications.clearBreakReminder()
             }
             rescheduleReminder()
@@ -52,6 +59,8 @@ final class FocusinStore: ObservableObject {
     }
     @Published var remainingBreakSeconds = 0
     @Published var libraryErrorMessage: String?
+    @Published private(set) var notificationPermissionStatus: NotificationPermissionStatus = .notDetermined
+    @Published private(set) var launchAtLoginStatus: LaunchAtLoginStatus = .disabled
 
     private let persistence: any FocusinPersisting
     private let engine: RecommendationEngine
@@ -94,9 +103,7 @@ final class FocusinStore: ObservableObject {
             libraryErrorMessage = "The local activity library could not be loaded."
         }
 
-        if settings.notificationsEnabled {
-            self.notifications.requestAuthorization()
-        }
+        refreshPlatformStatus()
         self.notifications.onReminderOpened = { [weak self] in
             self?.markBreakDue()
         }
@@ -204,6 +211,70 @@ final class FocusinStore: ObservableObject {
 
     var canShowRecommendation: Bool {
         currentActivity != nil && libraryErrorMessage == nil
+    }
+
+    var notificationGuidance: String? {
+        guard settings.notificationsEnabled else {
+            return "Break reminders are off. Timers still continue in Focusin."
+        }
+        switch notificationPermissionStatus {
+        case .notDetermined:
+            return "Allow notifications to receive break reminders. Focusin still works without them."
+        case .denied:
+            return "Notifications are off in System Settings. Timers still continue in Focusin."
+        case .authorized:
+            return nil
+        }
+    }
+
+    var launchAtLoginGuidance: String? {
+        switch launchAtLoginStatus {
+        case .requiresApproval:
+            return "Launch at Login needs approval in System Settings."
+        case .unavailable, .failed:
+            return "Focusin couldn’t update Launch at Login. You can keep using the app."
+        case .disabled, .enabled:
+            return nil
+        }
+    }
+
+    func refreshPlatformStatus() {
+        refreshNotificationPermission()
+        launchAtLoginStatus = launchAtLogin.status()
+        synchronizeLaunchAtLoginPreference()
+    }
+
+    func requestNotificationPermission() {
+        guard settings.notificationsEnabled else { return }
+        notifications.requestAuthorization { [weak self] status in
+            self?.notificationPermissionStatus = status
+            self?.rescheduleReminder()
+        }
+    }
+
+    func retryLaunchAtLogin() {
+        reconcileLaunchAtLogin()
+    }
+
+    private func refreshNotificationPermission() {
+        guard settings.notificationsEnabled else { return }
+        notifications.authorizationStatus { [weak self] status in
+            self?.notificationPermissionStatus = status
+            self?.rescheduleReminder()
+        }
+    }
+
+    private func reconcileLaunchAtLogin() {
+        launchAtLoginStatus = launchAtLogin.setEnabled(settings.launchAtLogin)
+        synchronizeLaunchAtLoginPreference()
+    }
+
+    private func synchronizeLaunchAtLoginPreference() {
+        guard launchAtLoginStatus != .failed else { return }
+        let actualEnabled = launchAtLoginStatus == .enabled
+        if settings.launchAtLogin != actualEnabled {
+            settings.launchAtLogin = actualEnabled
+        }
     }
 
     func recommend() {
@@ -330,6 +401,7 @@ final class FocusinStore: ObservableObject {
         notifications.clearBreakReminder()
 
         guard settings.notificationsEnabled,
+              notificationPermissionStatus == .authorized,
               let focusStartedAt,
               !isQuietTime(date: clock.now) else {
             return

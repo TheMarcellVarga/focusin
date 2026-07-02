@@ -217,16 +217,73 @@ final class FocusinStoreTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(notifications.clearCount, 1)
     }
 
+    func testDeniedNotificationsSurfaceGuidanceAndDoNotSchedule() {
+        let now = Date(timeIntervalSince1970: 41_000)
+        let notifications = TestNotifications(status: .denied)
+        let persistence = TestPersistence(
+            settings: FocusinSettings(startFocusTimerOnLaunch: false),
+            runtimeState: .focusing(startedAt: now)
+        )
+        let store = makeStore(persistence: persistence, notifications: notifications, clock: TestClock(now: now))
+
+        XCTAssertEqual(store.notificationPermissionStatus, .denied)
+        XCTAssertEqual(store.notificationGuidance, "Notifications are off in System Settings. Timers still continue in Focusin.")
+        XCTAssertTrue(notifications.scheduledDelays.isEmpty)
+        XCTAssertEqual(notifications.authorizationRequestCount, 0)
+    }
+
+    func testNotificationRequestUpdatesStatusAndSchedulesReminder() {
+        let now = Date(timeIntervalSince1970: 42_000)
+        let notifications = TestNotifications(status: .notDetermined, requestedStatus: .authorized)
+        let persistence = TestPersistence(
+            settings: FocusinSettings(startFocusTimerOnLaunch: false),
+            runtimeState: .focusing(startedAt: now)
+        )
+        let store = makeStore(persistence: persistence, notifications: notifications, clock: TestClock(now: now))
+
+        XCTAssertEqual(store.notificationPermissionStatus, .notDetermined)
+        store.requestNotificationPermission()
+
+        XCTAssertEqual(store.notificationPermissionStatus, .authorized)
+        XCTAssertEqual(notifications.authorizationRequestCount, 1)
+        XCTAssertEqual(notifications.scheduledDelays.last, 1_500)
+    }
+
+    func testLaunchAtLoginFailureAndApprovalPreserveActualToggleState() {
+        let now = Date(timeIntervalSince1970: 43_000)
+        let failureController = TestLaunchAtLogin(currentStatus: .disabled, updateStatus: .failed)
+        let failureStore = makeStore(
+            persistence: TestPersistence(settings: FocusinSettings(startFocusTimerOnLaunch: false), runtimeState: .idle),
+            clock: TestClock(now: now),
+            launchAtLogin: failureController
+        )
+        failureStore.settings.launchAtLogin = true
+        XCTAssertEqual(failureStore.launchAtLoginStatus, .failed)
+        XCTAssertTrue(failureStore.settings.launchAtLogin)
+        XCTAssertNotNil(failureStore.launchAtLoginGuidance)
+
+        let approvalController = TestLaunchAtLogin(currentStatus: .requiresApproval)
+        let approvalStore = makeStore(
+            persistence: TestPersistence(settings: FocusinSettings(launchAtLogin: true, startFocusTimerOnLaunch: false), runtimeState: .idle),
+            clock: TestClock(now: now),
+            launchAtLogin: approvalController
+        )
+        XCTAssertEqual(approvalStore.launchAtLoginStatus, .requiresApproval)
+        XCTAssertFalse(approvalStore.settings.launchAtLogin)
+        XCTAssertEqual(approvalStore.launchAtLoginGuidance, "Launch at Login needs approval in System Settings.")
+    }
+
     private func makeStore(
         persistence: TestPersistence,
         notifications: TestNotifications? = nil,
         clock: TestClock,
-        activities: [BreakActivity] = TestActivityLoader.oneActivity
+        activities: [BreakActivity] = TestActivityLoader.oneActivity,
+        launchAtLogin: TestLaunchAtLogin = TestLaunchAtLogin()
     ) -> FocusinStore {
         FocusinStore(
             persistence: persistence,
             notifications: notifications ?? TestNotifications(),
-            launchAtLogin: TestLaunchAtLogin(),
+            launchAtLogin: launchAtLogin,
             activityLoader: TestActivityLoader(activities: activities),
             clock: clock,
             runsTicker: false
@@ -299,15 +356,39 @@ private final class TestNotifications: NotificationScheduling {
     var authorizationRequestCount = 0
     var scheduledDelays: [TimeInterval] = []
     var clearCount = 0
+    var status: NotificationPermissionStatus
+    var requestedStatus: NotificationPermissionStatus
 
-    func requestAuthorization() { authorizationRequestCount += 1 }
+    init(status: NotificationPermissionStatus = .authorized, requestedStatus: NotificationPermissionStatus = .authorized) {
+        self.status = status
+        self.requestedStatus = requestedStatus
+    }
+
+    func authorizationStatus(_ completion: @escaping @MainActor @Sendable (NotificationPermissionStatus) -> Void) { completion(status) }
+    func requestAuthorization(_ completion: @escaping @MainActor @Sendable (NotificationPermissionStatus) -> Void) {
+        authorizationRequestCount += 1
+        status = requestedStatus
+        completion(status)
+    }
     func scheduleBreakReminder(after seconds: TimeInterval) { scheduledDelays.append(seconds) }
     func clearBreakReminder() { clearCount += 1 }
 }
 
 @MainActor
-private struct TestLaunchAtLogin: LaunchAtLoginControlling {
-    func setEnabled(_ enabled: Bool) {}
+private final class TestLaunchAtLogin: LaunchAtLoginControlling {
+    var currentStatus: LaunchAtLoginStatus
+    var updateStatus: LaunchAtLoginStatus?
+
+    init(currentStatus: LaunchAtLoginStatus = .disabled, updateStatus: LaunchAtLoginStatus? = nil) {
+        self.currentStatus = currentStatus
+        self.updateStatus = updateStatus
+    }
+
+    func status() -> LaunchAtLoginStatus { currentStatus }
+    func setEnabled(_ enabled: Bool) -> LaunchAtLoginStatus {
+        currentStatus = updateStatus ?? (enabled ? .enabled : .disabled)
+        return currentStatus
+    }
 }
 
 private struct TestActivityLoader: ActivityLoading {

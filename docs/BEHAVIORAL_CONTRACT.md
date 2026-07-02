@@ -62,7 +62,7 @@ Natural expiry is completion because the full selected break interval elapsed. T
 
 ## Permission And Error Copy Contract
 
-These presentations are **target** Phase 3 behavior. They do not block the local workflow.
+These presentations are implemented Phase 3 behavior. They do not block the local workflow; signed authorization and login-item lifecycle verification remains in Phase 4.
 
 | Condition | Required copy | Action |
 | --- | --- | --- |

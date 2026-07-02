@@ -8,21 +8,19 @@ Focusin integrates with macOS Notification Center, ServiceManagement login items
 
 ### Current behavior
 
-- Requests alert and sound authorization when notifications are enabled.
+- Reads authorization status when notifications are enabled and requests alert/sound permission only from the explicit `Allow Notifications` action.
+- Distinguishes not-determined, denied/revoked, and usable authorization (authorized/provisional/ephemeral) for in-app guidance.
+- Refreshes status on app activation and links denied users to Notification Settings.
 - Schedules one non-repeating notification under `focusin.break-due`.
 - Replaces prior pending requests before scheduling.
 - Clears pending and delivered reminders when no longer relevant.
 - Shows banner and sound while the app is active.
 - Activates the application and marks break due when opened.
 
-### Required hardening
+### Required signed-build verification
 
-- Inspect authorization status before presenting setting-dependent copy.
-- Distinguish not-determined, denied, provisional, and authorized states.
-- Explain how to re-enable notifications in System Settings after denial.
 - Verify revocation while a reminder is pending.
 - Confirm that in-app elapsed-time handling works with notifications off.
-- Avoid repeatedly requesting permission after denial.
 
 ## Quiet Hours
 
@@ -36,9 +34,9 @@ Required edge tests include 18:00–08:00, 08:00–18:00, equal endpoints, timez
 
 `SMAppService.mainApp` registers or unregisters the app when the preference changes. Required production behavior:
 
-- Reflect actual service status rather than assuming requested state succeeded.
-- Handle approval-required, denied, and not-found states visibly.
-- Avoid assertion-only error handling in release builds.
+- The toggle reconciles to actual service status rather than assuming the request succeeded.
+- Approval-required and unavailable/failure states are visible with System Settings or retry actions.
+- Registration errors preserve a usable local workflow without assertion-only handling.
 - Verify registration from a signed app in `/Applications`; development builds are not sufficient evidence.
 
 ## Menu Bar And Activation

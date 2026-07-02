@@ -17,6 +17,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 - Complete Phase 2 domain suite covering lifecycle transitions/restoration, quiet hours, persistence compatibility, recommendation passes, and real catalog validation.
 - Sandbox/privacy resource files and Xcode archive path.
 - Injectable clock/calendar, notification, login-item, catalog, and persistence boundaries; random selection is separated from deterministic candidate policy.
+- Actionable notification permission and launch-at-login status UI, including System Settings recovery actions and deterministic adapter/store tests.
 
 ## Resolved Product Contracts
 
@@ -33,10 +34,8 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 
 | Gap | Roadmap destination |
 | --- | --- |
-| Notification authorization result/status is ignored; denied and revoked states have no actionable UI. | Phase 3.5 permission status UI and Phase 4.2 authorization lifecycle |
-| Launch-at-login errors only trigger `assertionFailure` and the UI can disagree with actual service status. | Phase 3.5 permission status UI and Phase 4.3 login item lifecycle |
 | Sleep/wake, clock/timezone change, midnight rollover, and signed login-item behavior lack recorded evidence. | Phase 4.3–4.5 lifecycle matrices |
-| Accessibility audit is not recorded; newly labelled icon-only controls still need VoiceOver and Full Keyboard Access verification. | Phase 3.1–3.4 experience and accessibility |
+| Accessibility audit is incomplete; this machine denied assistive-device control, so VoiceOver and Full Keyboard Access verification still require manual evidence after permission is granted. | Phase 3.1–3.4 experience and accessibility; see `PHASE_3_EVIDENCE.md` |
 | Production icon/App Store screenshots, listing metadata, support URL, and privacy URL are not evidenced. | Phase 6.3 store presence |
 | Activity catalog has structural validation but no recorded complete editorial/safety and coverage review. | Phase 5.1–5.4 catalog validation |
 
