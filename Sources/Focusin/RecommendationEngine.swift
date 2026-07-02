@@ -26,6 +26,13 @@ public struct RecommendationEngine: Sendable {
     public init() {}
 
     public func recommend(from activities: [BreakActivity], request: RecommendationRequest) -> BreakActivity? {
+        candidates(from: activities, request: request).randomElement()
+    }
+
+    /// Returns the first non-empty fallback pass. Keeping selection separate makes
+    /// the recommendation policy deterministic to test while preserving random
+    /// choice among equally eligible activities in the app.
+    public func candidates(from activities: [BreakActivity], request: RecommendationRequest) -> [BreakActivity] {
         let eligible = activities.filter { activity in
             (!request.officeSafeOnly || activity.officeSafe)
                 && (request.includeMindfulness || !activity.mindfulness)
@@ -60,12 +67,12 @@ public struct RecommendationEngine: Sendable {
                 lhs.title.localizedCaseInsensitiveCompare(rhs.title) == .orderedAscending
             }
 
-            if let selected = candidates.randomElement() {
-                return selected
+            if !candidates.isEmpty {
+                return candidates
             }
         }
 
-        return nil
+        return []
     }
 }
 

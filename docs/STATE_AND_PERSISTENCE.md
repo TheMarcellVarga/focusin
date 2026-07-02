@@ -93,13 +93,12 @@ Restore the catalog activity by ID and derive remaining seconds from `endsAt`. I
 - Never reuse a removed activity ID for semantically different content.
 - A storage change must include clean-install, current-version, corrupt-data, and previous-version tests.
 
-## Planned Hardening
+## Completed Hardening
 
-- Extract clock/calendar protocols for deterministic expiry and midnight tests.
-- Extract platform adapters so store initialization is testable without real notifications/login services.
-- Add fixture-based migration tests for all persisted payload versions.
-- Test the approved policy that automatic break expiry counts as completion.
-- Remove unused legacy save helpers only after a released migration window.
+- Clock/calendar and platform adapters make expiry, rollover, quiet-hour, notification, login-item, catalog, and persistence behavior deterministic in tests.
+- Fixture tests cover clean, current, missing-field, corrupt, unknown-value, wrong-date, and legacy payloads.
+- State tests cover exact focus and break expiry, including the policy that automatic break expiry counts as completion.
+- Legacy save helpers remain intentionally available until the Phase 6.5 upgrade window is defined.
 
 ## Acceptance Criteria
 

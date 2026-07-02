@@ -14,9 +14,9 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 - Launch-at-login adapter.
 - Bundled 20-item catalog and baseline validation.
 - Codable compatibility defaults and two legacy read paths.
-- Initial domain test suite.
+- Complete Phase 2 domain suite covering lifecycle transitions/restoration, quiet hours, persistence compatibility, recommendation passes, and real catalog validation.
 - Sandbox/privacy resource files and Xcode archive path.
-- Injectable clock/calendar, notification, login-item, catalog, and persistence boundaries; deterministic exact-expiry and removed-active-ID restoration tests.
+- Injectable clock/calendar, notification, login-item, catalog, and persistence boundaries; random selection is separated from deterministic candidate policy.
 
 ## Resolved Product Contracts
 
@@ -35,9 +35,8 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 | --- | --- |
 | Notification authorization result/status is ignored; denied and revoked states have no actionable UI. | Phase 3.5 permission status UI and Phase 4.2 authorization lifecycle |
 | Launch-at-login errors only trigger `assertionFailure` and the UI can disagree with actual service status. | Phase 3.5 permission status UI and Phase 4.3 login item lifecycle |
-| Lifecycle behavior lacks deterministic tests because clock and platform services are concrete. | Phase 2.1 dependency seams and Phase 2.2–2.4 deterministic suites |
 | Sleep/wake, clock/timezone change, midnight rollover, and signed login-item behavior lack recorded evidence. | Phase 4.3–4.5 lifecycle matrices |
-| Accessibility audit is not recorded; icon-only controls need explicit semantic verification. | Phase 3.1–3.4 experience and accessibility |
+| Accessibility audit is not recorded; newly labelled icon-only controls still need VoiceOver and Full Keyboard Access verification. | Phase 3.1–3.4 experience and accessibility |
 | Production icon/App Store screenshots, listing metadata, support URL, and privacy URL are not evidenced. | Phase 6.3 store presence |
 | Activity catalog has structural validation but no recorded complete editorial/safety and coverage review. | Phase 5.1–5.4 catalog validation |
 
@@ -45,8 +44,6 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 
 | Gap | Roadmap destination |
 | --- | --- |
-| Equal quiet-hour endpoints intentionally mean all-day suppression, but Settings does not yet explain it. | Phase 3 experience copy |
-| Random recommendation selection is harder to reproduce in tests and demos. | Phase 2.1 dependency seams and Phase 2.5 recommendation suite |
 | Release evidence is not organized by build and macOS version. | Phase 4 signed-build evidence and Phase 7.1 final regression |
 | UI automation and deterministic launch-state fixtures do not exist. | Phase 3.1 popover state matrix and Phase 3 accessibility verification |
 | `.DS_Store` files and untracked `.vscode/` settings indicate repository hygiene cleanup is needed. | Phase 8.1 repository scan |

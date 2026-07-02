@@ -64,6 +64,8 @@ struct FocusinPopoverView: View {
             .buttonStyle(.borderless)
             .controlSize(.small)
             .help("Restart focus timer")
+            .accessibilityLabel("Restart focus timer")
+            .accessibilityHint("Starts a new focus interval from now")
 
             Button {
                 openSettings()
@@ -73,6 +75,7 @@ struct FocusinPopoverView: View {
             .buttonStyle(.borderless)
             .controlSize(.small)
             .help("Settings")
+            .accessibilityLabel("Open Settings")
         }
         .padding(.bottom, 2)
     }
@@ -102,6 +105,7 @@ struct FocusinPopoverView: View {
                     .font(.system(.title3, design: .rounded).weight(.semibold))
                     .foregroundStyle(.primary)
                     .monospacedDigit()
+                    .accessibilityHidden(true)
             }
         }
         .padding(12)
@@ -155,12 +159,14 @@ struct FocusinPopoverView: View {
                             total: Double(store.selectedDuration.seconds)
                         )
                         .controlSize(.small)
+                        .accessibilityLabel("Break progress")
 
                         HStack {
                             Text("Ends at \(breakEndsAt, style: .time)")
                             Spacer()
                             Text(store.breakCountdownText)
                                 .monospacedDigit()
+                                .accessibilityHidden(true)
                         }
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -178,7 +184,7 @@ struct FocusinPopoverView: View {
             StateMessage(
                 systemImage: "sparkle.magnifyingglass",
                 title: "No matching activity",
-                message: "Try another state, duration, or recommendation setting.",
+                message: "Adjust your break preferences to see more options.",
                 tint: .secondary
             )
         }
@@ -294,6 +300,8 @@ struct FocusinPopoverView: View {
                 .buttonStyle(.bordered)
                 .disabled(!store.canShowRecommendation)
                 .help("Show another activity")
+                .accessibilityLabel("Show another activity")
+                .accessibilityHint("Marks this suggestion as seen and shows a different match")
             }
         }
         .controlSize(.large)
@@ -378,6 +386,13 @@ struct SettingsView: View {
                     Text("End \(store.settings.quietEndHour):00")
                 }
                 .disabled(!store.settings.quietHoursEnabled)
+
+                if store.settings.quietHoursEnabled,
+                   store.settings.quietStartHour == store.settings.quietEndHour {
+                    Text("Start and end match, so reminders are quiet all day. Timers still continue.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
             }
         }
     }

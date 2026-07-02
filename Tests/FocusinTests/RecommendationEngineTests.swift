@@ -89,6 +89,55 @@ final class RecommendationEngineTests: XCTestCase {
         XCTAssertEqual(selected?.id, "fallback")
     }
 
+    func testAllSixFallbackPassesReturnTheExpectedCandidateSet() {
+        func ids(_ catalog: [BreakActivity], excluding excluded: Set<String> = []) -> [String] {
+            engine.candidates(
+                from: catalog,
+                request: RecommendationRequest(
+                    state: .stiff,
+                    duration: .twoMinutes,
+                    officeSafeOnly: false,
+                    includeMindfulness: true,
+                    excludedActivityIDs: excluded
+                )
+            ).map(\.id)
+        }
+
+        let exact = [
+            activity(id: "a-exact", states: [.stiff], durations: [.twoMinutes]),
+            activity(id: "b-exact", states: [.stiff], durations: [.twoMinutes])
+        ]
+        XCTAssertEqual(ids(exact), ["a-exact", "b-exact"]) // pass 1
+        XCTAssertEqual(ids(exact, excluding: ["a-exact", "b-exact"]), ["a-exact", "b-exact"]) // pass 2
+
+        let stateOnly = [activity(id: "state", states: [.stiff], durations: [.fiveMinutes])]
+        XCTAssertEqual(ids(stateOnly), ["state"]) // pass 3
+
+        let durationOnly = [activity(id: "duration", states: [.tired], durations: [.twoMinutes])]
+        XCTAssertEqual(ids(durationOnly), ["duration"]) // pass 4
+
+        let broad = [activity(id: "broad", states: [.tired], durations: [.fiveMinutes])]
+        XCTAssertEqual(ids(broad), ["broad"]) // pass 5
+        XCTAssertEqual(ids(broad, excluding: ["broad"]), ["broad"]) // pass 6
+    }
+
+    func testHardPreferencesNeverRelaxAcrossFallbacks() {
+        let candidates = engine.candidates(
+            from: [
+                activity(id: "unsafe", states: [.stiff], durations: [.twoMinutes], officeSafe: false),
+                activity(id: "mindful", states: [.stiff], durations: [.twoMinutes], mindfulness: true)
+            ],
+            request: RecommendationRequest(
+                state: .fine,
+                duration: .tenMinutes,
+                officeSafeOnly: true,
+                includeMindfulness: false,
+                excludedActivityIDs: ["unsafe", "mindful"]
+            )
+        )
+        XCTAssertTrue(candidates.isEmpty)
+    }
+
     func testDateKeyIgnoresTimeOfDay() {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(secondsFromGMT: 0)!
@@ -149,6 +198,36 @@ final class RecommendationEngineTests: XCTestCase {
         ]
 
         XCTAssertThrowsError(try ActivityLibrary.validate(duplicated))
+    }
+
+    func testActivityLibraryRejectsMissingStateAndDurationCoverage() {
+        XCTAssertThrowsError(try ActivityLibrary.validate([
+            activity(id: "empty-state", states: [], durations: [.twoMinutes])
+        ]))
+        XCTAssertThrowsError(try ActivityLibrary.validate([
+            activity(id: "empty-duration", states: FocusState.allCases, durations: [])
+        ]))
+        XCTAssertThrowsError(try ActivityLibrary.validate([
+            activity(id: "unsafe-only", states: FocusState.allCases, durations: BreakDuration.allCases, officeSafe: false)
+        ]))
+        XCTAssertThrowsError(try ActivityLibrary.validate([
+            activity(id: "mindful-only", states: FocusState.allCases, durations: BreakDuration.allCases, mindfulness: true)
+        ]))
+    }
+
+    func testRealBundledCatalogPassesStructuralAndCoverageValidation() throws {
+        let activities = try ActivityLibrary.load()
+        XCTAssertGreaterThanOrEqual(activities.count, 20)
+        XCTAssertEqual(Set(activities.map(\.id)).count, activities.count)
+        XCTAssertNoThrow(try ActivityLibrary.validate(activities))
+
+        for state in FocusState.allCases {
+            XCTAssertTrue(activities.contains { $0.states.contains(state) && $0.officeSafe })
+            XCTAssertTrue(activities.contains { $0.states.contains(state) && !$0.mindfulness })
+        }
+        for duration in BreakDuration.allCases {
+            XCTAssertTrue(activities.contains { $0.durations.contains(duration) })
+        }
     }
 
     private func activity(
