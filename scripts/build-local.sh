@@ -86,6 +86,7 @@ mkdir -p "$MACOS_DIR" "$RESOURCES_DIR"
 
 swiftc \
   -swift-version 6 \
+  -D DEBUG \
   -parse-as-library \
   -target arm64-apple-macosx14.0 \
   "$SOURCE_DIR/Models.swift" \

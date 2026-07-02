@@ -18,6 +18,8 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 - Sandbox/privacy resource files and Xcode archive path.
 - Injectable clock/calendar, notification, login-item, catalog, and persistence boundaries; random selection is separated from deterministic candidate policy.
 - Actionable notification permission and launch-at-login status UI, including System Settings recovery actions and deterministic adapter/store tests.
+- Phase 3 native experience matrix covering all six popover presentations in light/dark appearance, keyboard operation, accessibility semantics, increased contrast, reduced transparency, large text, and alternate accent color.
+- Debug-only deterministic UI launch fixtures for idle, focusing, break due, breaking, empty, and catalog-error presentations.
 
 ## Resolved Product Contracts
 
@@ -35,7 +37,6 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 | Gap | Roadmap destination |
 | --- | --- |
 | Sleep/wake, clock/timezone change, midnight rollover, and signed login-item behavior lack recorded evidence. | Phase 4.3–4.5 lifecycle matrices |
-| Accessibility audit is incomplete; this machine denied assistive-device control, so VoiceOver and Full Keyboard Access verification still require manual evidence after permission is granted. | Phase 3.1–3.4 experience and accessibility; see `PHASE_3_EVIDENCE.md` |
 | Production icon/App Store screenshots, listing metadata, support URL, and privacy URL are not evidenced. | Phase 6.3 store presence |
 | Activity catalog has structural validation but no recorded complete editorial/safety and coverage review. | Phase 5.1–5.4 catalog validation |
 
@@ -44,7 +45,6 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 | Gap | Roadmap destination |
 | --- | --- |
 | Release evidence is not organized by build and macOS version. | Phase 4 signed-build evidence and Phase 7.1 final regression |
-| UI automation and deterministic launch-state fixtures do not exist. | Phase 3.1 popover state matrix and Phase 3 accessibility verification |
 | `.DS_Store` files and untracked `.vscode/` settings indicate repository hygiene cleanup is needed. | Phase 8.1 repository scan |
 | Legacy reminder save methods appear unused and need migration-window review before removal. | Phase 8.1 repository scan; retain until the Phase 6.5 upgrade window is defined |
 

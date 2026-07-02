@@ -33,8 +33,9 @@ The roadmap therefore prioritizes verifiability and release quality over new fea
 | 0 — Documentation And Audit | Complete | [`PHASE_0_COMPLETION.md`](PHASE_0_COMPLETION.md) |
 | 1 — Behavioral Contract | Complete | [`PHASE_1_COMPLETION.md`](PHASE_1_COMPLETION.md) |
 | 2 — Domain And Persistence Hardening | Complete | [`PHASE_2_COMPLETION.md`](PHASE_2_COMPLETION.md) |
-| 3 — Native Experience And Accessibility | In progress | Phase 3.5 implemented and tested; OS Accessibility permission still blocks required keyboard/VoiceOver evidence. See [`PHASE_3_EVIDENCE.md`](PHASE_3_EVIDENCE.md) |
-| 4–8 | Blocked by sequence | Begin only after the preceding phase exits |
+| 3 — Native Experience And Accessibility | Complete | [`PHASE_3_EVIDENCE.md`](PHASE_3_EVIDENCE.md) |
+| 4 — macOS Lifecycle And Integration | Not started | Phase 3 exit is complete; Phase 4 is next |
+| 5–8 | Blocked by sequence | Begin only after the preceding phase exits |
 
 ## Phase 0: Documentation And Audit
 
