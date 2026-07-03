@@ -57,4 +57,4 @@ Use Pass/Fail plus concise observations and screenshots or command output. Do no
 
 ## Exit Decision
 
-Phase 4 may be marked complete only after every applicable matrix row passes on a signed installed Release build with the build-specific fields recorded above. Phase 5 remains blocked until then.
+Phase 4 may be marked complete only after every applicable matrix row passes on a signed installed Release build with the build-specific fields recorded above. On 2026-07-03, the owner explicitly authorized Phase 5 work to begin as a sequencing exception. That exception does not waive, defer, or mark complete any Phase 4 row; Phase 6 remains blocked by both incomplete phases.

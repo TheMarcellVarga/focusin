@@ -35,7 +35,8 @@ The roadmap therefore prioritizes verifiability and release quality over new fea
 | 2 — Domain And Persistence Hardening | Complete | [`PHASE_2_COMPLETION.md`](PHASE_2_COMPLETION.md) |
 | 3 — Native Experience And Accessibility | Complete | [`PHASE_3_EVIDENCE.md`](PHASE_3_EVIDENCE.md) |
 | 4 — macOS Lifecycle And Integration | In progress | Automated hardening passes; signed-build matrix remains in [`PHASE_4_EVIDENCE.md`](PHASE_4_EVIDENCE.md) |
-| 5–8 | Blocked by sequence | Begin only after the preceding phase exits |
+| 5 — Activity Catalog And Product Validation | In progress by explicit sequencing exception | Automated report and engineering pre-review in [`PHASE_5_EVIDENCE.md`](PHASE_5_EVIDENCE.md); owner sign-off and build-specific beta signal remain |
+| 6–8 | Blocked by sequence | Begin only after the preceding phase exits |
 
 ## Phase 0: Documentation And Audit
 

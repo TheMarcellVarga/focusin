@@ -23,7 +23,7 @@ The repository already contains several prerequisites for a real release:
 - Privacy manifest and sandbox entitlement files for distribution.
 - A checked-in Xcode project path for archive and signing.
 
-The app is not yet release-ready. Permission/error UX, deterministic lifecycle coverage, accessibility evidence, signed-build integration checks, catalog review, and App Store assets remain tracked in [`docs/UNFINISHED_SURFACES_AUDIT.md`](docs/UNFINISHED_SURFACES_AUDIT.md).
+The app is not yet release-ready. Signed-build integration checks, human catalog sign-off, beta feedback, and App Store assets remain tracked in [`docs/UNFINISHED_SURFACES_AUDIT.md`](docs/UNFINISHED_SURFACES_AUDIT.md).
 
 ## What It Does
 
@@ -85,6 +85,8 @@ The repository includes a full product-to-release planning system:
 - [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md) - phase backlog and task contract.
 - [`docs/MASTER_EXECUTION_ROADMAP.md`](docs/MASTER_EXECUTION_ROADMAP.md) - dependency-ordered execution control plane.
 - [`docs/UNFINISHED_SURFACES_AUDIT.md`](docs/UNFINISHED_SURFACES_AUDIT.md) - current shipped evidence and ranked gaps.
+- [`docs/PHASE_5_EVIDENCE.md`](docs/PHASE_5_EVIDENCE.md) - activity coverage, editorial pre-review, and remaining sign-off gates.
+- [`docs/RELEASE_NOTES.md`](docs/RELEASE_NOTES.md) - version-aligned product and catalog changes.
 - [`docs/RELEASE_AND_DISTRIBUTION.md`](docs/RELEASE_AND_DISTRIBUTION.md) - archive, TestFlight, App Store, and rollback plan.
 - [`docs/DEMO_WALKTHROUGH.md`](docs/DEMO_WALKTHROUGH.md) - repeatable release-candidate demo.
 - [`docs/PORTFOLIO_CASE_STUDY.md`](docs/PORTFOLIO_CASE_STUDY.md) - evidence-based case-study structure.
@@ -106,7 +108,7 @@ This repository includes scripts for local verification:
 ./scripts/test-local.sh
 ```
 
-On the documented toolchain, `swift test` currently rejects the executable target's top-level `Resources/Info.plist`. Until the package layout is corrected, use the local scripts for verification and the Xcode project for archive/signing.
+Use both local scripts for the repository gates. The build script creates an ad-hoc-signed local bundle; it does not replace signed Release-build verification.
 
 ### With SwiftPM
 

@@ -1,6 +1,6 @@
 import Foundation
 
-public enum FocusState: String, CaseIterable, Codable, Identifiable, Sendable {
+public enum FocusState: String, CaseIterable, Codable, Hashable, Identifiable, Sendable {
     case stiff
     case tired
     case scattered
@@ -20,7 +20,7 @@ public enum FocusState: String, CaseIterable, Codable, Identifiable, Sendable {
     }
 }
 
-public enum BreakDuration: String, CaseIterable, Codable, Identifiable, Sendable {
+public enum BreakDuration: String, CaseIterable, Codable, Hashable, Identifiable, Sendable {
     case thirtySeconds
     case twoMinutes
     case fiveMinutes
@@ -47,7 +47,7 @@ public enum BreakDuration: String, CaseIterable, Codable, Identifiable, Sendable
     }
 }
 
-public enum ActivityCategory: String, Codable, CaseIterable, Identifiable, Sendable {
+public enum ActivityCategory: String, Codable, CaseIterable, Hashable, Identifiable, Sendable {
     case move
     case mind
     case desk
@@ -57,7 +57,7 @@ public enum ActivityCategory: String, Codable, CaseIterable, Identifiable, Senda
     public var id: String { rawValue }
 }
 
-public enum ActivityIntensity: String, Codable, Sendable {
+public enum ActivityIntensity: String, Codable, CaseIterable, Hashable, Sendable {
     case low
     case medium
 }

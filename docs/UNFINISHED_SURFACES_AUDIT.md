@@ -21,6 +21,8 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 - Phase 3 native experience matrix covering all six popover presentations in light/dark appearance, keyboard operation, accessibility semantics, increased contrast, reduced transparency, large text, and alternate accent color.
 - Debug-only deterministic UI launch fixtures for idle, focusing, break due, breaking, empty, and catalog-error presentations.
 - Phase 4 automated lifecycle hardening: activation, wake, clock/timezone changes, and day rollover trigger immediate runtime/platform reconciliation; reminder mutations deterministically leave zero or one pending request.
+- Phase 5 measurable catalog validation and coverage reporting, including every default-filter state-duration intersection, category, intensity, and context-flag counts.
+- Phase 5 engineering editorial pre-review removed a breath-holding prompt, strengthened movement safety copy, and filled sparse stiff/ten-minute and social-category coverage.
 
 ## Resolved Product Contracts
 
@@ -39,7 +41,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 | --- | --- |
 | Signed-build notification, login-item, sleep/wake, clock/timezone, midnight, termination, and update scenarios lack recorded manual evidence. | Phase 4.2–4.5 lifecycle matrix in `PHASE_4_EVIDENCE.md` |
 | Production icon/App Store screenshots, listing metadata, support URL, and privacy URL are not evidenced. | Phase 6.3 store presence |
-| Activity catalog has structural validation but no recorded complete editorial/safety and coverage review. | Phase 5.1–5.4 catalog validation |
+| Activity catalog engineering pre-review is recorded, but named human owner sign-off and build-specific beta feedback are not complete. | Phase 5.2–5.3 evidence in `PHASE_5_EVIDENCE.md` |
 
 ## P2 — Quality Gaps
 

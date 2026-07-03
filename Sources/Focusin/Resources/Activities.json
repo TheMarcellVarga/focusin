@@ -66,9 +66,9 @@
     "intensity": "low"
   },
   {
-    "id": "box-breath-two",
-    "title": "Box Breathing",
-    "instruction": "Breathe in for four, hold for four, out for four, hold for four. Repeat four rounds.",
+    "id": "paced-breath-two",
+    "title": "Paced Breathing",
+    "instruction": "If comfortable, breathe in gently for four counts and out for six counts. Repeat eight times.",
     "category": "mind",
     "states": ["anxious", "scattered", "fine"],
     "durations": ["twoMinutes", "fiveMinutes"],
@@ -101,7 +101,7 @@
   {
     "id": "stand-and-reach-two",
     "title": "Stand and Reach",
-    "instruction": "Stand up, reach overhead, then reach gently to each side.",
+    "instruction": "If comfortable, stand and reach gently overhead, then to each side. Repeat twice.",
     "category": "move",
     "states": ["stiff", "tired", "fine"],
     "durations": ["twoMinutes", "fiveMinutes"],
@@ -165,9 +165,27 @@
     "intensity": "low"
   },
   {
+    "id": "standing-check-in-ten",
+    "title": "Standing Check-In",
+    "instruction": "If comfortable and appropriate, invite a colleague to stand for a brief check-in, then return.",
+    "category": "social",
+    "states": [
+      "stiff",
+      "tired",
+      "fine"
+    ],
+    "durations": [
+      "fiveMinutes",
+      "tenMinutes"
+    ],
+    "officeSafe": true,
+    "mindfulness": false,
+    "intensity": "low"
+  },
+  {
     "id": "outside-light-ten",
     "title": "Daylight Loop",
-    "instruction": "Step outside or near daylight for a short loop. Keep your phone away.",
+    "instruction": "If your surroundings allow, take a short loop outside or near daylight, then return.",
     "category": "move",
     "states": ["tired", "scattered", "anxious"],
     "durations": ["fiveMinutes", "tenMinutes"],
@@ -178,7 +196,7 @@
   {
     "id": "squats-ten",
     "title": "Ten Squats",
-    "instruction": "Do ten controlled squats, then take one slow breath before sitting.",
+    "instruction": "If comfortable, do ten controlled squats beside a stable chair, then sit down.",
     "category": "move",
     "states": ["stiff", "tired"],
     "durations": ["twoMinutes", "fiveMinutes"],
@@ -189,7 +207,7 @@
   {
     "id": "desk-dance-two",
     "title": "Silent Shakeout",
-    "instruction": "Step away and shake out your arms and legs for one minute.",
+    "instruction": "If comfortable, step into clear space and gently shake out your arms and legs for one minute.",
     "category": "move",
     "states": ["stiff", "tired", "anxious"],
     "durations": ["twoMinutes", "fiveMinutes"],

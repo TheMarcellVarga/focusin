@@ -47,17 +47,16 @@ Candidates within the first non-empty pass are selected randomly. Explicit prefe
 
 ## Catalog Validation
 
-Shipped validation currently enforces unique IDs, non-empty state/duration arrays, and at least one office-safe and non-mindfulness fallback per state.
+Shipped validation enforces:
 
-Planned validation should also enforce:
-
+- Non-empty, unique lowercase kebab-case IDs.
 - Non-empty trimmed title and instruction.
-- Known controlled-vocabulary values.
-- Coverage matrix for every state-duration pair where feasible.
-- At least one eligible item per state under default filters.
-- Reasonable instruction length for the popover.
-- No unsafe absolutes, diagnosis, pain-treatment, or outcome guarantees.
-- Duration realism and consistency with activity intensity.
+- Non-empty state and duration arrays with known controlled-vocabulary values.
+- At least one office-safe and non-mindfulness fallback per state.
+- At least one default-filter activity for every state-duration pair.
+- Representation across every category and both intensity levels.
+
+Instruction length, unsafe language, duration realism, context classification, and intensity consistency remain editorial review responsibilities; structural validation cannot prove those judgments.
 
 ## Content Guidelines
 

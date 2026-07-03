@@ -511,8 +511,9 @@ struct SettingsView: View {
     1. Did reminders feel useful or annoying?
     2. Did recommendations feel specific enough?
     3. Which state did you use most: Stiff, Tired, Scattered, Anxious, or Fine?
-    4. Which activity felt awkward in a study or office context?
-    5. Would Focusin earn a permanent menu bar spot?
+    4. Did any activity feel repetitive, awkward, unsafe, or mistimed? Name it and explain.
+    5. Did the suggested duration fit the activity?
+    6. Would Focusin earn a permanent menu bar spot?
     """
 }
 
