@@ -23,6 +23,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 - Phase 4 automated lifecycle hardening: activation, wake, clock/timezone changes, and day rollover trigger immediate runtime/platform reconciliation; reminder mutations deterministically leave zero or one pending request.
 - Phase 5 measurable catalog validation and coverage reporting, including every default-filter state-duration intersection, category, intensity, and context-flag counts.
 - Phase 5 engineering editorial pre-review removed a breath-holding prompt, strengthened movement safety copy, and filled sparse stiff/ten-minute and social-category coverage.
+- Phase 6 unsigned Release product integrity: final metadata, bundled catalog/privacy manifest, sandbox-only entitlements, shared scheme, and Release warnings are inspected by a repeatable preflight script.
 
 ## Resolved Product Contracts
 
@@ -40,7 +41,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 | Gap | Roadmap destination |
 | --- | --- |
 | Signed-build notification, login-item, sleep/wake, clock/timezone, midnight, termination, and update scenarios lack recorded manual evidence. | Phase 4.2–4.5 lifecycle matrix in `PHASE_4_EVIDENCE.md` |
-| Production icon/App Store screenshots, listing metadata, support URL, and privacy URL are not evidenced. | Phase 6.3 store presence |
+| Production icon/App Store screenshots, public support/privacy URLs, copyright, reviewer contact, and App Store Connect listing are not evidenced; listing copy is drafted locally. | Phase 6.3 store presence in `PHASE_6_EVIDENCE.md` |
 | Activity catalog engineering pre-review is recorded, but named human owner sign-off and build-specific beta feedback are not complete. | Phase 5.2–5.3 evidence in `PHASE_5_EVIDENCE.md` |
 
 ## P2 — Quality Gaps

@@ -86,6 +86,8 @@ The repository includes a full product-to-release planning system:
 - [`docs/MASTER_EXECUTION_ROADMAP.md`](docs/MASTER_EXECUTION_ROADMAP.md) - dependency-ordered execution control plane.
 - [`docs/UNFINISHED_SURFACES_AUDIT.md`](docs/UNFINISHED_SURFACES_AUDIT.md) - current shipped evidence and ranked gaps.
 - [`docs/PHASE_5_EVIDENCE.md`](docs/PHASE_5_EVIDENCE.md) - activity coverage, editorial pre-review, and remaining sign-off gates.
+- [`docs/PHASE_6_EVIDENCE.md`](docs/PHASE_6_EVIDENCE.md) - distribution preflight evidence and remaining external gates.
+- [`docs/APP_STORE_METADATA.md`](docs/APP_STORE_METADATA.md) - reviewed draft listing, TestFlight, review, and privacy copy.
 - [`docs/RELEASE_NOTES.md`](docs/RELEASE_NOTES.md) - version-aligned product and catalog changes.
 - [`docs/RELEASE_AND_DISTRIBUTION.md`](docs/RELEASE_AND_DISTRIBUTION.md) - archive, TestFlight, App Store, and rollback plan.
 - [`docs/DEMO_WALKTHROUGH.md`](docs/DEMO_WALKTHROUGH.md) - repeatable release-candidate demo.
