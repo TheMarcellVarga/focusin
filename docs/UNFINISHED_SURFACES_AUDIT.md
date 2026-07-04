@@ -24,6 +24,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 - Phase 5 measurable catalog validation and coverage reporting, including every default-filter state-duration intersection, category, intensity, and context-flag counts.
 - Phase 5 engineering editorial pre-review removed a breath-holding prompt, strengthened movement safety copy, and filled sparse stiff/ten-minute and social-category coverage.
 - Phase 6 unsigned Release product integrity: final metadata, bundled catalog/privacy manifest, sandbox-only entitlements, shared scheme, and Release warnings are inspected by a repeatable preflight script.
+- Phase 7 preparation: automated regression is recorded without mislabeling it final, case-study claims are reconciled, capture manifests are required, and support/rollback procedures are documented.
 
 ## Resolved Product Contracts
 
@@ -49,6 +50,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 | Gap | Roadmap destination |
 | --- | --- |
 | Release evidence is not organized by build and macOS version. | Phase 4 signed-build evidence and Phase 7.1 final regression |
+| No public support intake address or accountable release owner is assigned. | Phase 6.3 store presence and Phase 7.4 support readiness |
 | `.DS_Store` files and untracked `.vscode/` settings indicate repository hygiene cleanup is needed. | Phase 8.1 repository scan |
 | Legacy reminder save methods appear unused and need migration-window review before removal. | Phase 8.1 repository scan; retain until the Phase 6.5 upgrade window is defined |
 

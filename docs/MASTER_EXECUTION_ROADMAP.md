@@ -37,7 +37,8 @@ The roadmap therefore prioritizes verifiability and release quality over new fea
 | 4 — macOS Lifecycle And Integration | In progress | Automated hardening passes; signed-build matrix remains in [`PHASE_4_EVIDENCE.md`](PHASE_4_EVIDENCE.md) |
 | 5 — Activity Catalog And Product Validation | In progress by explicit sequencing exception | Automated report and engineering pre-review in [`PHASE_5_EVIDENCE.md`](PHASE_5_EVIDENCE.md); owner sign-off and build-specific beta signal remain |
 | 6 — Distribution Readiness | In progress by explicit sequencing exception | Local project integrity and metadata draft in [`PHASE_6_EVIDENCE.md`](PHASE_6_EVIDENCE.md); signing, store assets, TestFlight, and upgrade gates remain |
-| 7–8 | Blocked by sequence | Begin only after the preceding phase exits |
+| 7 — Release, Demo, And Portfolio Evidence | In progress by explicit sequencing exception | Automated regression, narrative reconciliation, and support runbook in [`PHASE_7_EVIDENCE.md`](PHASE_7_EVIDENCE.md); exact-candidate evidence remains blocked |
+| 8 | Blocked by sequence | Begin only after the preceding phase exits |
 
 ## Phase 0: Documentation And Audit
 

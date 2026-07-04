@@ -87,7 +87,9 @@ The repository includes a full product-to-release planning system:
 - [`docs/UNFINISHED_SURFACES_AUDIT.md`](docs/UNFINISHED_SURFACES_AUDIT.md) - current shipped evidence and ranked gaps.
 - [`docs/PHASE_5_EVIDENCE.md`](docs/PHASE_5_EVIDENCE.md) - activity coverage, editorial pre-review, and remaining sign-off gates.
 - [`docs/PHASE_6_EVIDENCE.md`](docs/PHASE_6_EVIDENCE.md) - distribution preflight evidence and remaining external gates.
+- [`docs/PHASE_7_EVIDENCE.md`](docs/PHASE_7_EVIDENCE.md) - regression, demo, portfolio, and support preparation evidence.
 - [`docs/APP_STORE_METADATA.md`](docs/APP_STORE_METADATA.md) - reviewed draft listing, TestFlight, review, and privacy copy.
+- [`docs/SUPPORT_AND_ROLLBACK.md`](docs/SUPPORT_AND_ROLLBACK.md) - support triage, stop-ship, hotfix, rollback, and incident procedure.
 - [`docs/RELEASE_NOTES.md`](docs/RELEASE_NOTES.md) - version-aligned product and catalog changes.
 - [`docs/RELEASE_AND_DISTRIBUTION.md`](docs/RELEASE_AND_DISTRIBUTION.md) - archive, TestFlight, App Store, and rollback plan.
 - [`docs/DEMO_WALKTHROUGH.md`](docs/DEMO_WALKTHROUGH.md) - repeatable release-candidate demo.

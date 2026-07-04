@@ -55,18 +55,21 @@ A main-actor `FocusinStore` coordinates the small state graph, persistence, and 
 - Validated resource catalog and pure recommendation engine.
 - UserNotifications and `SMAppService` adapters.
 - App Sandbox/privacy manifest and Xcode distribution project.
-- Tests for selection policy, normalization, compatibility, history, and identifiers.
+- Deterministic tests for lifecycle transitions, time boundaries, quiet hours, persistence compatibility, recommendation passes, catalog coverage, notification reconciliation, and login-item failure states.
 
 ## Quality Story
 
-The release program adds deterministic time/platform seams, full transition and migration coverage, accessibility validation, signed lifecycle testing, catalog editorial review, and archive/privacy verification. Evidence should cite exact test builds rather than claiming completion from source inspection alone.
+The app uses injected time, calendar, persistence, notification, login-item, catalog, and random-selection boundaries so domain and reconciliation behavior can be tested without wall-clock waits or platform prompts. The current suite contains 47 passing tests, and the bundled 21-activity catalog is validated across every default-filter state-duration intersection.
+
+The native interface has recorded Phase 3 evidence for its six popover states, light/dark appearance, keyboard operation, accessibility semantics, increased contrast, reduced transparency, large text, and alternate accent color. Release claims remain deliberately narrower: signed notification/login-item behavior, exact-candidate regression, beta feedback, and archive validation are still open external gates.
 
 ## Honest Limitations
 
-- Current catalog is intentionally small and requires beta feedback for variety.
+- The 21-item catalog is intentionally small and still requires beta feedback for usefulness and variety.
 - No cross-device sync or long-term insights.
-- Platform permission and login-item failure UX needs completion before public release.
-- A complete accessibility and signed lifecycle matrix must be recorded.
+- Signed lifecycle and upgrade matrices are not yet recorded.
+- No signed archive, TestFlight cohort, App Store listing, or release-candidate media exists yet.
+- Human catalog approval and build-specific beta feedback remain outstanding.
 - The app provides general wellness prompts, not medical guidance.
 
 ## Outcome Evidence Template
@@ -97,4 +100,3 @@ Complete only with real data:
 - Why deadline persistence is more reliable than tick-count persistence.
 - How hard and soft recommendation constraints were separated.
 - Which release risks remain platform-specific despite a small codebase.
-

@@ -53,10 +53,12 @@ Summarize the date-derived persisted state machine, validated bundled catalog, o
 - Settings control surface.
 - Optional relaunch during a break to prove restoration.
 
+For every capture, retain a manifest containing the app version/build, full commit SHA, macOS version, appearance/accessibility settings, capture filename, and whether a debug fixture was used. Store release evidence under a version/build-specific directory; do not mix Phase 3 fixture captures with release-candidate media.
+
 ## Demo Guardrails
 
 - Do not claim scientific validation, treatment, AI, cloud sync, or behavioral analytics.
-- Do not present planned permission/error UX as shipped.
+- Do not hide permission or login-item recovery states when they are relevant to the demonstrated path.
 - Do not use a debug-only flow without labeling it.
 - Do not stage screenshots from a UI version different from the candidate.
 - If a system integration fails during the demo, explain the exact permission/environment state rather than masking it.
@@ -64,4 +66,3 @@ Summarize the date-derived persisted state machine, validated bundled catalog, o
 ## Success Criteria
 
 The audience can explain who the product is for, complete the focus/break loop, understand why the recommendation differs from a generic timer, and identify the privacy/architecture constraint within five minutes.
-
