@@ -115,7 +115,7 @@ let resourceURL = URL(fileURLWithPath: CommandLine.arguments[1])
 let data = try Data(contentsOf: resourceURL)
 let library = try JSONDecoder().decode([BreakActivity].self, from: data)
 try ActivityLibrary.validate(library)
-precondition(library.count >= 20)
+precondition(library.count >= 21)
 precondition(Set(library.map(\.id)).count == library.count)
 
 for state in FocusState.allCases {

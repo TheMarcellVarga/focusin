@@ -12,7 +12,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 - Same-day seen/completed/skipped history.
 - Notifications, quiet-hour scheduling logic, and reminder opening callback.
 - Launch-at-login adapter.
-- Bundled 20-item catalog and baseline validation.
+- Bundled 21-item catalog with full measurable coverage validation.
 - Codable compatibility defaults and two legacy read paths.
 - Complete Phase 2 domain suite covering lifecycle transitions/restoration, quiet hours, persistence compatibility, recommendation passes, and real catalog validation.
 - Sandbox/privacy resource files and Xcode archive path.
@@ -25,6 +25,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 - Phase 5 engineering editorial pre-review removed a breath-holding prompt, strengthened movement safety copy, and filled sparse stiff/ten-minute and social-category coverage.
 - Phase 6 unsigned Release product integrity: final metadata, bundled catalog/privacy manifest, sandbox-only entitlements, shared scheme, and Release warnings are inspected by a repeatable preflight script.
 - Phase 7 preparation: automated regression is recorded without mislabeling it final, case-study claims are reconciled, capture manifests are required, and support/rollback procedures are documented.
+- Phase 8 repository hygiene: `.DS_Store` and tracked editor settings are removed/ignored, stale catalog and architecture claims are reconciled, and legacy migration methods are explicitly retained through the first supported upgrade window.
 
 ## Resolved Product Contracts
 
@@ -51,8 +52,6 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 | --- | --- |
 | Release evidence is not organized by build and macOS version. | Phase 4 signed-build evidence and Phase 7.1 final regression |
 | No public support intake address or accountable release owner is assigned. | Phase 6.3 store presence and Phase 7.4 support readiness |
-| `.DS_Store` files and untracked `.vscode/` settings indicate repository hygiene cleanup is needed. | Phase 8.1 repository scan |
-| Legacy reminder save methods appear unused and need migration-window review before removal. | Phase 8.1 repository scan; retain until the Phase 6.5 upgrade window is defined |
 
 ## P3 — Candidates After Version 1
 
@@ -67,6 +66,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 - No authentication or billing: intentionally out of scope.
 - No analytics: privacy decision, not missing instrumentation.
 - No AI generation: catalog reviewability and safety are preferred for version 1.
+- Legacy daily-history and reminder-start reads remain intentionally supported and fixture-tested until at least one released migration window and Phase 6.5 upgrade verification are complete. The legacy reminder save helper exists only to construct the compatibility fixture and must not be used by production state mutations.
 
 ## Closure Rule
 

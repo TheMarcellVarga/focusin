@@ -88,6 +88,7 @@ The repository includes a full product-to-release planning system:
 - [`docs/PHASE_5_EVIDENCE.md`](docs/PHASE_5_EVIDENCE.md) - activity coverage, editorial pre-review, and remaining sign-off gates.
 - [`docs/PHASE_6_EVIDENCE.md`](docs/PHASE_6_EVIDENCE.md) - distribution preflight evidence and remaining external gates.
 - [`docs/PHASE_7_EVIDENCE.md`](docs/PHASE_7_EVIDENCE.md) - regression, demo, portfolio, and support preparation evidence.
+- [`docs/PHASE_8_EVIDENCE.md`](docs/PHASE_8_EVIDENCE.md) - repository scan, reconciliation, gap disposition, and final-sign-off status.
 - [`docs/APP_STORE_METADATA.md`](docs/APP_STORE_METADATA.md) - reviewed draft listing, TestFlight, review, and privacy copy.
 - [`docs/SUPPORT_AND_ROLLBACK.md`](docs/SUPPORT_AND_ROLLBACK.md) - support triage, stop-ship, hotfix, rollback, and incident procedure.
 - [`docs/PRIVACY_POLICY.md`](docs/PRIVACY_POLICY.md) - publishable local-only privacy policy.

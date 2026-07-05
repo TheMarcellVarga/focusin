@@ -63,6 +63,7 @@ require_file() {
 
 require_command swiftc
 require_command plutil
+require_command iconutil
 
 if [[ "$CLEAN_ONLY" == true ]]; then
   rm -rf "$APP_DIR"
@@ -102,6 +103,17 @@ swiftc \
 
 cp "$ROOT_DIR/Sources/Focusin/Resources/Info.plist" "$CONTENTS_DIR/Info.plist"
 find "$RESOURCE_SOURCE_DIR" -maxdepth 1 -type f ! -name "Info.plist" ! -name "Focusin.entitlements" -exec cp {} "$RESOURCES_DIR/" \;
+
+ICONSET_SOURCE="$RESOURCE_SOURCE_DIR/Assets.xcassets/AppIcon.appiconset"
+ICONSET_BUILD="$BUILD_DIR/Focusin.iconset"
+if [[ -d "$ICONSET_SOURCE" ]]; then
+  rm -rf "$ICONSET_BUILD"
+  mkdir -p "$ICONSET_BUILD"
+  find "$ICONSET_SOURCE" -maxdepth 1 -name 'icon_*.png' -exec cp {} "$ICONSET_BUILD/" \;
+  iconutil --convert icns --output "$RESOURCES_DIR/AppIcon.icns" "$ICONSET_BUILD"
+  /usr/libexec/PlistBuddy -c 'Add :CFBundleIconFile string AppIcon' "$CONTENTS_DIR/Info.plist"
+  rm -rf "$ICONSET_BUILD"
+fi
 
 if command -v codesign >/dev/null 2>&1; then
   codesign \

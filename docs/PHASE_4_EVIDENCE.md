@@ -9,7 +9,7 @@ Phase 4 is in progress. Automated lifecycle and integration hardening passes. Th
 Verified on 2026-07-03:
 
 - `swift test`: 45 tests passed.
-- `./scripts/test-local.sh`: passed against the 20-item bundled catalog.
+- `./scripts/test-local.sh`: passes against the current 21-item bundled catalog.
 - `./scripts/build-local.sh`: produced and verified the ad-hoc-signed local app bundle.
 - Reminder reconciliation tests cover launch/restoration, interval edits, notification toggles and revocation, quiet-hour edits, timer restart, break start, completion, skip/due transitions, and forward/backward clock changes. Each mutation leaves exactly zero or one modeled pending reminder.
 - Runtime tests cover exact focus and break deadlines, termination-style restoration across deadlines, missing active catalog identity, local-day rollover, timezone/DST calendars, and notification-open idempotence.

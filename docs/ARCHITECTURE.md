@@ -97,7 +97,7 @@ User actions mutate the store synchronously on the main actor. `didSet` observer
 
 - `UserDefaults` is sufficient for compact preferences/history but not long-term event analytics.
 - Random selection improves variety but requires injected randomness or candidate-set assertions for fully deterministic tests.
-- Store construction causes platform side effects, which complicates isolated lifecycle testing; adapter protocols are a planned hardening step.
+- Store construction performs reconciliation through injected persistence, notification, login-item, catalog, clock, and calendar boundaries; tests use deterministic adapters while production construction supplies Apple-framework implementations.
 - A main-thread ticker is acceptable at this scale but must never be the source of elapsed-time truth.
 
 ## Non-Goals
@@ -111,7 +111,7 @@ User actions mutate the store synchronously on the main actor. `didSet` observer
 
 Introduce a stronger abstraction only when evidence requires it:
 
-- Protocol-based notification/login adapters when lifecycle tests need fakes.
+- Split the main store only if product complexity creates independently evolving state graphs or the existing injected boundaries stop providing clear deterministic tests.
 - File or database storage only when durable longitudinal history becomes an approved feature.
 - Shared package targets only when another Apple-platform client is scheduled.
 - Network layer only after an explicit privacy and entitlement review.

@@ -18,7 +18,7 @@ Already shipped in the repository:
 
 - SwiftUI menu bar and Settings scenes.
 - Four-state focus/break lifecycle.
-- Bundled 20-item activity catalog and ordered recommendation fallback.
+- Bundled 21-item activity catalog and ordered recommendation fallback.
 - Same-day completed/skipped/seen exclusions.
 - Local settings and runtime persistence with legacy migration reads.
 - Notifications, quiet hours, launch-at-login adapter, privacy manifest, sandbox entitlements.
@@ -38,7 +38,7 @@ The roadmap therefore prioritizes verifiability and release quality over new fea
 | 5 — Activity Catalog And Product Validation | In progress by explicit sequencing exception | Automated report and engineering pre-review in [`PHASE_5_EVIDENCE.md`](PHASE_5_EVIDENCE.md); owner sign-off and build-specific beta signal remain |
 | 6 — Distribution Readiness | In progress by explicit sequencing exception | Local project integrity and metadata draft in [`PHASE_6_EVIDENCE.md`](PHASE_6_EVIDENCE.md); signing, store assets, TestFlight, and upgrade gates remain |
 | 7 — Release, Demo, And Portfolio Evidence | In progress by explicit sequencing exception | Automated regression, narrative reconciliation, and support runbook in [`PHASE_7_EVIDENCE.md`](PHASE_7_EVIDENCE.md); exact-candidate evidence remains blocked |
-| 8 | Blocked by sequence | Begin only after the preceding phase exits |
+| 8 — No-Placeholder Completion Pass | In progress by explicit sequencing exception | Repository scan, reconciliation, and gap dispositions in [`PHASE_8_EVIDENCE.md`](PHASE_8_EVIDENCE.md); external sign-offs remain |
 
 ## Phase 0: Documentation And Audit
 
