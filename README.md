@@ -90,6 +90,8 @@ The repository includes a full product-to-release planning system:
 - [`docs/PHASE_7_EVIDENCE.md`](docs/PHASE_7_EVIDENCE.md) - regression, demo, portfolio, and support preparation evidence.
 - [`docs/APP_STORE_METADATA.md`](docs/APP_STORE_METADATA.md) - reviewed draft listing, TestFlight, review, and privacy copy.
 - [`docs/SUPPORT_AND_ROLLBACK.md`](docs/SUPPORT_AND_ROLLBACK.md) - support triage, stop-ship, hotfix, rollback, and incident procedure.
+- [`docs/PRIVACY_POLICY.md`](docs/PRIVACY_POLICY.md) - publishable local-only privacy policy.
+- [`docs/SUPPORT.md`](docs/SUPPORT.md) - publishable support guidance awaiting a monitored contact.
 - [`docs/RELEASE_NOTES.md`](docs/RELEASE_NOTES.md) - version-aligned product and catalog changes.
 - [`docs/RELEASE_AND_DISTRIBUTION.md`](docs/RELEASE_AND_DISTRIBUTION.md) - archive, TestFlight, App Store, and rollback plan.
 - [`docs/DEMO_WALKTHROUGH.md`](docs/DEMO_WALKTHROUGH.md) - repeatable release-candidate demo.
@@ -110,6 +112,7 @@ This repository includes scripts for local verification:
 ```sh
 ./scripts/build-local.sh --run
 ./scripts/test-local.sh
+./scripts/release-preflight.sh
 ```
 
 Use both local scripts for the repository gates. The build script creates an ad-hoc-signed local bundle; it does not replace signed Release-build verification.

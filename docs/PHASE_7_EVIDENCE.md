@@ -29,7 +29,7 @@ Outcome metrics and submitted-build assets remain intentionally blank until real
 
 `SUPPORT_AND_ROLLBACK.md` defines intake data, privacy-minimizing response handling, severity triage, stop-ship/removal criteria, hotfix verification, rollback constraints, and incident records.
 
-The operational procedure is complete, but external distribution remains blocked until a public support address and accountable release owner are assigned.
+The operational procedure and publishable support/privacy pages are complete, but external distribution remains blocked until the pages are published and a public support address and accountable release owner are assigned.
 
 ## Exit Decision
 

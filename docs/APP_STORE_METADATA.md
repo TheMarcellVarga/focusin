@@ -2,7 +2,7 @@
 
 ## Status
 
-This is reviewed draft copy for Focusin 0.1.0. It is not evidence of an App Store Connect listing. Support/privacy URLs, screenshots, icon assets, copyright holder, and reviewer contact remain unassigned distribution inputs.
+This is reviewed draft copy for Focusin 0.1.0. It is not evidence of an App Store Connect listing. Public support/privacy URLs, screenshots, copyright holder, and reviewer contact remain unassigned distribution inputs. Production app-icon assets are now included in the Xcode target.
 
 ## Listing Copy
 
@@ -63,9 +63,9 @@ Subject to inspection of the signed submitted archive:
 
 ## Required External Inputs
 
-- Support URL: not assigned; must resolve publicly before submission.
-- Privacy-policy URL: not assigned; must resolve publicly before submission.
+- Support page: `SUPPORT.md` is ready to publish, but its contact and public URL are not assigned.
+- Privacy policy: `PRIVACY_POLICY.md` is ready to publish, but its public URL is not assigned.
 - Copyright: owner and year not recorded.
 - Reviewer contact: not recorded.
-- App icon: no production asset catalog exists.
+- App icon: production asset catalog exists; final human brand approval remains.
 - Screenshots: must be captured from the exact submitted signed build.

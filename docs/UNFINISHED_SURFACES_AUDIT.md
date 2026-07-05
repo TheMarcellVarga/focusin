@@ -42,7 +42,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 | Gap | Roadmap destination |
 | --- | --- |
 | Signed-build notification, login-item, sleep/wake, clock/timezone, midnight, termination, and update scenarios lack recorded manual evidence. | Phase 4.2–4.5 lifecycle matrix in `PHASE_4_EVIDENCE.md` |
-| Production icon/App Store screenshots, public support/privacy URLs, copyright, reviewer contact, and App Store Connect listing are not evidenced; listing copy is drafted locally. | Phase 6.3 store presence in `PHASE_6_EVIDENCE.md` |
+| App Store screenshots, published support/privacy URLs, monitored support contact, copyright, reviewer contact, final icon approval, and App Store Connect listing are not evidenced; icon assets and listing/page copy are prepared locally. | Phase 6.3 store presence in `PHASE_6_EVIDENCE.md` |
 | Activity catalog engineering pre-review is recorded, but named human owner sign-off and build-specific beta feedback are not complete. | Phase 5.2–5.3 evidence in `PHASE_5_EVIDENCE.md` |
 
 ## P2 — Quality Gaps

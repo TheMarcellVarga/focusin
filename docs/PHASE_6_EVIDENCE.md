@@ -16,13 +16,13 @@ Verified on 2026-07-03 using Xcode 26.6 on macOS 26.5.1 (Apple silicon):
 - The privacy manifest declares no tracking, collected data, accessed API categories, or tracking domains.
 - The only entitlement is App Sandbox; no network or sensitive-resource entitlement is present.
 - An unsigned Release build succeeded. The only warning was Xcode’s metadata tool reporting that extraction was skipped because the app does not link AppIntents; this is expected for a target with no App Intents.
-- `scripts/release-preflight.sh` reproduces the unsigned product-integrity inspection and fails on unexpected build warnings or resource/metadata drift.
+- `scripts/release-preflight.sh` reproduces the unsigned product-integrity inspection and fails on unexpected build warnings, missing compiled app-icon assets, or resource/metadata drift.
 
-Project integrity is locally verified except for the production app icon, which belongs to store presence and is currently absent.
+Project integrity is locally verified.
 
 ## 6.2 Signing And Archive
 
-Blocked. `security find-identity -v -p codesigning` reports zero valid identities and the project has no development team. No signed archive, Apple validation, notarization/distribution inspection, or retained signed-build evidence exists.
+Blocked. `security find-identity -v -p codesigning` reports zero valid identities and the project has no development team. No signed archive, Apple validation, notarization/distribution inspection, or retained signed-build evidence exists. `scripts/verify-signed-candidate.sh` is ready to reject ad-hoc or incorrectly installed candidates and print the exact version, authority, team, commit, macOS, and hardware evidence once a signed build exists.
 
 ## 6.3 Store Presence
 
@@ -30,9 +30,9 @@ Draft listing copy, TestFlight instructions, review notes, and conditional priva
 
 Open inputs:
 
-- Production icon and Xcode asset catalog.
+- Final human brand approval of the source-controlled production icon.
 - Exact-build App Store screenshots.
-- Public support and privacy-policy URLs.
+- Publication of the prepared support/privacy pages and assignment of a monitored support contact.
 - Copyright and reviewer contact.
 - App Store Connect entry and final privacy answers verified against the signed archive.
 

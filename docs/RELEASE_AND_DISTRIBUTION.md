@@ -31,7 +31,7 @@
 ## TestFlight Sequence
 
 1. Archive the Release scheme from a clean Xcode environment.
-2. Validate the archive and inspect signing/entitlements/resources.
+2. Install the candidate at `/Applications/Focusin.app`, run `./scripts/verify-signed-candidate.sh /Applications/Focusin.app`, then validate the archive and inspect signing/entitlements/resources.
 3. Upload with a unique build number.
 4. Complete export-compliance and privacy questions accurately.
 5. Run internal tester smoke checks.
@@ -94,4 +94,3 @@ Without analytics, monitoring relies on App Store crash/diagnostic channels, Tes
 - Open known issues:
 - TestFlight/App Store status:
 - Approver and date:
-

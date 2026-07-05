@@ -33,6 +33,8 @@ xcodebuild \
 test -x "$APP/Contents/MacOS/Focusin"
 test -f "$APP/Contents/Resources/Activities.json"
 test -f "$APP/Contents/Resources/PrivacyInfo.xcprivacy"
+test -f "$APP/Contents/Resources/AppIcon.icns"
+test -f "$APP/Contents/Resources/Assets.car"
 
 test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP/Contents/Info.plist")" = "com.marcellvarga.focusin"
 test "$(/usr/libexec/PlistBuddy -c 'Print :LSMinimumSystemVersion' "$APP/Contents/Info.plist")" = "14.0"
@@ -51,4 +53,4 @@ if [[ -n "$unexpected_warnings" ]]; then
 fi
 
 print "Release preflight passed: unsigned Release product integrity verified."
-print "Signing, archive validation, app icon, and App Store assets are separate release gates."
+print "Signing, archive validation, screenshots, and App Store submission are separate release gates."

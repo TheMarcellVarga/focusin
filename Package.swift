@@ -15,6 +15,7 @@ let package = Package(
         .executableTarget(
             name: "Focusin",
             exclude: [
+                "Resources/Assets.xcassets",
                 "Resources/Info.plist",
                 "Resources/Focusin.entitlements"
             ],
