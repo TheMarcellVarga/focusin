@@ -352,6 +352,7 @@ struct FocusinPopoverView: View {
 
 struct SettingsView: View {
     @EnvironmentObject private var store: FocusinStore
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         TabView(selection: $store.selectedSettingsTab) {
@@ -380,7 +381,10 @@ struct SettingsView: View {
                 .tag(FocusinSettingsTab.feedback)
         }
         .scenePadding()
-        .frame(width: 540, height: 430)
+        .frame(
+            width: dynamicTypeSize.isAccessibilitySize ? 720 : 540,
+            height: dynamicTypeSize.isAccessibilitySize ? 560 : 430
+        )
     }
 
     private var reminderSettings: some View {
