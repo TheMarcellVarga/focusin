@@ -384,7 +384,7 @@ struct SettingsView: View {
         .scenePadding()
         .frame(
             width: dynamicTypeSize.isAccessibilitySize ? 840 : 540,
-            height: dynamicTypeSize.isAccessibilitySize ? 560 : 430
+            height: dynamicTypeSize.isAccessibilitySize ? 560 : 500
         )
     }
 
