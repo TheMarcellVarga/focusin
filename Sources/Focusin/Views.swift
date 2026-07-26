@@ -147,7 +147,9 @@ struct FocusinPopoverView: View {
                 systemImage: "exclamationmark.triangle",
                 title: "Activity library unavailable",
                 message: message,
-                tint: .orange
+                tint: .orange,
+                actionTitle: "Try Again",
+                action: store.reloadActivities
             )
         } else if let activity = store.currentActivity {
             VStack(alignment: .leading, spacing: 12) {
@@ -209,8 +211,12 @@ struct FocusinPopoverView: View {
                 systemImage: "sparkle.magnifyingglass",
                 title: "No matching activity",
                 message: "Adjust your break preferences to see more options.",
-                tint: .secondary
-            )
+                tint: .secondary,
+                actionTitle: "Open Break Preferences"
+            ) {
+                store.presentBreakPreferences()
+                openSettings()
+            }
         }
     }
 
@@ -348,26 +354,30 @@ struct SettingsView: View {
     @EnvironmentObject private var store: FocusinStore
 
     var body: some View {
-        TabView {
+        TabView(selection: $store.selectedSettingsTab) {
             reminderSettings
                 .tabItem {
                     Label("Reminder", systemImage: "bell")
                 }
+                .tag(FocusinSettingsTab.reminder)
 
             recommendationSettings
                 .tabItem {
                     Label("Activities", systemImage: "figure.walk")
                 }
+                .tag(FocusinSettingsTab.activities)
 
             systemSettings
                 .tabItem {
                     Label("System", systemImage: "macwindow")
                 }
+                .tag(FocusinSettingsTab.system)
 
             feedbackSettings
                 .tabItem {
                     Label("Feedback", systemImage: "text.bubble")
                 }
+                .tag(FocusinSettingsTab.feedback)
         }
         .scenePadding()
         .frame(width: 540, height: 430)
@@ -572,23 +582,32 @@ private struct StateMessage: View {
     let title: String
     let message: String
     let tint: Color
+    var actionTitle: String?
+    var action: (() -> Void)?
 
     var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: systemImage)
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(tint)
-                .frame(width: 32, height: 32)
-                .background(tint.opacity(0.12), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
-                .accessibilityHidden(true)
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 12) {
+                Image(systemName: systemImage)
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(tint)
+                    .frame(width: 32, height: 32)
+                    .background(tint.opacity(0.12), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                    .accessibilityHidden(true)
 
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(.callout.weight(.semibold))
-                Text(message)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(.callout.weight(.semibold))
+                    Text(message)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+
+            if let actionTitle, let action {
+                Button(actionTitle, action: action)
+                    .controlSize(.small)
             }
         }
         .padding(14)

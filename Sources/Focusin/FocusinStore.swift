@@ -59,6 +59,7 @@ final class FocusinStore: ObservableObject {
     }
     @Published var remainingBreakSeconds = 0
     @Published var libraryErrorMessage: String?
+    @Published var selectedSettingsTab: FocusinSettingsTab = .reminder
     @Published private(set) var notificationPermissionStatus: NotificationPermissionStatus = .notDetermined
     @Published private(set) var launchAtLoginStatus: LaunchAtLoginStatus = .disabled
 
@@ -97,12 +98,7 @@ final class FocusinStore: ObservableObject {
         activityHistory = resolvedPersistence.loadActivityHistory(dateKey: DateKey.make(for: clock.now, calendar: clock.calendar))
         runtimeState = resolvedPersistence.loadRuntimeState()
 
-        do {
-            activities = try activityLoader.load()
-            recommend()
-        } catch {
-            libraryErrorMessage = "The local activity library could not be loaded."
-        }
+        reloadActivities()
 
         refreshPlatformStatus()
         self.notifications.onReminderOpened = { [weak self] in
@@ -263,6 +259,22 @@ final class FocusinStore: ObservableObject {
 
     func retryLaunchAtLogin() {
         reconcileLaunchAtLogin()
+    }
+
+    func reloadActivities() {
+        do {
+            activities = try activityLoader.load()
+            libraryErrorMessage = nil
+            recommend()
+        } catch {
+            activities = []
+            currentActivity = nil
+            libraryErrorMessage = "Focus timers still work. Try loading the activity library again."
+        }
+    }
+
+    func presentBreakPreferences() {
+        selectedSettingsTab = .activities
     }
 
     private func refreshNotificationPermission() {

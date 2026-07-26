@@ -367,6 +367,48 @@ final class FocusinStoreTests: XCTestCase {
         XCTAssertEqual(approvalStore.launchAtLoginGuidance, "Launch at Login needs approval in System Settings.")
     }
 
+    func testCatalogFailureCanRetryWithoutBlockingFocusTimer() {
+        let loader = RecoveringTestActivityLoader()
+        let store = FocusinStore(
+            persistence: TestPersistence(
+                settings: FocusinSettings(startFocusTimerOnLaunch: false),
+                runtimeState: .idle
+            ),
+            notifications: TestNotifications(),
+            launchAtLogin: TestLaunchAtLogin(),
+            activityLoader: loader,
+            clock: TestClock(now: Date(timeIntervalSince1970: 43_100)),
+            runsTicker: false
+        )
+
+        XCTAssertNotNil(store.libraryErrorMessage)
+        XCTAssertNil(store.currentActivity)
+
+        store.startFocusTimer()
+        XCTAssertTrue(store.isFocusing)
+
+        loader.shouldFail = false
+        store.reloadActivities()
+
+        XCTAssertNil(store.libraryErrorMessage)
+        XCTAssertEqual(store.currentActivity?.id, "recovered")
+        XCTAssertTrue(store.isFocusing)
+    }
+
+    func testBreakPreferencesSelectsActivitiesSettingsTab() {
+        let store = makeStore(
+            persistence: TestPersistence(
+                settings: FocusinSettings(startFocusTimerOnLaunch: false),
+                runtimeState: .idle
+            ),
+            clock: TestClock(now: Date(timeIntervalSince1970: 43_200))
+        )
+
+        XCTAssertEqual(store.selectedSettingsTab, .reminder)
+        store.presentBreakPreferences()
+        XCTAssertEqual(store.selectedSettingsTab, .activities)
+    }
+
     private func makeStore(
         persistence: TestPersistence,
         notifications: TestNotifications? = nil,
@@ -504,5 +546,29 @@ private struct TestActivityLoader: ActivityLoading {
 
     private static func makeActivity(id: String) -> BreakActivity {
         BreakActivity(id: id, title: id, instruction: "Pause briefly.", category: .focus, states: FocusState.allCases, durations: BreakDuration.allCases, officeSafe: true, mindfulness: false, intensity: .low)
+    }
+}
+
+private final class RecoveringTestActivityLoader: ActivityLoading {
+    var shouldFail = true
+
+    func load() throws -> [BreakActivity] {
+        if shouldFail {
+            throw ActivityLibraryError.missingResource
+        }
+
+        return [
+            BreakActivity(
+                id: "recovered",
+                title: "Recovered",
+                instruction: "Pause briefly.",
+                category: .focus,
+                states: FocusState.allCases,
+                durations: BreakDuration.allCases,
+                officeSafe: true,
+                mindfulness: false,
+                intensity: .low
+            )
+        ]
     }
 }
