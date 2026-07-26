@@ -13,7 +13,7 @@
   {
     "id": "shoulder-reset-30",
     "title": "Shoulder Reset",
-    "instruction": "Raise your shoulders toward your ears, hold briefly, then release. Repeat five times.",
+    "instruction": "Lift your shoulders toward your ears, pause, then let them drop. Repeat five times.",
     "category": "move",
     "states": ["stiff", "tired", "fine"],
     "durations": ["thirtySeconds", "twoMinutes"],
@@ -112,7 +112,7 @@
   {
     "id": "walk-window-five",
     "title": "Window Walk",
-    "instruction": "Walk to a window or doorway and let your eyes rest on distance.",
+    "instruction": "Take a short walk to a window or doorway, look into the distance, then return.",
     "category": "move",
     "states": ["tired", "stiff", "scattered"],
     "durations": ["fiveMinutes", "tenMinutes"],
