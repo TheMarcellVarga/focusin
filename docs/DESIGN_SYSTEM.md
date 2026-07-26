@@ -16,7 +16,7 @@ Focusin should feel like a quiet macOS utility: immediate, compact, native, and 
 
 ### Popover
 
-- Fixed baseline width: 384 points.
+- Baseline width: 384 points; expand to 480 points at accessibility text sizes so native labels are not compressed away.
 - Outer padding: 16 points.
 - Major vertical gap: 14 points.
 - Panel padding: 12–14 points.
@@ -27,7 +27,8 @@ The popover may grow vertically for accessibility text sizes but should avoid ho
 
 ### Settings
 
-- Baseline window: 540 x 430 points.
+- Baseline window: 540 x 500 points.
+- Accessibility text window: 840 x 560 points so all tab labels and form rows remain visible.
 - Use a native tab view and grouped forms.
 - Group settings by reminder, activities, system, and feedback.
 - Reveal custom interval controls only when relevant.
@@ -106,4 +107,3 @@ Required states are idle, focusing, break due, breaking, no eligible activity, i
 - Menu bar text on and off.
 - Every runtime, empty, permission, and error state.
 - 13-inch display and external-display menu bars.
-

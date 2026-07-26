@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Native experience
+
+- Added actionable retry and Break Preferences recovery paths for unavailable recommendations.
+- Prevented popover, Settings form, and Settings tab clipping at normal and accessibility text sizes.
+
 ### Activity catalog
 
 - Retired `box-breath-two` because its breath-holding instruction violated the catalog safety contract. Added `paced-breath-two` as a distinct, no-hold activity; the retired ID is not reused.

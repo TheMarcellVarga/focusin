@@ -44,6 +44,7 @@ Changes resulting from review:
 - Retired `box-breath-two`; its breath-holding instruction directly violated the content contract. Added the distinct `paced-breath-two` identity with no breath hold.
 - Added conditional language, stable support/clear-space guidance, and stopping points to movement prompts.
 - Added `standing-check-in-ten`, raising stiff/ten-minute default coverage from one to two and social representation from one to two.
+- Rework Phase 1 clarified the existing Shoulder Reset and Window Walk stopping points without changing their IDs or classifications.
 
 These changes are recorded in `RELEASE_NOTES.md`. Retired IDs are not reused.
 

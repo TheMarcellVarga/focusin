@@ -86,6 +86,7 @@ The repository includes a full product-to-release planning system:
 - [`docs/MASTER_EXECUTION_ROADMAP.md`](docs/MASTER_EXECUTION_ROADMAP.md) - dependency-ordered execution control plane.
 - [`docs/UNFINISHED_SURFACES_AUDIT.md`](docs/UNFINISHED_SURFACES_AUDIT.md) - current shipped evidence and ranked gaps.
 - [`docs/REWORK_PHASE_0_BASELINE.md`](docs/REWORK_PHASE_0_BASELINE.md) - verified release baseline and pre-polish state captures for the portfolio rework plan.
+- [`docs/REWORK_PHASE_1_EVIDENCE.md`](docs/REWORK_PHASE_1_EVIDENCE.md) - native polish changes, visual matrix, and the remaining human-owner gate.
 - [`docs/PHASE_5_EVIDENCE.md`](docs/PHASE_5_EVIDENCE.md) - activity coverage, editorial pre-review, and remaining sign-off gates.
 - [`docs/PHASE_6_EVIDENCE.md`](docs/PHASE_6_EVIDENCE.md) - distribution preflight evidence and remaining external gates.
 - [`docs/PHASE_7_EVIDENCE.md`](docs/PHASE_7_EVIDENCE.md) - regression, demo, portfolio, and support preparation evidence.

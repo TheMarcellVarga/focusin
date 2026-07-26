@@ -71,7 +71,7 @@ These presentations are implemented Phase 3 behavior. They do not block the loca
 | notifications disabled in Focusin | “Break reminders are off. Timers still continue in Focusin.” | settings toggle is the action; do not request authorization |
 | login item requires approval/was denied | “Launch at Login needs approval in System Settings.” | `Open Login Items Settings` |
 | login item registration failed/not found | “Focusin couldn’t update Launch at Login. You can keep using the app.” | `Try Again`; preserve the actual service state in the toggle |
-| catalog missing/invalid | “Activity library unavailable. Focus timers still work.” | `Try Again`; Settings and focus controls remain available |
+| catalog missing/invalid | “Activity library unavailable. Focus timers still work. Try loading the activity library again.” | `Try Again`; Settings and focus controls remain available |
 | no eligible activity after hard filters | “No matching activity. Adjust your break preferences to see more options.” | `Open Break Preferences` |
 
 Permission prompts must not repeat after denial. Platform status is refreshed on app activation and before presenting status-dependent copy.
