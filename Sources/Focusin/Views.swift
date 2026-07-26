@@ -4,6 +4,7 @@ import SwiftUI
 struct FocusinPopoverView: View {
     @EnvironmentObject private var store: FocusinStore
     @Environment(\.openSettings) private var openSettings
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -36,7 +37,7 @@ struct FocusinPopoverView: View {
             footer
         }
         .padding(16)
-        .frame(width: 384)
+        .frame(width: dynamicTypeSize.isAccessibilitySize ? 480 : 384)
         .background(Color(nsColor: .windowBackgroundColor))
     }
 
