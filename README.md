@@ -156,7 +156,7 @@ Use the checked-in Xcode project for archiving and distribution:
 
 Short description for a portfolio page:
 
-> Focusin is a SwiftUI macOS menu bar app that recommends short, state-aware micro-breaks, keeps users in a focused workflow, and ships with TestFlight-ready distribution files.
+> Focusin is a SwiftUI macOS menu bar app that recommends short, state-aware micro-breaks, keeps users in a focused workflow, and includes an unsigned, locally verified distribution foundation. Signed archive and TestFlight verification remain open release gates.
 
 Suggested talking points:
 
