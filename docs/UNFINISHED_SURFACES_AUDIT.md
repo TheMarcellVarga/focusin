@@ -27,7 +27,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 - Phase 7 preparation: automated regression is recorded without mislabeling it final, case-study claims are reconciled, capture manifests are required, and support/rollback procedures are documented.
 - Phase 8 repository hygiene: `.DS_Store` and tracked editor settings are removed/ignored, stale catalog and architecture claims are reconciled, and legacy migration methods are explicitly retained through the first supported upgrade window.
 - Rework Phase 0 release baseline: local tests, local app build, SwiftPM tests, unsigned Release preflight, Debug/Release warning inspection, repository hygiene, release claims, icon dimensions, and six current product-state captures are recorded in `REWORK_PHASE_0_BASELINE.md`.
-- Rework Phase 1 implementation: catalog and empty-state recovery actions, adaptive large-text layouts, unclipped Reminder settings, 41 current appearance/accessibility captures, icon/symbol verification, and a 21-item engineering copy review are recorded in `REWORK_PHASE_1_EVIDENCE.md`.
+- Rework Phase 1 completion: catalog and empty-state recovery actions, adaptive large-text layouts, unclipped Reminder settings, 41 current appearance/accessibility captures, icon/symbol verification, a 21-item engineering copy review, and named human content approval are recorded in `REWORK_PHASE_1_EVIDENCE.md`.
 
 ## Resolved Product Contracts
 
@@ -46,7 +46,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 | --- | --- |
 | Signed-build notification, login-item, sleep/wake, clock/timezone, midnight, termination, and update scenarios lack recorded manual evidence. | Phase 4.2–4.5 lifecycle matrix in `PHASE_4_EVIDENCE.md` |
 | App Store screenshots, published support/privacy URLs, monitored support contact, copyright, reviewer contact, final icon approval, and App Store Connect listing are not evidenced; icon assets and listing/page copy are prepared locally. | Phase 6.3 store presence in `PHASE_6_EVIDENCE.md` |
-| Activity catalog engineering pre-review is recorded, but named human owner sign-off and build-specific beta feedback are not complete. | Phase 5.2–5.3 evidence in `PHASE_5_EVIDENCE.md` |
+| Activity catalog engineering pre-review and named human owner sign-off are recorded, but build-specific beta feedback is not complete. | Phase 5.3 evidence in `PHASE_5_EVIDENCE.md` |
 
 ## P2 — Quality Gaps
 

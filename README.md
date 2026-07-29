@@ -23,7 +23,7 @@ The repository already contains several prerequisites for a real release:
 - Privacy manifest and sandbox entitlement files for distribution.
 - A checked-in Xcode project path for archive and signing.
 
-The app is not yet release-ready. Signed-build integration checks, human catalog sign-off, beta feedback, and App Store assets remain tracked in [`docs/UNFINISHED_SURFACES_AUDIT.md`](docs/UNFINISHED_SURFACES_AUDIT.md).
+The app is not yet release-ready. Signed-build integration checks, beta feedback, and App Store assets remain tracked in [`docs/UNFINISHED_SURFACES_AUDIT.md`](docs/UNFINISHED_SURFACES_AUDIT.md).
 
 ## What It Does
 
@@ -86,8 +86,8 @@ The repository includes a full product-to-release planning system:
 - [`docs/MASTER_EXECUTION_ROADMAP.md`](docs/MASTER_EXECUTION_ROADMAP.md) - dependency-ordered execution control plane.
 - [`docs/UNFINISHED_SURFACES_AUDIT.md`](docs/UNFINISHED_SURFACES_AUDIT.md) - current shipped evidence and ranked gaps.
 - [`docs/REWORK_PHASE_0_BASELINE.md`](docs/REWORK_PHASE_0_BASELINE.md) - verified release baseline and pre-polish state captures for the portfolio rework plan.
-- [`docs/REWORK_PHASE_1_EVIDENCE.md`](docs/REWORK_PHASE_1_EVIDENCE.md) - native polish changes, visual matrix, and the remaining human-owner gate.
-- [`docs/PHASE_5_EVIDENCE.md`](docs/PHASE_5_EVIDENCE.md) - activity coverage, editorial pre-review, and remaining sign-off gates.
+- [`docs/REWORK_PHASE_1_EVIDENCE.md`](docs/REWORK_PHASE_1_EVIDENCE.md) - completed native polish changes, visual matrix, and human content sign-off.
+- [`docs/PHASE_5_EVIDENCE.md`](docs/PHASE_5_EVIDENCE.md) - activity coverage, editorial review, human sign-off, and the remaining beta gate.
 - [`docs/PHASE_6_EVIDENCE.md`](docs/PHASE_6_EVIDENCE.md) - distribution preflight evidence and remaining external gates.
 - [`docs/PHASE_7_EVIDENCE.md`](docs/PHASE_7_EVIDENCE.md) - regression, demo, portfolio, and support preparation evidence.
 - [`docs/PHASE_8_EVIDENCE.md`](docs/PHASE_8_EVIDENCE.md) - repository scan, reconciliation, gap disposition, and final-sign-off status.

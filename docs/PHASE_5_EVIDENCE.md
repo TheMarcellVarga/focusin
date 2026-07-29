@@ -2,7 +2,7 @@
 
 ## Status
 
-Phase 5 is in progress under an owner-authorized sequencing exception while Phase 4 remains incomplete. Automated coverage, catalog revision, and an engineering editorial pre-review are complete. The phase cannot exit until a named human owner signs off the editorial/safety review and beta feedback is recorded against a specific signed build.
+Phase 5 is in progress under an owner-authorized sequencing exception while Phase 4 remains incomplete. Automated coverage, catalog revision, engineering editorial pre-review, and named human owner sign-off are complete. The phase cannot exit until beta feedback is recorded against a specific signed build.
 
 ## Automated Coverage Report
 
@@ -50,11 +50,11 @@ These changes are recorded in `RELEASE_NOTES.md`. Retired IDs are not reused.
 
 ## Human Owner Sign-off
 
-Not complete. A named human reviewer must inspect all 21 prompts in the running product and record name, date, build, and Pass/Fail here. An agent pre-review is not represented as human approval.
+Complete. The named project owner inspected all 21 prompts in the running product and recorded the build-specific disposition.
 
 | Reviewer | Date | Build | Result | Notes |
 | --- | --- | --- | --- | --- |
-| Not recorded | — | — | Not run | Required for Phase 5 exit |
+| Marcell Varga | 2026-07-29 | 0.1.0 (1) | Pass | No additional copy changes required. |
 
 ## Beta Signal
 
@@ -70,6 +70,5 @@ On 2026-07-03, `swift test` passed 47 tests, including real-catalog validation, 
 
 Phase 5 remains in progress. Open gates:
 
-1. Named human editorial/safety sign-off for all 21 activities.
-2. Build-specific beta feedback and disposition of any catalog findings.
-3. Re-run the full local test/build scripts after those findings are applied.
+1. Build-specific beta feedback and disposition of any catalog findings.
+2. Re-run the full local test/build scripts after those findings are applied.
