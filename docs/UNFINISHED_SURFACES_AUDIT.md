@@ -28,6 +28,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 - Phase 8 repository hygiene: `.DS_Store` and tracked editor settings are removed/ignored, stale catalog and architecture claims are reconciled, and legacy migration methods are explicitly retained through the first supported upgrade window.
 - Rework Phase 0 release baseline: local tests, local app build, SwiftPM tests, unsigned Release preflight, Debug/Release warning inspection, repository hygiene, release claims, icon dimensions, and six current product-state captures are recorded in `REWORK_PHASE_0_BASELINE.md`.
 - Rework Phase 1 completion: catalog and empty-state recovery actions, adaptive large-text layouts, unclipped Reminder settings, 41 current appearance/accessibility captures, icon/symbol verification, a 21-item engineering copy review, and named human content approval are recorded in `REWORK_PHASE_1_EVIDENCE.md`.
+- Rework Phase 2 engineering checkpoint: dedicated timezone observation, external platform-status reconciliation, privacy-safe integration failure logs, 52 passing tests, and the unavailable signed-build precondition are recorded in `REWORK_PHASE_2_EVIDENCE.md`.
 
 ## Resolved Product Contracts
 

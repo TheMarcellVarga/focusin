@@ -6,15 +6,17 @@ Phase 4 is in progress. Automated lifecycle and integration hardening passes. Th
 
 ## Automated Evidence
 
-Verified on 2026-07-03:
+Verified on 2026-07-30:
 
-- `swift test`: 45 tests passed.
+- `swift test`: 52 tests passed.
 - `./scripts/test-local.sh`: passes against the current 21-item bundled catalog.
 - `./scripts/build-local.sh`: produced and verified the ad-hoc-signed local app bundle.
 - Reminder reconciliation tests cover launch/restoration, interval edits, notification toggles and revocation, quiet-hour edits, timer restart, break start, completion, skip/due transitions, and forward/backward clock changes. Each mutation leaves exactly zero or one modeled pending reminder.
 - Runtime tests cover exact focus and break deadlines, termination-style restoration across deadlines, missing active catalog identity, local-day rollover, timezone/DST calendars, and notification-open idempotence.
 - Lifecycle observers now reconcile immediately on application activation, system wake, system clock/timezone changes, and calendar-day rollover.
 - Login-item tests cover enabled/disabled reconciliation, approval required, and registration failure without blocking the local workflow.
+- External notification approval/revocation and login-item status changes reconcile through the same lifecycle path.
+- Notification authorization/scheduling and login-item registration failures use privacy-safe unified logging for signed-matrix diagnosis.
 
 ## Signed-Build Preconditions
 
@@ -28,7 +30,7 @@ Record all results against the same Release build installed in `/Applications`.
 | Signing | `codesign` identity/team and successful strict verification |
 | Install location | `/Applications/Focusin.app` |
 
-Current machine observation on 2026-07-03: `security find-identity -v -p codesigning` reported zero valid identities, and the Xcode project has no development team configured. Signed-build rows therefore remain unexecuted.
+Current machine observation on 2026-07-30: `security find-identity -v -p codesigning` reported zero valid identities, and the Xcode project has no development team configured. Signed-build rows therefore remain unexecuted.
 
 ## Manual Matrix
 
