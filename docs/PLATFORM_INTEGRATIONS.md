@@ -70,4 +70,6 @@ Test:
 
 ## Failure Policy
 
-Platform integration failures must not crash the app or corrupt domain state. Expose actionable status where user intervention is possible; otherwise log in development and retain a usable local workflow.
+Platform integration failures must not crash the app or corrupt domain state. Expose actionable status where user intervention is possible and retain a usable local workflow.
+
+Notification authorization/scheduling and login-item registration failures are written to unified logging under subsystem `com.marcellvarga.focusin`, using the `notifications` and `login-item` categories. Capture relevant entries for any failed signed-build matrix row; logs contain platform error descriptions but no activity history, selected state, settings payloads, or other user content.

@@ -1,5 +1,6 @@
 import Foundation
 import AppKit
+import OSLog
 import UserNotifications
 
 @MainActor
@@ -22,6 +23,7 @@ final class NotificationScheduler: NSObject, UNUserNotificationCenterDelegate, N
     static let shared = NotificationScheduler()
 
     private let center = UNUserNotificationCenter.current()
+    private let logger = Logger(subsystem: "com.marcellvarga.focusin", category: "notifications")
     private let reminderIdentifier = "focusin.break-due"
 
     var onReminderOpened: (() -> Void)?
@@ -41,7 +43,11 @@ final class NotificationScheduler: NSObject, UNUserNotificationCenterDelegate, N
 
     func requestAuthorization(_ completion: @escaping @MainActor @Sendable (NotificationPermissionStatus) -> Void) {
         Task {
-            _ = try? await center.requestAuthorization(options: [.alert, .sound])
+            do {
+                _ = try await center.requestAuthorization(options: [.alert, .sound])
+            } catch {
+                logger.error("Notification authorization request failed: \(error.localizedDescription, privacy: .public)")
+            }
             let settings = await center.notificationSettings()
             completion(Self.permissionStatus(from: settings.authorizationStatus))
         }
@@ -66,7 +72,11 @@ final class NotificationScheduler: NSObject, UNUserNotificationCenterDelegate, N
 
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: max(seconds, 1), repeats: false)
         let request = UNNotificationRequest(identifier: reminderIdentifier, content: content, trigger: trigger)
-        center.add(request)
+        center.add(request) { [logger] error in
+            if let error {
+                logger.error("Break reminder scheduling failed: \(error.localizedDescription, privacy: .public)")
+            }
+        }
     }
 
     func clearBreakReminder() {

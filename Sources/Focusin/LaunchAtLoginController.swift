@@ -1,4 +1,5 @@
 import Foundation
+import OSLog
 import ServiceManagement
 
 @MainActor
@@ -12,6 +13,8 @@ enum LaunchAtLoginStatus: Equatable {
 }
 
 struct LaunchAtLoginController: LaunchAtLoginControlling {
+    private static let logger = Logger(subsystem: "com.marcellvarga.focusin", category: "login-item")
+
     func status() -> LaunchAtLoginStatus {
         Self.map(SMAppService.mainApp.status)
     }
@@ -29,6 +32,7 @@ struct LaunchAtLoginController: LaunchAtLoginControlling {
             }
             return status()
         } catch {
+            Self.logger.error("Launch at Login update failed: \(error.localizedDescription, privacy: .public)")
             return .failed
         }
     }
