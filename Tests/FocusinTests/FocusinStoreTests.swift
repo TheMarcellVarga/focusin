@@ -311,6 +311,30 @@ final class FocusinStoreTests: XCTestCase {
         XCTAssertTrue(store.isFocusing)
     }
 
+    func testLifecycleEventHandlesExternalNotificationApproval() {
+        let now = Date(timeIntervalSince1970: 42_750)
+        let clock = TestClock(now: now)
+        let notifications = TestNotifications(status: .denied)
+        let store = makeStore(
+            persistence: TestPersistence(
+                settings: FocusinSettings(startFocusTimerOnLaunch: false),
+                runtimeState: .focusing(startedAt: now)
+            ),
+            notifications: notifications,
+            clock: clock
+        )
+
+        XCTAssertEqual(store.notificationPermissionStatus, .denied)
+        XCTAssertEqual(notifications.pendingReminderCount, 0)
+
+        notifications.status = .authorized
+        store.handleLifecycleEvent()
+
+        XCTAssertEqual(store.notificationPermissionStatus, .authorized)
+        XCTAssertEqual(notifications.pendingReminderCount, 1)
+        XCTAssertTrue(store.isFocusing)
+    }
+
     func testLifecycleEventReconcilesTimezoneChangeAcrossLocalMidnight() {
         var losAngeles = Calendar(identifier: .gregorian)
         losAngeles.timeZone = TimeZone(identifier: "America/Los_Angeles")!
@@ -400,6 +424,31 @@ final class FocusinStoreTests: XCTestCase {
         XCTAssertEqual(approvalStore.launchAtLoginStatus, .requiresApproval)
         XCTAssertFalse(approvalStore.settings.launchAtLogin)
         XCTAssertEqual(approvalStore.launchAtLoginGuidance, "Launch at Login needs approval in System Settings.")
+    }
+
+    func testLifecycleEventReconcilesExternalLoginItemStatusChanges() {
+        let controller = TestLaunchAtLogin(currentStatus: .requiresApproval)
+        let store = makeStore(
+            persistence: TestPersistence(
+                settings: FocusinSettings(launchAtLogin: true, startFocusTimerOnLaunch: false),
+                runtimeState: .idle
+            ),
+            clock: TestClock(now: Date(timeIntervalSince1970: 43_050)),
+            launchAtLogin: controller
+        )
+
+        XCTAssertFalse(store.settings.launchAtLogin)
+        XCTAssertEqual(store.launchAtLoginStatus, .requiresApproval)
+
+        controller.currentStatus = .enabled
+        store.handleLifecycleEvent()
+        XCTAssertTrue(store.settings.launchAtLogin)
+        XCTAssertEqual(store.launchAtLoginStatus, .enabled)
+
+        controller.currentStatus = .disabled
+        store.handleLifecycleEvent()
+        XCTAssertFalse(store.settings.launchAtLogin)
+        XCTAssertEqual(store.launchAtLoginStatus, .disabled)
     }
 
     func testCatalogFailureCanRetryWithoutBlockingFocusTimer() {
