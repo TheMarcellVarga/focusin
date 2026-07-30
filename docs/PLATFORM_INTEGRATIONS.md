@@ -58,7 +58,7 @@ Version 1 should require only App Sandbox. Network client/server, files, contact
 
 ## Sleep, Wake, And Clock Changes
 
-Deadlines are wall-clock dates. Focusin immediately reconciles runtime state, daily history, notification permission, login-item status, and the pending reminder on application activation, system wake, significant clock/timezone change, and calendar-day rollover. The one-second ticker remains a fallback while the process is active.
+Deadlines are wall-clock dates. Focusin immediately reconciles runtime state, daily history, notification permission, login-item status, and the pending reminder on application activation, system wake, significant clock change, system timezone change, and calendar-day rollover. The one-second ticker remains a fallback while the process is active.
 
 Test:
 

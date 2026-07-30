@@ -311,6 +311,41 @@ final class FocusinStoreTests: XCTestCase {
         XCTAssertTrue(store.isFocusing)
     }
 
+    func testLifecycleEventReconcilesTimezoneChangeAcrossLocalMidnight() {
+        var losAngeles = Calendar(identifier: .gregorian)
+        losAngeles.timeZone = TimeZone(identifier: "America/Los_Angeles")!
+        var singapore = Calendar(identifier: .gregorian)
+        singapore.timeZone = TimeZone(identifier: "Asia/Singapore")!
+        let now = Self.localDate(year: 2026, month: 7, day: 2, hour: 17, calendar: losAngeles)
+        let clock = TestClock(now: now, calendar: losAngeles)
+        let notifications = TestNotifications()
+        let store = makeStore(
+            persistence: TestPersistence(
+                settings: FocusinSettings(
+                    quietHoursEnabled: true,
+                    quietStartHour: 8,
+                    quietEndHour: 10,
+                    startFocusTimerOnLaunch: false
+                ),
+                runtimeState: .focusing(startedAt: now),
+                activityHistory: ActivityHistory(
+                    dateKey: "2026-7-2",
+                    completedActivityIDs: ["available"]
+                )
+            ),
+            notifications: notifications,
+            clock: clock
+        )
+
+        XCTAssertEqual(notifications.pendingReminderCount, 1)
+        clock.calendar = singapore
+        store.handleLifecycleEvent()
+
+        XCTAssertEqual(store.activityHistory, ActivityHistory(dateKey: "2026-7-3"))
+        XCTAssertEqual(notifications.pendingReminderCount, 0)
+        XCTAssertTrue(store.isFocusing)
+    }
+
     func testEveryReminderMutationLeavesExactlyZeroOrOnePendingRequest() {
         let now = Date(timeIntervalSince1970: 42_800)
         let clock = TestClock(now: now)

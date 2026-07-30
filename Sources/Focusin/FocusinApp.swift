@@ -54,6 +54,9 @@ private struct LifecycleAwareMenuBarLabel: View {
         .onReceive(NotificationCenter.default.publisher(for: .NSSystemClockDidChange)) { _ in
             store.handleLifecycleEvent()
         }
+        .onReceive(NotificationCenter.default.publisher(for: .NSSystemTimeZoneDidChange)) { _ in
+            store.handleLifecycleEvent()
+        }
         .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in
             store.handleLifecycleEvent()
         }
