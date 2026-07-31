@@ -34,6 +34,7 @@ swiftc \
   "$SOURCE_DIR/NotificationScheduler.swift" \
   "$SOURCE_DIR/LaunchAtLoginController.swift" \
   "$SOURCE_DIR/FocusinStore.swift" \
+  "$SOURCE_DIR/BetaFeedbackTemplate.swift" \
   "$SOURCE_DIR/Views.swift" \
   "$SOURCE_DIR/FocusinApp.swift"
 
