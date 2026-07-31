@@ -355,6 +355,7 @@ struct FocusinPopoverView: View {
 struct SettingsView: View {
     @EnvironmentObject private var store: FocusinStore
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @State private var feedbackCopied = false
 
     var body: some View {
         TabView(selection: $store.selectedSettingsTab) {
@@ -513,24 +514,20 @@ struct SettingsView: View {
 
                 Button {
                     NSPasteboard.general.clearContents()
-                    NSPasteboard.general.setString(Self.feedbackTemplate, forType: .string)
+                    feedbackCopied = NSPasteboard.general.setString(BetaFeedbackTemplate.current, forType: .string)
                 } label: {
                     Label("Copy Feedback Notes", systemImage: "doc.on.clipboard")
+                }
+
+                if feedbackCopied {
+                    Label("Copied to Clipboard", systemImage: "checkmark.circle")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .accessibilityLabel("Feedback notes copied to clipboard")
                 }
             }
         }
     }
-
-    private static let feedbackTemplate = """
-    Focusin beta feedback
-
-    1. Did reminders feel useful or annoying?
-    2. Did recommendations feel specific enough?
-    3. Which state did you use most: Stiff, Tired, Scattered, Anxious, or Fine?
-    4. Did any activity feel repetitive, awkward, unsafe, or mistimed? Name it and explain.
-    5. Did the suggested duration fit the activity?
-    6. Would Focusin earn a permanent menu bar spot?
-    """
 }
 
 private enum SystemSettingsDestination {

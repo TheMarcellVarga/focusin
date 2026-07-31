@@ -16,6 +16,7 @@
 		0A0001070000000000000000 /* FocusinStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002070000000000000000 /* FocusinStore.swift */; };
 		0A0001080000000000000000 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002080000000000000000 /* Views.swift */; };
 		0A0001090000000000000000 /* FocusinApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002090000000000000000 /* FocusinApp.swift */; };
+		0A0001100000000000000000 /* BetaFeedbackTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002100000000000000000 /* BetaFeedbackTemplate.swift */; };
 		0A00010A0000000000000000 /* Activities.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A00020A0000000000000000 /* Activities.json */; };
 		0A00010B0000000000000000 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 0A00020B0000000000000000 /* PrivacyInfo.xcprivacy */; };
 		0A00010F0000000000000000 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A00020F0000000000000000 /* Assets.xcassets */; };
@@ -31,6 +32,7 @@
 		0A0002070000000000000000 /* FocusinStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusinStore.swift; sourceTree = "<group>"; };
 		0A0002080000000000000000 /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 		0A0002090000000000000000 /* FocusinApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusinApp.swift; sourceTree = "<group>"; };
+		0A0002100000000000000000 /* BetaFeedbackTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaFeedbackTemplate.swift; sourceTree = "<group>"; };
 		0A00020A0000000000000000 /* Activities.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Activities.json; sourceTree = "<group>"; };
 		0A00020B0000000000000000 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		0A00020C0000000000000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 			children = (
 				0A0002090000000000000000 /* FocusinApp.swift */,
 				0A0002080000000000000000 /* Views.swift */,
+				0A0002100000000000000000 /* BetaFeedbackTemplate.swift */,
 				0A0002070000000000000000 /* FocusinStore.swift */,
 				0A0002010000000000000000 /* Models.swift */,
 				0A0002040000000000000000 /* Persistence.swift */,
@@ -175,6 +178,7 @@
 				0A0001070000000000000000 /* FocusinStore.swift in Sources */,
 				0A0001080000000000000000 /* Views.swift in Sources */,
 				0A0001090000000000000000 /* FocusinApp.swift in Sources */,
+				0A0001100000000000000000 /* BetaFeedbackTemplate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
