@@ -187,6 +187,7 @@ struct FocusinPopoverView: View {
                         )
                         .controlSize(.small)
                         .accessibilityLabel("Break progress")
+                        .accessibilityValue("In progress")
 
                         HStack {
                             Text("Ends at \(breakEndsAt, style: .time)")
@@ -565,6 +566,7 @@ private struct SegmentedPickerSection<Selection: Hashable, Content: View>: View 
             }
             .pickerStyle(.segmented)
             .labelsHidden()
+            .accessibilityLabel(title)
             .controlSize(.regular)
         }
     }

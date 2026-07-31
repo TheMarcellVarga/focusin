@@ -51,7 +51,7 @@ The host's original `AppleKeyboardUIMode` value was restored after the check.
 - Restart and shuffle expose concise action hints.
 - State and duration are exposed as named radio groups and radio buttons with selected values.
 - Runtime title/detail, activity title/instruction, office-safe status, empty state, and catalog error are exposed as text.
-- Decorative status/category images and changing countdown duplicates are hidden; the stable break-progress label remains exposed.
+- Decorative status/category images and changing countdown duplicates are hidden; the break-progress label and its stable “In progress” value remain exposed without a per-second numeric update.
 
 ### 3.4 Display accommodations
 

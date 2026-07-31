@@ -87,7 +87,7 @@ Required states are idle, focusing, break due, breaking, no eligible activity, i
 - Full Keyboard Access supports the golden path.
 - Text remains legible with increased contrast and larger accessibility sizes.
 - Reduce Motion and Reduce Transparency produce stable layouts.
-- Timer announcements do not update every second through VoiceOver.
+- Timer and progress accessibility values remain stable instead of announcing every second through VoiceOver.
 - Target controls meet comfortable macOS hit-area expectations.
 
 ## Copy Style
