@@ -83,6 +83,7 @@ Required states are idle, focusing, break due, breaking, no eligible activity, i
 
 - Logical VoiceOver reading and keyboard focus order.
 - Descriptive labels for icon-only timer, gear, and shuffle controls.
+- Settings action buttons expose a named AX button and standard press action.
 - No essential information conveyed only by color or animation.
 - Full Keyboard Access supports the golden path.
 - Text remains legible with increased contrast and larger accessibility sizes.

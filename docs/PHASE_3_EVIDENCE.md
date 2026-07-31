@@ -52,6 +52,7 @@ The host's original `AppleKeyboardUIMode` value was restored after the check.
 - State and duration are exposed as named radio groups and radio buttons with selected values.
 - Runtime title/detail, activity title/instruction, office-safe status, empty state, and catalog error are exposed as text.
 - Decorative status/category images and changing countdown duplicates are hidden; the break-progress label and its stable “In progress” value remain exposed without a per-second numeric update.
+- Settings recovery and feedback actions use native AppKit buttons because grouped SwiftUI forms exposed unnamed AX button nodes on the current macOS toolchain; manual hierarchy inspection confirms explicit titles and press actions.
 
 ### 3.4 Display accommodations
 

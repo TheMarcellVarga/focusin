@@ -402,7 +402,7 @@ struct SettingsView: View {
                         .foregroundStyle(.secondary)
 
                     if store.settings.notificationsEnabled && store.notificationPermissionStatus == .denied {
-                        Button("Open Notification Settings") {
+                        SettingsActionButton(title: "Open Notification Settings") {
                             openSystemSettings(.notifications)
                         }
                     }
@@ -488,11 +488,11 @@ struct SettingsView: View {
                         .foregroundStyle(.secondary)
 
                     if store.launchAtLoginStatus == .requiresApproval {
-                        Button("Open Login Items Settings") {
+                        SettingsActionButton(title: "Open Login Items Settings") {
                             openSystemSettings(.loginItems)
                         }
                     } else {
-                        Button("Try Again") {
+                        SettingsActionButton(title: "Try Again") {
                             store.retryLaunchAtLogin()
                         }
                     }
@@ -512,11 +512,8 @@ struct SettingsView: View {
                         .foregroundStyle(.secondary)
                 }
 
-                Button {
-                    NSPasteboard.general.clearContents()
-                    feedbackCopied = NSPasteboard.general.setString(BetaFeedbackTemplate.current, forType: .string)
-                } label: {
-                    Label("Copy Feedback Notes", systemImage: "doc.on.clipboard")
+                SettingsActionButton(title: "Copy Feedback Notes") {
+                    copyFeedbackNotes()
                 }
 
                 if feedbackCopied {
@@ -527,6 +524,11 @@ struct SettingsView: View {
                 }
             }
         }
+    }
+
+    private func copyFeedbackNotes() {
+        NSPasteboard.general.clearContents()
+        feedbackCopied = NSPasteboard.general.setString(BetaFeedbackTemplate.current, forType: .string)
     }
 }
 
@@ -578,6 +580,44 @@ private struct SettingsForm<Content: View>: View {
         }
         .formStyle(.grouped)
         .scrollContentBackground(.hidden)
+    }
+}
+
+private struct SettingsActionButton: NSViewRepresentable {
+    let title: String
+    let action: () -> Void
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(action: action)
+    }
+
+    func makeNSView(context: Context) -> NSButton {
+        let button = NSButton(
+            title: title,
+            target: context.coordinator,
+            action: #selector(Coordinator.performAction)
+        )
+        button.bezelStyle = .rounded
+        button.setAccessibilityLabel(title)
+        return button
+    }
+
+    func updateNSView(_ button: NSButton, context: Context) {
+        context.coordinator.action = action
+        button.title = title
+        button.setAccessibilityLabel(title)
+    }
+
+    final class Coordinator: NSObject {
+        var action: () -> Void
+
+        init(action: @escaping () -> Void) {
+            self.action = action
+        }
+
+        @objc func performAction() {
+            action()
+        }
     }
 }
 

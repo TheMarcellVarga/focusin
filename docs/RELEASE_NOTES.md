@@ -6,6 +6,7 @@
 
 - Added actionable retry and Break Preferences recovery paths for unavailable recommendations.
 - Prevented popover, Settings form, and Settings tab clipping at normal and accessibility text sizes.
+- Prevented per-second VoiceOver progress chatter and restored explicit accessibility titles for Settings actions.
 
 ### Activity catalog
 
