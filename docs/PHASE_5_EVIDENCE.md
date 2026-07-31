@@ -58,7 +58,7 @@ Complete. The named project owner inspected all 21 prompts in the running produc
 
 ## Beta Signal
 
-The built-in feedback template now explicitly asks whether activities were specific, repetitive, awkward, unsafe, mistimed, and duration-appropriate. No analytics or network capability was added.
+The built-in versioned feedback template now provides three task scenarios and explicitly asks whether activities were specific, repetitive, awkward, unsafe, mistimed, and duration-appropriate. The anonymous cohort and triage protocol are defined in `BETA_TEST_PLAN.md`. No analytics or network capability was added.
 
 No build-specific tester responses are recorded. Phase 5.3 remains open until feedback from the signed beta is summarized here, including build number, cohort size, identified P0/P1 issues, and resulting catalog decisions.
 

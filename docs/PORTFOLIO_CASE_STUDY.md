@@ -59,7 +59,7 @@ A main-actor `FocusinStore` coordinates the small state graph, persistence, and 
 
 ## Quality Story
 
-The app uses injected time, calendar, persistence, notification, login-item, catalog, and random-selection boundaries so domain and reconciliation behavior can be tested without wall-clock waits or platform prompts. The current suite contains 47 passing tests, and the bundled 21-activity catalog is validated across every default-filter state-duration intersection.
+The app uses injected time, calendar, persistence, notification, login-item, catalog, and random-selection boundaries so domain and reconciliation behavior can be tested without wall-clock waits or platform prompts. The current suite contains 54 passing tests, and the bundled 21-activity catalog is validated across every default-filter state-duration intersection.
 
 The native interface has recorded Phase 3 evidence for its six popover states, light/dark appearance, keyboard operation, accessibility semantics, increased contrast, reduced transparency, large text, and alternate accent color. Release claims remain deliberately narrower: signed notification/login-item behavior, exact-candidate regression, beta feedback, and archive validation are still open external gates.
 
@@ -69,7 +69,7 @@ The native interface has recorded Phase 3 evidence for its six popover states, l
 - No cross-device sync or long-term insights.
 - Signed lifecycle and upgrade matrices are not yet recorded.
 - No signed archive, TestFlight cohort, App Store listing, or release-candidate media exists yet.
-- Human catalog approval and build-specific beta feedback remain outstanding.
+- Human catalog approval is recorded; build-specific beta feedback from 5–8 real testers remains outstanding.
 - The app provides general wellness prompts, not medical guidance.
 
 ## Outcome Evidence Template

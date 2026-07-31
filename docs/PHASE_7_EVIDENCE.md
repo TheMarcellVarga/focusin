@@ -21,7 +21,7 @@ The walkthrough is reconciled with shipped permission/error behavior and now req
 
 ## 7.3 Case Study
 
-The narrative now distinguishes implemented automated/accessibility evidence from open signed lifecycle, human catalog, beta, archive, and media gates. It records current scale (47 tests and 21 activities) without claiming a release or beta outcome.
+The narrative now distinguishes implemented automated/accessibility evidence from open signed lifecycle, beta, archive, and media gates. The original checkpoint recorded 47 tests; the 2026-08-01 rework checkpoint records the current scale of 54 tests and 21 activities without claiming a release or beta outcome.
 
 Outcome metrics and submitted-build assets remain intentionally blank until real evidence exists.
 

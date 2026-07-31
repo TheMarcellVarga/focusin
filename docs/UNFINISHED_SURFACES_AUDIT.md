@@ -29,6 +29,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 - Rework Phase 0 release baseline: local tests, local app build, SwiftPM tests, unsigned Release preflight, Debug/Release warning inspection, repository hygiene, release claims, icon dimensions, and six current product-state captures are recorded in `REWORK_PHASE_0_BASELINE.md`.
 - Rework Phase 1 completion: catalog and empty-state recovery actions, adaptive large-text layouts, unclipped Reminder settings, 41 current appearance/accessibility captures, icon/symbol verification, a 21-item engineering copy review, and named human content approval are recorded in `REWORK_PHASE_1_EVIDENCE.md`.
 - Rework Phase 2 engineering checkpoint: dedicated timezone observation, external platform-status reconciliation, privacy-safe integration failure logs, 52 passing tests, and the unavailable signed-build precondition are recorded in `REWORK_PHASE_2_EVIDENCE.md`.
+- Rework Phase 3 engineering checkpoint: stable VoiceOver progress semantics, named Settings action nodes, a versioned three-scenario beta packet, 54 passing tests, and the remaining human evidence gates are recorded in `REWORK_PHASE_3_EVIDENCE.md`.
 
 ## Resolved Product Contracts
 
@@ -47,7 +48,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 | --- | --- |
 | Signed-build notification, login-item, sleep/wake, clock/timezone, midnight, termination, and update scenarios lack recorded manual evidence. | Phase 4.2–4.5 lifecycle matrix in `PHASE_4_EVIDENCE.md` |
 | App Store screenshots, published support/privacy URLs, monitored support contact, copyright, reviewer contact, final icon approval, and App Store Connect listing are not evidenced; icon assets and listing/page copy are prepared locally. | Phase 6.3 store presence in `PHASE_6_EVIDENCE.md` |
-| Activity catalog engineering pre-review and named human owner sign-off are recorded, but build-specific beta feedback is not complete. | Phase 5.3 evidence in `PHASE_5_EVIDENCE.md` |
+| Activity catalog engineering pre-review and named human owner sign-off are recorded, but the anonymous 5–8 tester cohort and build-specific beta feedback are not complete. | Rework Phase 3 and Phase 5.3 evidence in `REWORK_PHASE_3_EVIDENCE.md` and `PHASE_5_EVIDENCE.md` |
 
 ## P2 — Quality Gaps
 

@@ -38,7 +38,7 @@ Open inputs:
 
 ## 6.4 TestFlight Cohort
 
-Not started. A signed uploaded build, App Store Connect access, tester cohort, version notes, feedback record, and P0/P1 triage are required.
+Not started. `BETA_TEST_PLAN.md` defines the anonymous cohort, task scenarios, evidence fields, and triage rules. A signed uploaded build, App Store Connect access, 5–8 real testers, version notes, feedback record, and P0/P1 triage are still required.
 
 ## 6.5 Upgrade Verification
 
