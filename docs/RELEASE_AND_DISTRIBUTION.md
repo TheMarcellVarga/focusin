@@ -31,6 +31,7 @@
 ## TestFlight Sequence
 
 1. Archive the Release scheme from a clean Xcode environment.
+   The repeatable CLI path is `./scripts/archive-signed-release.sh TEAM_ID`; it refuses dirty trees, missing identities, and accidental archive replacement.
 2. Install the candidate at `/Applications/Focusin.app`, run `./scripts/verify-signed-candidate.sh /Applications/Focusin.app`, then validate the archive and inspect signing/entitlements/resources.
 3. Upload with a unique build number.
 4. Complete export-compliance and privacy questions accurately.
