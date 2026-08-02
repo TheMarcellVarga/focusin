@@ -22,7 +22,7 @@ Project integrity is locally verified.
 
 ## 6.2 Signing And Archive
 
-Blocked. `security find-identity -v -p codesigning` reports zero valid identities and the project has no development team. No signed archive, Apple validation, notarization/distribution inspection, or retained signed-build evidence exists. `scripts/verify-signed-candidate.sh` is ready to reject ad-hoc or incorrectly installed candidates and print the exact version, authority, team, commit, macOS, and hardware evidence once a signed build exists.
+Blocked. `security find-identity -v -p codesigning` reports zero valid identities and the project has no development team. No signed archive, Apple validation, notarization/distribution inspection, or retained signed-build evidence exists. `scripts/archive-signed-release.sh` creates a clean-tree archive with commit/environment provenance; `scripts/verify-signed-archive.sh` rejects ad-hoc signing, forbidden entitlements, privacy/resource drift, and commit mismatch; and `scripts/verify-signed-candidate.sh` verifies the installed candidate before lifecycle testing.
 
 ## 6.3 Store Presence
 

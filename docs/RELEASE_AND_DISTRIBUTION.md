@@ -32,13 +32,14 @@
 
 1. Archive the Release scheme from a clean Xcode environment.
    The repeatable CLI path is `./scripts/archive-signed-release.sh TEAM_ID`; it refuses dirty trees, missing identities, and accidental archive replacement.
-2. Install the candidate at `/Applications/Focusin.app`, run `./scripts/verify-signed-candidate.sh /Applications/Focusin.app`, then validate the archive and inspect signing/entitlements/resources.
-3. Upload with a unique build number.
-4. Complete export-compliance and privacy questions accurately.
-5. Run internal tester smoke checks.
-6. Add concise “What to Test” notes covering reminder usefulness, recommendation specificity, context fit, and permanent menu-bar value.
-7. Expand to a small external cohort only after P0/P1 triage.
-8. Record feedback against the exact build.
+2. Run `./scripts/verify-signed-archive.sh .build/Focusin.xcarchive` to verify signing, entitlements, privacy/resources, metadata, and commit provenance.
+3. Install the archived candidate at `/Applications/Focusin.app`, then run `./scripts/verify-signed-candidate.sh /Applications/Focusin.app` before the lifecycle matrix.
+4. Upload with a unique build number.
+5. Complete export-compliance and privacy questions accurately.
+6. Run internal tester smoke checks.
+7. Add concise “What to Test” notes covering reminder usefulness, recommendation specificity, context fit, and permanent menu-bar value.
+8. Expand to a small external cohort only after P0/P1 triage.
+9. Record feedback against the exact build.
 
 ## Manual Release Matrix
 

@@ -56,6 +56,16 @@ xcodebuild \
 APP="$ARCHIVE_PATH/Products/Applications/Focusin.app"
 test -x "$APP/Contents/MacOS/Focusin"
 
+METADATA="$ARCHIVE_PATH/FocusinBuildMetadata.plist"
+plutil -create xml1 "$METADATA"
+plutil -insert Commit -string "$(git rev-parse HEAD)" "$METADATA"
+plutil -insert TeamIdentifier -string "$TEAM_ID" "$METADATA"
+plutil -insert CreatedAtUTC -string "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$METADATA"
+plutil -insert macOS -string "$(sw_vers -productVersion) ($(sw_vers -buildVersion))" "$METADATA"
+plutil -insert Hardware -string "$(uname -m)" "$METADATA"
+plutil -insert Xcode -string "$(xcodebuild -version | tr '\n' ' ' | sed 's/ $//')" "$METADATA"
+plutil -insert Swift -string "$(swift --version | head -1)" "$METADATA"
+
 print "Signed archive created: $ARCHIVE_PATH"
 print "Archived app: $APP"
 print "Next: ./scripts/verify-signed-archive.sh \"$ARCHIVE_PATH\""
