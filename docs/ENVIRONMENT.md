@@ -27,9 +27,13 @@ docs/                            product and engineering control plane
 ./scripts/build-local.sh --run
 swift test
 swift run Focusin
+./scripts/release-preflight.sh
+./scripts/archive-signed-release.sh TEAM_ID
+./scripts/verify-signed-archive.sh .build/Focusin.xcarchive
+./scripts/verify-signed-candidate.sh /Applications/Focusin.app
 ```
 
-The checked-in scripts are the repository-supported fallback when the local Command Line Tools SwiftPM installation cannot load manifests. Xcode remains authoritative for archive, signing, capabilities, resource membership, and distribution.
+SwiftPM and the local scripts provide repeatable development checks. The checked-in Xcode project remains authoritative for archive, signing, capabilities, resource membership, and distribution; the archive and verification scripts make that release path reproducible and retain exact-build provenance.
 
 ## First Run
 
@@ -82,4 +86,3 @@ Confirm `xcode-select`, `swift --version`, and SDK compatibility. Use checked-in
 - Keep resources source-controlled and human-reviewable.
 - Update project and package definitions together when source/resource membership changes.
 - Keep build warnings at zero for release candidates.
-

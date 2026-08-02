@@ -30,6 +30,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 - Rework Phase 1 completion: catalog and empty-state recovery actions, adaptive large-text layouts, unclipped Reminder settings, 41 current appearance/accessibility captures, icon/symbol verification, a 21-item engineering copy review, and named human content approval are recorded in `REWORK_PHASE_1_EVIDENCE.md`.
 - Rework Phase 2 engineering checkpoint: dedicated timezone observation, external platform-status reconciliation, privacy-safe integration failure logs, 52 passing tests, and the unavailable signed-build precondition are recorded in `REWORK_PHASE_2_EVIDENCE.md`.
 - Rework Phase 3 engineering checkpoint: stable VoiceOver progress semantics, named Settings action nodes, a versioned three-scenario beta packet, 54 passing tests, and the remaining human evidence gates are recorded in `REWORK_PHASE_3_EVIDENCE.md`.
+- Rework Phase 4 engineering checkpoint: clean-tree signed-archive creation, strict signature/entitlement/privacy/resource/provenance inspection, 54 passing tests, and the remaining Apple/publication gates are recorded in `REWORK_PHASE_4_EVIDENCE.md`.
 
 ## Resolved Product Contracts
 

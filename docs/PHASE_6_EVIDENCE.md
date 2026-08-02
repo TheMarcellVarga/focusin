@@ -6,7 +6,7 @@ Phase 6 is in progress under an owner-authorized sequencing exception. Phases 4 
 
 ## 6.1 Project Integrity
 
-Verified on 2026-07-03 using Xcode 26.6 on macOS 26.5.1 (Apple silicon):
+Reverified on 2026-08-02 using Xcode 26.6 on macOS 26.5.2 (Apple silicon):
 
 - Shared `Focusin` scheme and Debug/Release configurations exist.
 - Product identifier is `com.marcellvarga.focusin`; version/build is 0.1.0 (1).
