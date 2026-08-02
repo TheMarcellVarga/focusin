@@ -90,6 +90,8 @@ The repository includes a full product-to-release planning system:
 - [`docs/REWORK_PHASE_2_EVIDENCE.md`](docs/REWORK_PHASE_2_EVIDENCE.md) - lifecycle hardening, automated verification, and the signed-build matrix precondition.
 - [`docs/REWORK_PHASE_3_EVIDENCE.md`](docs/REWORK_PHASE_3_EVIDENCE.md) - accessibility remediation, task-based beta preparation, and the remaining human evidence gates.
 - [`docs/REWORK_PHASE_4_EVIDENCE.md`](docs/REWORK_PHASE_4_EVIDENCE.md) - signed-archive tooling, distribution integrity checks, and the remaining Apple/publication gates.
+- [`docs/REWORK_PHASE_5_EVIDENCE.md`](docs/REWORK_PHASE_5_EVIDENCE.md) - concise case-study package, lifecycle diagram, media manifest, and remaining signed-candidate gate.
+- [`docs/CASE_STUDY_CAPTURE_MANIFEST.md`](docs/CASE_STUDY_CAPTURE_MANIFEST.md) - exact-build inventory for six screenshots, the short workflow recording, and media approval.
 - [`docs/BETA_TEST_PLAN.md`](docs/BETA_TEST_PLAN.md) - anonymous 5–8 tester protocol, task scenarios, evidence table, and triage rules.
 - [`docs/PHASE_5_EVIDENCE.md`](docs/PHASE_5_EVIDENCE.md) - activity coverage, editorial review, human sign-off, and the remaining beta gate.
 - [`docs/PHASE_6_EVIDENCE.md`](docs/PHASE_6_EVIDENCE.md) - distribution preflight evidence and remaining external gates.

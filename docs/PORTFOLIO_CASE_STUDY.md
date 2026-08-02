@@ -1,102 +1,137 @@
-# Portfolio Case Study
+# Focusin: A Local-First macOS Micro-Break Companion
 
-## Working Title
+> Portfolio case study draft. The product and engineering claims below are implemented and locally verified; signed-candidate media, beta outcomes, and App Store availability remain pending.
 
-Focusin: Designing a local-first macOS micro-break companion
+## At A Glance
 
-## One-Line Summary
+| | |
+| --- | --- |
+| Product | Native macOS 14+ menu bar utility |
+| Core loop | Focus interval → break due → recommended reset → return to focus |
+| Architecture | SwiftUI + AppKit, one `MainActor` store, local Codable persistence |
+| Privacy | No account, backend, analytics, advertising, or network entitlement |
+| Content | 21 reviewed activities in a validated bundled catalog |
+| Verification | 54 deterministic tests plus native appearance/accessibility evidence |
+| Release status | Unsigned local integrity passes; signing, beta, and distribution evidence remain open |
 
-A native menu bar app that combines persisted focus intervals with a transparent, state-aware micro-break recommendation system.
+## The 30-Second Version
 
-## Problem
+Break timers answer *when* to pause but still leave the user choosing *what* to do. Focusin keeps that decision in the menu bar: choose how you feel and how much time you have, receive one practical micro-break, complete or skip it, and return to focus.
 
-Break reminders often fail at the moment of action: a user receives an interruption but still has to choose a useful, context-appropriate activity. Focusin reduces that decision to current state and available time, then provides one action without opening a full productivity workspace.
-
-## Constraints
-
-- Menu bar-first, compact native UI.
-- macOS 14+ and Apple platform frameworks.
-- No account, backend, analytics, or network dependency.
-- Low-risk wellness language without medical positioning.
-- Runtime must survive relaunch, sleep, and timer coalescing.
-- Recommendation content must remain inspectable and testable.
-
-## Key Decisions
-
-### Persist dates, not ticks
-
-Focus and break states store `startedAt`/`endsAt`. The one-second timer updates presentation, while wall-clock dates remain truth. This supports restoration and avoids accumulated tick drift.
-
-### Transparent fallback recommendations
-
-Explicit office/mindfulness preferences are hard filters. State, duration, and novelty are relaxed through a documented order only when needed. This makes the behavior explainable and prevents empty results where an eligible alternative exists.
-
-### Bundled content over remote generation
-
-A reviewed JSON catalog preserves offline use, privacy, stable behavior, and content accountability. It is a better fit for version 1 than generative or network-fetched wellness advice.
-
-### One application store
-
-A main-actor `FocusinStore` coordinates the small state graph, persistence, and platform adapters. This avoids premature architecture while keeping pure recommendation logic isolated.
+The interesting engineering work is beneath the small interface. Wall-clock deadlines survive relaunch and sleep, a transparent recommendation policy separates hard preferences from soft matching, platform failures never block the local loop, and the entire version-one experience works without an account or network connection.
 
 ## Product Flow
 
-1. Begin or restore a focus interval.
-2. Reconcile a single optional notification.
-3. Mark the break due based on elapsed wall time.
-4. Recommend from state, duration, preferences, and same-day history.
-5. Run or skip the break.
-6. Persist history and begin focus again.
+1. Start or restore a focus interval.
+2. Choose a current state and available break time.
+3. Receive one recommendation from the local catalog.
+4. At the deadline, enter break due with at most one optional notification.
+5. Complete or skip the break; Focusin records same-day variety and begins focus again.
 
-## Engineering Highlights
+```mermaid
+stateDiagram-v2
+    [*] --> Ready
+    Ready --> Focusing: Start Focus
+    Ready --> Breaking: Reset Now
+    Focusing --> Focusing: Reset interval
+    Focusing --> BreakDue: Deadline reached
+    Focusing --> Breaking: Take Break
+    BreakDue --> Breaking: Start recommendation
+    Breaking --> Focusing: Done / Skip / natural expiry
 
-- SwiftUI `MenuBarExtra` and Settings scene.
-- Codable settings/runtime/history with compatibility defaults and legacy migration reads.
-- Validated resource catalog and pure recommendation engine.
-- UserNotifications and `SMAppService` adapters.
-- App Sandbox/privacy manifest and Xcode distribution project.
-- Deterministic tests for lifecycle transitions, time boundaries, quiet hours, persistence compatibility, recommendation passes, catalog coverage, notification reconciliation, and login-item failure states.
+    note right of Focusing
+      Persist startedAt
+      Reconcile zero or one reminder
+    end note
 
-## Quality Story
+    note right of Breaking
+      Persist activity ID + endsAt
+      Restore the same activity after relaunch
+    end note
+```
 
-The app uses injected time, calendar, persistence, notification, login-item, catalog, and random-selection boundaries so domain and reconciliation behavior can be tested without wall-clock waits or platform prompts. The current suite contains 54 passing tests, and the bundled 21-activity catalog is validated across every default-filter state-duration intersection.
+## The Problem
 
-The native interface has recorded Phase 3 evidence for its six popover states, light/dark appearance, keyboard operation, accessibility semantics, increased contrast, reduced transparency, large text, and alternate accent color. Release claims remain deliberately narrower: signed notification/login-item behavior, exact-candidate regression, beta feedback, and archive validation are still open external gates.
+Desk workers can notice stiffness, fatigue, scattered attention, or anxiety without having the energy to choose a useful response. A generic reminder adds another decision at exactly the wrong moment. Focusin narrows the interaction to two inputs—state and time—and presents one optional, low-risk action without opening a productivity dashboard.
+
+## Constraints That Shaped The Product
+
+- Menu bar-first and immediately understandable.
+- Native macOS controls rather than web-style interaction patterns.
+- Useful when notifications, login-item permission, or platform services fail.
+- Local-only version one: no account, sync, telemetry, advertising, or remote content.
+- General-wellness language, never diagnosis or treatment.
+- Persisted behavior must survive relaunch, sleep, clock changes, and old settings payloads.
+- Recommendation content must be inspectable, testable, and attributable to a human review.
+
+## Five Engineering Decisions
+
+### 1. Persist deadlines, not countdown ticks
+
+Focus states store `startedAt`; active breaks store an activity ID and `endsAt`. The one-second ticker updates presentation, but dates remain the source of truth. Relaunch, wake, and delayed timers therefore reconcile from elapsed wall time instead of accumulating drift.
+
+### 2. Separate hard preferences from soft matching
+
+Office-safe and mindfulness choices are never relaxed. State, duration, and same-day novelty are softened through a documented fallback order only when necessary. The engine can explain why an activity was eligible, avoid unnecessary empty states, and remain deterministic under test.
+
+### 3. Keep content bundled and curated
+
+A versioned JSON catalog is a deliberate product boundary, not missing AI. It keeps Focusin offline, makes safety language reviewable, preserves stable activity identities, and prevents unreviewed wellness instructions from appearing at runtime.
+
+### 4. Reconcile platform services around a local core
+
+`FocusinStore` owns the small state graph on `MainActor`. Notification and `SMAppService` adapters report their real status, while the focus/break loop continues independently. Activation, wake, clock, timezone, and day-change events all enter the same reconciliation path.
+
+### 5. Treat accessibility as behavior
+
+Primary actions have keyboard defaults, state never depends on color alone, large text expands native layouts, countdown duplicates are hidden from VoiceOver, progress semantics remain stable, and Settings actions expose named AX buttons. Accessibility defects are handled as workflow defects rather than presentation polish.
+
+## Evidence, Not Claims
+
+| Area | Recorded evidence |
+| --- | --- |
+| Domain behavior | 54 deterministic tests covering lifecycle, persistence, quiet hours, recommendation passes, catalog validation, permission reconciliation, and beta-template requirements |
+| Catalog | 21 activities; every default-filter state/duration intersection covered; named human content review passed for 0.1.0 (1) |
+| Native UI | Six popover presentations plus Settings captured across light/dark, normal/large text, increased contrast, and reduced transparency |
+| Accessibility | Keyboard and VoiceOver semantics recorded; later AX inspection fixed unnamed Settings actions and per-second progress chatter |
+| Privacy | App Sandbox only, no network entitlement, no tracking or collected-data declaration, local preferences/history |
+| Distribution discipline | Unsigned Release preflight and archive tooling pass locally; signed archive and installed-candidate gates remain unexecuted |
+
+Debug-fixture images in `docs/evidence` are engineering evidence, not App Store or final portfolio media.
+
+## Scope Judgment
+
+Version one intentionally excludes accounts, cloud sync, AI generation, social features, task management, streak pressure, and behavioral analytics. Those features would expand privacy, safety, moderation, operational, and support obligations without improving the core proof: a resilient native loop can remain small and useful.
 
 ## Honest Limitations
 
-- The 21-item catalog is intentionally small and still requires beta feedback for usefulness and variety.
-- No cross-device sync or long-term insights.
-- Signed lifecycle and upgrade matrices are not yet recorded.
-- No signed archive, TestFlight cohort, App Store listing, or release-candidate media exists yet.
-- Human catalog approval is recorded; build-specific beta feedback from 5–8 real testers remains outstanding.
-- The app provides general wellness prompts, not medical guidance.
+- No signed archive, TestFlight build, App Store listing, or installable beta exists yet.
+- Signed notification, login-item, lifecycle, upgrade, and exact-candidate VoiceOver matrices remain open.
+- The 5–8 person beta cohort has not run, so there are no usability or satisfaction metrics.
+- The 21-item catalog is intentionally small; usefulness and variety still require real-world feedback.
+- Final screenshots and the 30–45 second recording must come from the exact signed candidate.
+- Focusin provides optional general-wellness prompts, not medical guidance.
 
-## Outcome Evidence Template
+## Five-To-Ten Minute Engineering Discussion
 
-Complete only with real data:
+1. Why a menu bar utility fit the job better than a web or document app.
+2. How date-derived state prevents relaunch and timer-drift bugs.
+3. How hard constraints and ordered fallback passes make recommendations explainable.
+4. Why a curated local catalog was safer and more private than remote generation.
+5. How notification, login-item, and lifecycle events degrade without blocking the product.
+6. Which risks still require signed-build and human evidence despite deterministic tests.
 
-- Beta cohort and tested builds:
+## Outcome Fields
+
+Complete only from real evidence:
+
+- Signed candidate version/build and commit:
+- Beta cohort and tested macOS versions:
 - Golden-path completion observations:
-- Most/least useful states or activities:
-- Notification usefulness feedback:
-- Defects found through lifecycle testing:
-- Accessibility changes made:
-- App Store/TestFlight status:
+- Recommendation usefulness/variety findings:
+- Lifecycle or accessibility defects found and fixed:
+- TestFlight/App Store status:
 
-## Suggested Portfolio Assets
+## Portfolio Asset Set
 
-- Hero popover with a representative recommendation.
-- Four-state lifecycle diagram.
-- Recommendation fallback diagram.
-- Active break and Settings screenshots.
-- Short code excerpts for deadline persistence and selection policy.
-- Release/test evidence summary.
-
-## Interview Talking Points
-
-- Why a native menu bar utility fit the interaction better than a web app.
-- How local-only architecture reduced privacy and operational complexity.
-- Why deadline persistence is more reliable than tick-count persistence.
-- How hard and soft recommendation constraints were separated.
-- Which release risks remain platform-specific despite a small codebase.
+Final assets are defined in [`CASE_STUDY_CAPTURE_MANIFEST.md`](CASE_STUDY_CAPTURE_MANIFEST.md). Until every asset references the same signed candidate, use the textual case study and clearly labeled engineering evidence only.

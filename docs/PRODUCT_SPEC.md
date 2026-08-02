@@ -123,8 +123,8 @@ Version 1 success is qualitative and operational because analytics are intention
 - [x] Four-state lifecycle is persisted.
 - [x] Bundled recommendation catalog and fallback selection exist.
 - [x] Reminder and quiet-hour controls exist.
-- [ ] Permission-denied experience has dedicated copy and verification.
-- [ ] Accessibility audit is complete.
-- [ ] Catalog safety/content review is signed off.
+- [x] Permission-denied experience has dedicated copy and deterministic verification.
+- [x] Local accessibility audit is complete; exact signed-candidate smoke testing remains a release gate.
+- [x] Catalog safety/content review is signed off for 0.1.0 (1).
 - [ ] TestFlight beta evidence is recorded.
 - [ ] App Store assets and listing are complete.

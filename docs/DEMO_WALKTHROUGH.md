@@ -4,6 +4,21 @@
 
 Demonstrate Focusin’s complete value loop in three to five minutes using only shipped behavior. The demo should emphasize low interaction cost, native integration, local privacy, and lifecycle reliability.
 
+## 30–45 Second Portfolio Cut
+
+Use edited cuts from one exact signed candidate; do not wait through a real focus interval on screen.
+
+| Time | Visual | Narration |
+| --- | --- | --- |
+| 0–5s | Menu bar → popover | “Break timers tell you when to stop. Focusin also gives you one practical thing to do.” |
+| 5–14s | Change state and duration; recommendation updates | “Choose how you feel and how much time you have. The bundled catalog matches state, duration, and preferences locally.” |
+| 14–23s | Break due → Start | “At the deadline, Focusin offers the reset even when notifications are unavailable.” |
+| 23–31s | Active break → Done | “Complete or skip it, and the next focus interval starts immediately.” |
+| 31–39s | Reminder and Activities Settings | “Quiet hours, office-safe activities, and reminders stay under the user’s control.” |
+| 39–45s | Menu bar status plus privacy card/title | “No account, analytics, network dependency, or generated wellness advice.” |
+
+End on the product, not a documentation or test-count screen.
+
 ## Preparation
 
 - Use the exact release-candidate build.
@@ -54,6 +69,8 @@ Summarize the date-derived persisted state machine, validated bundled catalog, o
 - Optional relaunch during a break to prove restoration.
 
 For every capture, retain a manifest containing the app version/build, full commit SHA, macOS version, appearance/accessibility settings, capture filename, and whether a debug fixture was used. Store release evidence under a version/build-specific directory; do not mix Phase 3 fixture captures with release-candidate media.
+
+Use [`CASE_STUDY_CAPTURE_MANIFEST.md`](CASE_STUDY_CAPTURE_MANIFEST.md) as the exact-candidate inventory and sign-off record.
 
 ## Demo Guardrails
 

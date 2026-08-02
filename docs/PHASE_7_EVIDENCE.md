@@ -17,11 +17,11 @@ This is not final-regression evidence because there is no signed release candida
 
 ## 7.2 Demo Capture
 
-The walkthrough is reconciled with shipped permission/error behavior and now requires a per-capture build manifest. No release-candidate screenshot or video was captured. Existing Phase 3 images are debug-fixture accessibility evidence and must not be presented as submitted-build media.
+The walkthrough now includes a 30–45 second portfolio cut, and `CASE_STUDY_CAPTURE_MANIFEST.md` defines the six-image inventory, video record, exact-candidate identity, privacy checks, and approval. No release-candidate screenshot or video was captured. Existing Phase 3 images are debug-fixture accessibility evidence and must not be presented as submitted-build media.
 
 ## 7.3 Case Study
 
-The narrative now distinguishes implemented automated/accessibility evidence from open signed lifecycle, beta, archive, and media gates. The original checkpoint recorded 47 tests; the 2026-08-01 rework checkpoint records the current scale of 54 tests and 21 activities without claiming a release or beta outcome.
+The narrative now opens with a 30-second explanation, includes the lifecycle diagram and five engineering decisions, and distinguishes implemented automated/accessibility evidence from open signed lifecycle, beta, archive, and media gates. The current scale is 54 tests and 21 activities without a release or beta claim.
 
 Outcome metrics and submitted-build assets remain intentionally blank until real evidence exists.
 
