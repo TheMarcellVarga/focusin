@@ -261,7 +261,7 @@ struct FocusinPopoverView: View {
                 Button {
                     store.startBreak()
                 } label: {
-                    Label("Take Break", systemImage: "play.fill")
+                    Label("Reset Now", systemImage: "play.fill")
                 }
                 .buttonStyle(.bordered)
                 .disabled(!store.canShowRecommendation)
