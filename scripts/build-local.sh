@@ -76,10 +76,10 @@ require_file "$RESOURCE_SOURCE_DIR/Activities.json"
 require_file "$RESOURCE_SOURCE_DIR/PrivacyInfo.xcprivacy"
 require_file "$RESOURCE_SOURCE_DIR/Focusin.entitlements"
 
-plutil -lint "$RESOURCE_SOURCE_DIR/Info.plist" "$RESOURCE_SOURCE_DIR/Focusin.entitlements" >/dev/null
+plutil -lint "$RESOURCE_SOURCE_DIR/Info.plist" "$RESOURCE_SOURCE_DIR/Focusin.entitlements" "$RESOURCE_SOURCE_DIR/PrivacyInfo.xcprivacy" >/dev/null
 
 if command -v jq >/dev/null 2>&1; then
-  jq empty "$RESOURCE_SOURCE_DIR/Activities.json" "$RESOURCE_SOURCE_DIR/PrivacyInfo.xcprivacy"
+  jq empty "$RESOURCE_SOURCE_DIR/Activities.json"
 fi
 
 rm -rf "$APP_DIR"
@@ -98,7 +98,8 @@ swiftc \
   "$SOURCE_DIR/LaunchAtLoginController.swift" \
   "$SOURCE_DIR/FocusinStore.swift" \
   "$SOURCE_DIR/BetaFeedbackTemplate.swift" \
-  "$SOURCE_DIR/Views.swift" \
+  "$SOURCE_DIR/FocusinPopoverView.swift" \
+  "$SOURCE_DIR/SettingsView.swift" \
   "$SOURCE_DIR/FocusinApp.swift" \
   -o "$EXECUTABLE"
 

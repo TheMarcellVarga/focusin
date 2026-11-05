@@ -113,6 +113,11 @@ final class FocusinStoreTests: XCTestCase {
         let store = makeStore(persistence: persistence, clock: clock, activities: TestActivityLoader.twoActivities)
         let deadline = store.breakEndsAt
         store.anotherActivity()
+        store.selectedState = .tired
+        store.settings.officeSafeOnly = false
+        store.recommend()
+        XCTAssertEqual(store.currentActivity?.id, "available")
+        XCTAssertTrue(store.activityHistory.seenActivityIDs.isEmpty)
         XCTAssertEqual(store.breakEndsAt, deadline)
         store.completeBreak()
         XCTAssertEqual(store.activityHistory.completedActivityIDs, ["available"])
@@ -128,6 +133,65 @@ final class FocusinStoreTests: XCTestCase {
         store.selectedDuration = .fiveMinutes
         store.settings.officeSafeOnly = false
         XCTAssertEqual(store.runtimeState, original)
+    }
+
+    func testHardFilterChangesImmediatelyRefreshSuggestion() {
+        let activity = BreakActivity(
+            id: "not-office-safe", title: "Walk", instruction: "Take a walk.",
+            category: .move, states: FocusState.allCases, durations: BreakDuration.allCases,
+            officeSafe: false, mindfulness: false, intensity: .low
+        )
+        let store = makeStore(
+            persistence: TestPersistence(
+                settings: FocusinSettings(officeSafeOnly: false, startFocusTimerOnLaunch: false),
+                runtimeState: .idle
+            ),
+            clock: TestClock(now: Date(timeIntervalSince1970: 25_000)),
+            activities: [activity]
+        )
+        XCTAssertEqual(store.currentActivity?.id, activity.id)
+        store.settings.officeSafeOnly = true
+        XCTAssertNil(store.currentActivity)
+        store.settings.officeSafeOnly = false
+        XCTAssertEqual(store.currentActivity?.id, activity.id)
+    }
+
+    func testBreakDueWithUnavailableCatalogCanReturnToFocus() {
+        let clock = TestClock(now: Date(timeIntervalSince1970: 25_000))
+        let store = makeStore(
+            persistence: TestPersistence(settings: FocusinSettings(startFocusTimerOnLaunch: false), runtimeState: .breakDue),
+            clock: clock,
+            activities: []
+        )
+        XCTAssertFalse(store.canShowRecommendation)
+        store.startFocusTimer()
+        XCTAssertEqual(store.focusStartedAt, clock.now)
+    }
+
+    func testMindfulnessFilterImmediatelyRemovesIneligibleSuggestion() {
+        let activity = BreakActivity(
+            id: "mindful", title: "Pause", instruction: "Notice your breath.",
+            category: .mind, states: FocusState.allCases, durations: BreakDuration.allCases,
+            officeSafe: true, mindfulness: true, intensity: .low
+        )
+        let store = makeStore(
+            persistence: TestPersistence(settings: FocusinSettings(startFocusTimerOnLaunch: false), runtimeState: .idle),
+            clock: TestClock(now: Date(timeIntervalSince1970: 25_000)),
+            activities: [activity]
+        )
+        XCTAssertEqual(store.currentActivity?.id, activity.id)
+        store.settings.includeMindfulness = false
+        XCTAssertNil(store.currentActivity)
+    }
+
+    func testLocalBuildDisablesLaunchAtLoginConfiguration() {
+        let store = makeStore(
+            persistence: TestPersistence(settings: FocusinSettings(startFocusTimerOnLaunch: false), runtimeState: .idle),
+            clock: TestClock(now: Date(timeIntervalSince1970: 25_000))
+        )
+        #if DEBUG
+        XCTAssertFalse(store.canConfigureLaunchAtLogin)
+        #endif
     }
 
     func testCalendarDayRolloverClearsHistoryWithoutChangingState() {

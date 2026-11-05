@@ -10,7 +10,7 @@ This document is the Phase 1 executable specification for Focusin. Each case has
 - Notification availability never controls the focus/break state machine.
 - At most one break reminder, `focusin.break-due`, may be pending.
 - Recommendation changes never alter runtime state.
-- `Done`, `Skip`, and natural break expiry start a new focus interval.
+- `Finish Break`, `Skip`, and natural break expiry start a new focus interval.
 - An action with no eligible/current activity is a no-op and must not fabricate content.
 
 ## Transition Cases
@@ -18,18 +18,18 @@ This document is the Phase 1 executable specification for Focusin. Each case has
 | ID | Starting state | Event | Result | History and notification effect |
 | --- | --- | --- | --- | --- |
 | RT-01 | idle | `Start Focus` | focusing with `startedAt = now` | replace the pending reminder when permitted |
-| RT-02 | idle | `Reset Now` with an activity | breaking with the selected duration deadline | clear the reminder; no history entry yet |
+| RT-02 | idle | `Take Break` with an activity | breaking with the selected duration deadline | clear the reminder; no history entry yet |
 | RT-03 | focusing | `Start Focus`/`Reset` | focusing with a fresh `startedAt` | replace the prior reminder |
 | RT-04 | focusing | interval reaches or passes its exact deadline | break due | clear the reminder; no activity history entry |
-| RT-05 | focusing | `Reset Now` with an activity | breaking | clear the reminder |
-| RT-06 | break due | `Start` with an activity | breaking | clear any delivered/pending reminder |
+| RT-05 | focusing | `Take Break` with an activity | breaking | clear the reminder |
+| RT-06 | break due | `Start Break` with an activity | breaking | clear any delivered/pending reminder |
 | RT-07 | break due | `Start Focus`/`Reset` | focusing with a fresh `startedAt` | schedule when permitted |
-| RT-08 | breaking | `Done` | focusing | record the active ID as completed; schedule when permitted |
+| RT-08 | breaking | `Finish Break` | focusing | record the active ID as completed; schedule when permitted |
 | RT-09 | breaking | `Skip` | focusing | record the active ID as skipped; schedule when permitted |
 | RT-10 | breaking | break reaches or passes its exact deadline | focusing | record the active ID as completed; schedule when permitted |
 | RT-11 | any non-breaking state | `Another` | state unchanged; replace recommendation | record the displayed ID as seen |
-| RT-12 | breaking | `Another` | breaking and deadline unchanged; display may change | record the displayed ID as seen; completion/skip still applies to the active ID |
-| RT-13 | any state | state, duration, or recommendation-filter edit | runtime state unchanged | recompute the recommendation; preserve hard filters |
+| RT-12 | breaking | `Another` | breaking, deadline, and displayed activity unchanged | no-op; shuffle is unavailable during a break |
+| RT-13 | any state | state, duration, or recommendation-filter edit | runtime state unchanged | recompute the recommendation outside a break; preserve active activity during a break; new filters apply to the next suggestion |
 | RT-14 | any state | local calendar date changes | runtime state unchanged | replace history with an empty history for the new date |
 | RT-15 | any state | repeated action | apply the same rules from the state observed when the action is handled | never create more than one pending reminder |
 
@@ -70,7 +70,8 @@ These presentations are implemented Phase 3 behavior. They do not block the loca
 | notifications denied or revoked | “Notifications are off in System Settings. Timers still continue in Focusin.” | `Open Notification Settings` opens the app's macOS notification settings |
 | notifications disabled in Focusin | “Break reminders are off. Timers still continue in Focusin.” | settings toggle is the action; do not request authorization |
 | login item requires approval/was denied | “Launch at Login needs approval in System Settings.” | `Open Login Items Settings` |
-| login item registration failed/not found | “Focusin couldn’t update Launch at Login. You can keep using the app.” | `Try Again`; preserve the actual service state in the toggle |
+| login item registration failed | “Couldn’t update launch at login. Try again or open Focusin manually.” | `Try Again`; preserve the actual service state in the toggle |
+| login item unavailable or Debug/local build | “Unavailable in this build. Open Focusin manually.” | toggle disabled; no retry action |
 | catalog missing/invalid | “Activity library unavailable. Focus timers still work. Try loading the activity library again.” | `Try Again`; Settings and focus controls remain available |
 | no eligible activity after hard filters | “No matching activity. Adjust your break preferences to see more options.” | `Open Break Preferences` |
 
@@ -79,7 +80,8 @@ Permission prompts must not repeat after denial. Platform status is refreshed on
 ## Settings And Invalid Data
 
 - Work interval changes retain the focusing `startedAt`; they do not silently restart focus.
-- Break duration changes do not alter an already active break deadline.
+- Break duration changes do not alter an already active break deadline. State/duration selectors are disabled during a break.
+- In break-due with an unavailable catalog or no eligible activity, `Start Focus` replaces the unavailable shuffle action so the user can resume focus.
 - Invalid settings JSON resets settings only. Unknown selected state/duration values use documented defaults.
 - Invalid runtime JSON becomes idle. Invalid or wrong-date history becomes empty current-day history.
 - Hard recommendation preferences never relax, including during recovery.

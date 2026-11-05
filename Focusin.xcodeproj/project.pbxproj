@@ -14,7 +14,8 @@
 		0A0001050000000000000000 /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002050000000000000000 /* NotificationScheduler.swift */; };
 		0A0001060000000000000000 /* LaunchAtLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002060000000000000000 /* LaunchAtLoginController.swift */; };
 		0A0001070000000000000000 /* FocusinStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002070000000000000000 /* FocusinStore.swift */; };
-		0A0001080000000000000000 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002080000000000000000 /* Views.swift */; };
+		0A0001110000000000000000 /* FocusinPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002110000000000000000 /* FocusinPopoverView.swift */; };
+		0A0001120000000000000000 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002120000000000000000 /* SettingsView.swift */; };
 		0A0001090000000000000000 /* FocusinApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002090000000000000000 /* FocusinApp.swift */; };
 		0A0001100000000000000000 /* BetaFeedbackTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002100000000000000000 /* BetaFeedbackTemplate.swift */; };
 		0A00010A0000000000000000 /* Activities.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A00020A0000000000000000 /* Activities.json */; };
@@ -30,7 +31,8 @@
 		0A0002050000000000000000 /* NotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationScheduler.swift; sourceTree = "<group>"; };
 		0A0002060000000000000000 /* LaunchAtLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginController.swift; sourceTree = "<group>"; };
 		0A0002070000000000000000 /* FocusinStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusinStore.swift; sourceTree = "<group>"; };
-		0A0002080000000000000000 /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
+		0A0002110000000000000000 /* FocusinPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusinPopoverView.swift; sourceTree = "<group>"; };
+		0A0002120000000000000000 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0A0002090000000000000000 /* FocusinApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusinApp.swift; sourceTree = "<group>"; };
 		0A0002100000000000000000 /* BetaFeedbackTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaFeedbackTemplate.swift; sourceTree = "<group>"; };
 		0A00020A0000000000000000 /* Activities.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Activities.json; sourceTree = "<group>"; };
@@ -64,7 +66,8 @@
 			isa = PBXGroup;
 			children = (
 				0A0002090000000000000000 /* FocusinApp.swift */,
-				0A0002080000000000000000 /* Views.swift */,
+				0A0002110000000000000000 /* FocusinPopoverView.swift */,
+				0A0002120000000000000000 /* SettingsView.swift */,
 				0A0002100000000000000000 /* BetaFeedbackTemplate.swift */,
 				0A0002070000000000000000 /* FocusinStore.swift */,
 				0A0002010000000000000000 /* Models.swift */,
@@ -176,7 +179,8 @@
 				0A0001050000000000000000 /* NotificationScheduler.swift in Sources */,
 				0A0001060000000000000000 /* LaunchAtLoginController.swift in Sources */,
 				0A0001070000000000000000 /* FocusinStore.swift in Sources */,
-				0A0001080000000000000000 /* Views.swift in Sources */,
+				0A0001110000000000000000 /* FocusinPopoverView.swift in Sources */,
+				0A0001120000000000000000 /* SettingsView.swift in Sources */,
 				0A0001090000000000000000 /* FocusinApp.swift in Sources */,
 				0A0001100000000000000000 /* BetaFeedbackTemplate.swift in Sources */,
 			);

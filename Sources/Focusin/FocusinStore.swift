@@ -35,6 +35,9 @@ final class FocusinStore: ObservableObject {
             } else if !settings.notificationsEnabled {
                 notifications.clearBreakReminder()
             }
+            if settings.officeSafeOnly != oldValue.officeSafeOnly || settings.includeMindfulness != oldValue.includeMindfulness {
+                recommend()
+            }
             rescheduleReminder()
         }
     }
@@ -175,19 +178,6 @@ final class FocusinStore: ObservableObject {
         }
     }
 
-    var runtimeStateDetail: String {
-        switch runtimeState {
-        case .idle:
-            return "Choose a reset or start a focus timer."
-        case .focusing:
-            return "A gentle reminder will appear when this interval ends."
-        case .breakDue:
-            return "Start the suggested reset or pick another one."
-        case .breaking:
-            return "Finish early or skip when you are ready."
-        }
-    }
-
     var breakCountdownText: String {
         formatted(seconds: remainingBreakSeconds)
     }
@@ -224,12 +214,22 @@ final class FocusinStore: ObservableObject {
         }
     }
 
+    var canConfigureLaunchAtLogin: Bool {
+        #if DEBUG
+        false
+        #else
+        launchAtLoginStatus != .unavailable
+        #endif
+    }
+
     var launchAtLoginGuidance: String? {
         switch launchAtLoginStatus {
         case .requiresApproval:
             return "Launch at Login needs approval in System Settings."
-        case .unavailable, .failed:
-            return "Focusin couldn’t update Launch at Login. You can keep using the app."
+        case .unavailable:
+            return "Unavailable in this build. Open Focusin manually."
+        case .failed:
+            return "Couldn’t update launch at login. Try again or open Focusin manually."
         case .disabled, .enabled:
             return nil
         }
@@ -301,6 +301,11 @@ final class FocusinStore: ObservableObject {
     }
 
     func recommend() {
+        // An active break owns its activity until completion, even when preferences change.
+        if case let .breaking(activityID, _) = runtimeState {
+            currentActivity = activities.first { $0.id == activityID }
+            return
+        }
         refreshHistoryIfNeeded()
 
         let request = RecommendationRequest(
@@ -315,6 +320,7 @@ final class FocusinStore: ObservableObject {
     }
 
     func anotherActivity() {
+        guard !isBreaking else { return }
         recordCurrentActivityAsSeen()
         recommend()
     }

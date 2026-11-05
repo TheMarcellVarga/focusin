@@ -12,6 +12,8 @@ Focusin is designed as a small but complete macOS product:
 - Distribution-oriented structure with sandboxing, a privacy manifest, and entitlement support; signing, archive validation, and store assets remain release gates.
 - Local-only by design: no account, no analytics, and no cloud dependency.
 
+For an interview, follow the [live local demo](docs/DEMO_WALKTHROUGH.md#live-interview-demo-local-build): choose a state and duration, take a break, and finish to return to focus.
+
 ## Release Foundation
 
 The repository already contains several prerequisites for a real release:
@@ -19,7 +21,7 @@ The repository already contains several prerequisites for a real release:
 - A stable macOS 14+ target.
 - Persistent settings and runtime state.
 - Notification-based break reminders.
-- Launch-at-login support.
+- Launch-at-login adapter (disabled in local demo builds).
 - Privacy manifest and sandbox entitlement files for distribution.
 - A checked-in Xcode project path for archive and signing.
 
@@ -55,7 +57,8 @@ The interface is intentionally native macOS rather than web-like:
 ## Project Structure
 
 - `Sources/Focusin/FocusinApp.swift` - app entry point and menu bar scene.
-- `Sources/Focusin/Views.swift` - menu bar popover and settings UI.
+- `Sources/Focusin/FocusinPopoverView.swift` - menu bar popover UI.
+- `Sources/Focusin/SettingsView.swift` - settings UI and controls.
 - `Sources/Focusin/FocusinStore.swift` - app state, timers, persistence, and reminders.
 - `Sources/Focusin/RecommendationEngine.swift` - activity recommendation logic.
 - `Sources/Focusin/ActivityLibrary.swift` - local activity loading.

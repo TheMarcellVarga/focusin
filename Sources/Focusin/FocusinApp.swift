@@ -7,6 +7,15 @@ struct FocusinApp: App {
 
     init() {
         #if DEBUG
+        switch ProcessInfo.processInfo.environment["FOCUSIN_UI_APPEARANCE"] {
+        case "dark":
+            NSApplication.shared.appearance = NSAppearance(named: .darkAqua)
+        case "light":
+            NSApplication.shared.appearance = NSAppearance(named: .aqua)
+        default:
+            break
+        }
+
         if let fixture = FocusinUIFixture.current {
             _store = StateObject(wrappedValue: fixture.makeStore())
             return
@@ -31,6 +40,7 @@ struct FocusinApp: App {
                 .environmentObject(store)
                 .focusinUIFixtureEnvironment()
         }
+
     }
 }
 
@@ -67,15 +77,28 @@ private extension View {
     @ViewBuilder
     func focusinUIFixtureEnvironment() -> some View {
         #if DEBUG
-        if ProcessInfo.processInfo.environment["FOCUSIN_UI_LARGE_TEXT"] == "1" {
-            environment(\.dynamicTypeSize, .accessibility3)
-        } else {
-            self
-        }
+        self
+            .environment(
+                \.dynamicTypeSize,
+                ProcessInfo.processInfo.environment["FOCUSIN_UI_LARGE_TEXT"] == "1"
+                    ? .accessibility3
+                    : .large
+            )
+            .preferredColorScheme(focusinFixtureColorScheme)
         #else
         self
         #endif
     }
+
+    #if DEBUG
+    private var focusinFixtureColorScheme: ColorScheme? {
+        switch ProcessInfo.processInfo.environment["FOCUSIN_UI_APPEARANCE"] {
+        case "dark": .dark
+        case "light": .light
+        default: nil
+        }
+    }
+    #endif
 }
 
 #if DEBUG

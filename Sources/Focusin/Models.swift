@@ -4,7 +4,6 @@ enum FocusinSettingsTab: Hashable {
     case reminder
     case activities
     case system
-    case feedback
 }
 
 public enum FocusState: String, CaseIterable, Codable, Hashable, Identifiable, Sendable {

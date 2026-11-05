@@ -51,6 +51,10 @@ The matrix was captured from deterministic debug fixtures after the implementati
 
 The host's original dark appearance and disabled contrast/transparency accommodations were restored after capture.
 
+### September 2026 surface follow-up
+
+The functional popover panels now use opaque semantic `controlBackgroundColor` surfaces instead of thin and regular materials. This removes desktop-dependent luminance washes in dark appearance while preserving native controls, semantic colors, separators, and accessibility behavior. Fresh deterministic captures for light focusing, light break due, and dark active break are stored in `evidence/opaque-panels`. The July matrix remains historical engineering evidence; it is not current media for this surface treatment and does not replace the exact-candidate capture gate.
+
 ## Icon And Menu Bar Review
 
 - The existing reset-ring app icon was retained after inspection at 16 and 1024 pixels.

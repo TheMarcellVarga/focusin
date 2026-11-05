@@ -50,7 +50,7 @@ Manual QA must cover multiple displays, full-screen spaces, menu bar auto-hide, 
 
 ## Clipboard
 
-The beta feedback tab writes a static template to the general pasteboard only after explicit user action. Focusin does not read clipboard contents.
+The beta feedback tab was removed for the interview simplification. The static feedback template remains an internal beta-preparation resource; the product has no clipboard feedback action. Focusin does not read clipboard contents.
 
 ## Sandbox And Entitlements
 

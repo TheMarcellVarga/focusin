@@ -6,7 +6,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 
 ## Shipped And Evidenced
 
-- Menu bar popover and four-tab Settings UI.
+- Menu bar popover and three-tab Settings UI; beta-feedback tab removed in the interview simplification.
 - Four-state focus/break lifecycle and persisted deadlines.
 - State/duration selection and recommendation fallback engine.
 - Same-day seen/completed/skipped history.
@@ -27,7 +27,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 - Phase 7 preparation: automated regression is recorded without mislabeling it final, case-study claims are reconciled, capture manifests are required, and support/rollback procedures are documented.
 - Phase 8 repository hygiene: `.DS_Store` and tracked editor settings are removed/ignored, stale catalog and architecture claims are reconciled, and legacy migration methods are explicitly retained through the first supported upgrade window.
 - Rework Phase 0 release baseline: local tests, local app build, SwiftPM tests, unsigned Release preflight, Debug/Release warning inspection, repository hygiene, release claims, icon dimensions, and six current product-state captures are recorded in `REWORK_PHASE_0_BASELINE.md`.
-- Rework Phase 1 completion: catalog and empty-state recovery actions, adaptive large-text layouts, unclipped Reminder settings, 41 current appearance/accessibility captures, icon/symbol verification, a 21-item engineering copy review, and named human content approval are recorded in `REWORK_PHASE_1_EVIDENCE.md`.
+- Rework Phase 1 completion: catalog and empty-state recovery actions, adaptive large-text layouts, unclipped Reminder settings, 41 recorded appearance/accessibility captures, icon/symbol verification, a 21-item engineering copy review, and named human content approval are recorded in `REWORK_PHASE_1_EVIDENCE.md`. Those July captures predate the September opaque-panel refinement and remain historical evidence rather than current release media.
 - Rework Phase 2 engineering checkpoint: dedicated timezone observation, external platform-status reconciliation, privacy-safe integration failure logs, 52 passing tests, and the unavailable signed-build precondition are recorded in `REWORK_PHASE_2_EVIDENCE.md`.
 - Rework Phase 3 engineering checkpoint: stable VoiceOver progress semantics, named Settings action nodes, a versioned three-scenario beta packet, 54 passing tests, and the remaining human evidence gates are recorded in `REWORK_PHASE_3_EVIDENCE.md`.
 - Rework Phase 4 engineering checkpoint: clean-tree signed-archive creation, strict signature/entitlement/privacy/resource/provenance inspection, 54 passing tests, and the remaining Apple/publication gates are recorded in `REWORK_PHASE_4_EVIDENCE.md`.
@@ -56,6 +56,7 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 
 | Gap | Roadmap destination |
 | --- | --- |
+| Native view checks now cover the focus/break actions, Return-key activation, three Settings tabs, disabled controls, light/dark appearance, and larger-text dark layout using a temporary window host; see `INTERVIEW_UI_QA.md`. Exact menu-bar opening, full keyboard traversal, and assistive-technology checks remain outstanding. Older captures predate this UI. | Phase 3 native experience maintenance; capture current candidate before the interview. |
 | Release evidence is not organized by build and macOS version. | Phase 4 signed-build evidence and Phase 7.1 final regression |
 | No public support intake address or accountable release owner is assigned. | Phase 6.3 store presence and Phase 7.4 support readiness |
 
@@ -77,3 +78,17 @@ Reviewed against the current Swift sources, bundled activity JSON, tests, Xcode/
 ## Closure Rule
 
 Move an item to shipped only with code/test or signed-build/manual evidence. When deferring an item, name the target phase or mark it candidate/out of scope with rationale.
+
+## Interview Simplification — 5 November 2026
+
+Phase 3 maintenance and Phase 7 demo scope: keep the core local focus/break loop, remove repeated status/help, duplicate Settings/restart controls, office-safe badge, duplicated progress/end-time, beta-feedback tab, and duplicate state/duration Settings editors. Notification setup/recovery remains in Reminder Settings. Legacy settings payloads remain compatible.
+
+State/duration selectors disable during active breaks. Recommendation refreshes preserve active activity identity, shuffle is ignored during breaks, and hard-filter edits refresh idle/focusing suggestions immediately. Launch at login is disabled in Debug/local builds and when platform status is unavailable. Release registration, signing, and public distribution gates remain unchanged.
+
+Apple's SwiftPM build rejected the JSON privacy manifest. It now uses XML property-list format with the same declarations; local scripts validate it using plutil. This is a format correction, not a signed-release privacy approval.
+
+Verification: `./scripts/test-local.sh` passed (21 catalog activities); `./scripts/build-local.sh` passed; `swift test` passed all 56 tests with zero failures. Native visual/manual integration evidence remains outstanding as described above.
+
+Double-check follow-up: break-due error/empty states now expose Start Focus in place of shuffle, preserving timer recovery after removing the header shortcut. The behavioral contract now matches active-break selection locking and the revised action names. Regression tests cover no-activity focus recovery and immediate mindfulness filtering. Follow-up verification: 58 SwiftPM tests pass with zero failures; local test and build scripts pass; diff whitespace checks pass.
+
+Native view QA follow-through is recorded in [INTERVIEW_UI_QA.md](INTERVIEW_UI_QA.md). The original menu-bar-only build remains unchanged and was reopened after testing. This evidence partially closes the UI smoke-test gap without claiming exact menu-bar or signed-build verification.

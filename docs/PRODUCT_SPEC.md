@@ -52,6 +52,7 @@ Desk workers often notice discomfort, fatigue, scattered attention, or anxiety o
 - Support 30-second, 2-minute, 5-minute, and 10-minute durations.
 - Preserve the active activity and break deadline across relaunch.
 - Allow early completion or skipping.
+- Keep the active activity fixed until completion or skip; disable state/duration selectors during a break.
 - Start the next focus interval after completion or skip.
 - Treat natural break expiry as completion for same-day novelty history, without implying a wellness outcome.
 
@@ -65,11 +66,11 @@ Desk workers often notice discomfort, fatigue, scattered attention, or anxiety o
 
 ### Preferences
 
-- Persist all user-editable settings.
+- Persist all user-editable settings. Break state/duration are chosen in the popover; the persisted legacy default-duration field remains compatible but has no separate Settings editor.
 - Normalize user-editable numbers to supported bounds.
 - Support quiet hours that cross midnight.
 - Treat matching quiet-hour endpoints as all-day reminder suppression while timers continue.
-- Support optional launch at login and optional menu bar text.
+- Support optional launch at login and optional menu bar text. Launch-at-login configuration is disabled in Debug/local builds and when unavailable on the platform.
 - Default auto-start-on-launch to enabled for clean installs and older settings payloads missing that field.
 
 ## Experience Requirements

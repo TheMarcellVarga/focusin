@@ -19,7 +19,7 @@ This information is used only to provide the application’s focus/break workflo
 
 Focusin can optionally request notification permission and register itself as a login item. macOS controls these permissions, and you can change them in System Settings. Focusin remains usable when notifications are denied.
 
-Focusin writes a static beta-feedback template to the clipboard only when you select the copy action. It does not read clipboard contents.
+The static beta-feedback template is maintained as an internal beta-preparation resource. Focusin does not copy to or read from the clipboard.
 
 ## Data collection and tracking
 

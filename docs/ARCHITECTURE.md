@@ -35,8 +35,8 @@ FocusinStore ----------> LaunchAtLoginController
 
 - Render observable state and dispatch user intent.
 - Own no durable state beyond view presentation.
-- Use native SwiftUI materials, controls, and settings structure.
-- May bridge to AppKit for application termination and clipboard behavior.
+- Use native SwiftUI controls, semantic AppKit colors, and Settings structure; keep functional popover panels opaque across appearances.
+- May bridge to AppKit for application termination, System Settings links, and accessible Settings action buttons.
 
 ### `FocusinStore`
 

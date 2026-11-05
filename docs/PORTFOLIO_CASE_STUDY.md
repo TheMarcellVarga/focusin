@@ -92,7 +92,7 @@ Primary actions have keyboard defaults, state never depends on color alone, larg
 | --- | --- |
 | Domain behavior | 54 deterministic tests covering lifecycle, persistence, quiet hours, recommendation passes, catalog validation, permission reconciliation, and beta-template requirements |
 | Catalog | 21 activities; every default-filter state/duration intersection covered; named human content review passed for 0.1.0 (1) |
-| Native UI | Six popover presentations plus Settings captured across light/dark, normal/large text, increased contrast, and reduced transparency |
+| Native UI | Six popover presentations plus Settings have recorded light/dark, normal/large text, increased-contrast, and reduced-transparency evidence; the July matrix predates the opaque-panel refinement and is not final media |
 | Accessibility | Keyboard and VoiceOver semantics recorded; later AX inspection fixed unnamed Settings actions and per-second progress chatter |
 | Privacy | App Sandbox only, no network entitlement, no tracking or collected-data declaration, local preferences/history |
 | Distribution discipline | Unsigned Release preflight and archive tooling pass locally; signed archive and installed-candidate gates remain unexecuted |
@@ -135,3 +135,16 @@ Complete only from real evidence:
 ## Portfolio Asset Set
 
 Final assets are defined in [`CASE_STUDY_CAPTURE_MANIFEST.md`](CASE_STUDY_CAPTURE_MANIFEST.md). Until every asset references the same signed candidate, use the textual case study and clearly labeled engineering evidence only.
+
+## Portfolio Presentation Refresh — 12 October 2026
+
+The `/focusin` case in `personal-portfolio-v.2` now follows the index design system
+and Aperture's screen-led approach: selectable focus/break/reset captures, recent
+UI and accessibility work, interactive recovery explanations, and expandable
+engineering evidence. Current opaque-panel popover fixtures and historical July
+Settings fixtures are labeled engineering evidence, not final release media.
+
+The 54-test result above remains recorded evidence. Attempts to rerun
+`test-local.sh` and `build-local.sh` on 12 October 2026 stopped because the installed
+Command Line Tools could not load the SwiftUI `SwiftUIMacros.StateMacro` plugin.
+The portfolio refresh does not establish a newly verified native candidate.

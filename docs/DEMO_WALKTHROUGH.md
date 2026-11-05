@@ -4,6 +4,16 @@
 
 Demonstrate Focusin’s complete value loop in three to five minutes using only shipped behavior. The demo should emphasize low interaction cost, native integration, local privacy, and lifecycle reliability.
 
+## Live Interview Demo (Local Build)
+
+1. Run `./scripts/build-local.sh --open` and open Focusin from the menu bar.
+2. Choose a state and a 30-second break. Show one suggestion and shuffle once.
+3. Click **Take Break** (or **Start Break** when due). The selectors disable while the countdown runs.
+4. Click **Finish Break** to show the next focus interval starting automatically.
+5. Open Settings only if asked: interval, quiet hours, activity filters, and menu bar text are functional. Launch at login is visibly disabled in local builds.
+
+This path needs no notification permission. For a live break-due transition, set a custom one-minute work interval and click **Reset**. Notification delivery and release login-item behavior still require signed-build evidence; avoid promising those as verified integrations.
+
 ## 30–45 Second Portfolio Cut
 
 Use edited cuts from one exact signed candidate; do not wait through a real focus interval on screen.
@@ -12,8 +22,8 @@ Use edited cuts from one exact signed candidate; do not wait through a real focu
 | --- | --- | --- |
 | 0–5s | Menu bar → popover | “Break timers tell you when to stop. Focusin also gives you one practical thing to do.” |
 | 5–14s | Change state and duration; recommendation updates | “Choose how you feel and how much time you have. The bundled catalog matches state, duration, and preferences locally.” |
-| 14–23s | Break due → Start | “At the deadline, Focusin offers the reset even when notifications are unavailable.” |
-| 23–31s | Active break → Done | “Complete or skip it, and the next focus interval starts immediately.” |
+| 14–23s | Break due → Start Break | “At the deadline, Focusin offers the reset even when notifications are unavailable.” |
+| 23–31s | Active break → Finish Break | “Complete or skip it, and the next focus interval starts immediately.” |
 | 31–39s | Reminder and Activities Settings | “Quiet hours, office-safe activities, and reminders stay under the user’s control.” |
 | 39–45s | Menu bar status plus privacy card/title | “No account, analytics, network dependency, or generated wellness advice.” |
 
@@ -49,11 +59,11 @@ Show focus running, then use a prepared short interval or controlled fixture to 
 
 ### 5. Active break — 35 seconds
 
-Start the recommendation. Show persisted activity instructions, progress, countdown, Done, and Skip. Choose Done and show the next focus interval begin automatically.
+Start the recommendation. Show persisted activity instructions, the countdown, Finish Break, and Skip. Choose Finish Break and show the next focus interval begin automatically.
 
 ### 6. Control and privacy — 45 seconds
 
-Open Settings. Briefly show work interval, quiet hours, office-safe/mindfulness filters, menu bar text, and launch at login. Explain that settings and same-day history use local preferences, with no account, analytics, or network requirement.
+Open Settings. Briefly show work interval, quiet hours, office-safe/mindfulness filters, and menu bar text. Launch at login is disabled in the local demo build. Explain that settings and same-day history use local preferences, with no account, analytics, or network requirement.
 
 ### 7. Engineering close — 30 seconds
 
@@ -64,7 +74,7 @@ Summarize the date-derived persisted state machine, validated bundled catalog, o
 - Popover in a clear focus state.
 - Recommendation changing with state or duration.
 - Break-due notification and status.
-- Active break progress.
+- Active break countdown and disabled selectors.
 - Settings control surface.
 - Optional relaunch during a break to prove restoration.
 

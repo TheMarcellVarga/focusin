@@ -17,10 +17,10 @@ require_command() {
 require_command swiftc
 require_command plutil
 
-plutil -lint "$RESOURCE_DIR/Info.plist" "$RESOURCE_DIR/Focusin.entitlements" >/dev/null
+plutil -lint "$RESOURCE_DIR/Info.plist" "$RESOURCE_DIR/Focusin.entitlements" "$RESOURCE_DIR/PrivacyInfo.xcprivacy" >/dev/null
 
 if command -v jq >/dev/null 2>&1; then
-  jq empty "$RESOURCE_DIR/Activities.json" "$RESOURCE_DIR/PrivacyInfo.xcprivacy"
+  jq empty "$RESOURCE_DIR/Activities.json"
 fi
 
 swiftc \
@@ -35,7 +35,8 @@ swiftc \
   "$SOURCE_DIR/LaunchAtLoginController.swift" \
   "$SOURCE_DIR/FocusinStore.swift" \
   "$SOURCE_DIR/BetaFeedbackTemplate.swift" \
-  "$SOURCE_DIR/Views.swift" \
+  "$SOURCE_DIR/FocusinPopoverView.swift" \
+  "$SOURCE_DIR/SettingsView.swift" \
   "$SOURCE_DIR/FocusinApp.swift"
 
 HARNESS="$TMP_DIR/main.swift"
